@@ -19,20 +19,25 @@ public partial class adminweb : System.Web.UI.Page
 	//载入
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["issuper"] == null)
+        topnew.Visible = false;
+        if (Session["issuper"] == null || Session["ispwd"] == null)
             {
                 Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
             }
+        else if (WebHelp.Auth(Session["issuper"].ToString(), Session["ispwd"].ToString()) == false)
+        {
+            Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
+        }
 
             else
             {
-                this.Label1.Text = "欢迎管理员：" + Session["issuper"];
-                this.btnUser.Visible = true;
+                this.Label1.Text = "欢迎管理员：" + Encryption.Decode(Session["issuper"]);
                 aptips.InnerText = "";
                 footerload();
                 if (Session["suadmin"].ToString() == "True")
                 {
                     this.btnUser.Visible = true;
+                    topnews();
                 }
                 else
                 {
@@ -100,7 +105,7 @@ public partial class adminweb : System.Web.UI.Page
             string st = "update Admin set adpwd='" + @conf + "' where adname='" + @Session["issuper"] + "' and adpwd='" + @oldpwd + "'";
             cnn.Open();
             SqlCommand cmd = new SqlCommand(st, cnn);
-            int ret = cmd.ExecuteNonQuery();//返回受影响的行数
+            int ret = cmd.ExecuteNonQuery();
             if (ret != 0)
         {
             cnn.Close();
@@ -162,7 +167,7 @@ public partial class adminweb : System.Web.UI.Page
     //GridView的绑定
      private void bind()
      {
-         string bdsql = "select *,ROW_NUMBER()OVER (order by id) AS rowsid  from Admin";
+         string bdsql = "select *,ROW_NUMBER()OVER (order by id) AS rowsid  from Admin where id<>3 and adname<>'" + Session["issuper"] + "'";
          string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
              SqlConnection conur = new SqlConnection(connectionString);
              SqlDataAdapter cmdu = new SqlDataAdapter(bdsql, conur);
@@ -186,7 +191,7 @@ public partial class adminweb : System.Web.UI.Page
          string delur = "delete from Admin where id='" + @id + "'";
          SqlCommand cmdu = new SqlCommand(delur, conur);
          conur.Open();
-         int ret = cmdu.ExecuteNonQuery();//返回受影响的行数
+         cmdu.ExecuteNonQuery();
          conur.Close();
          Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('删除成功！');</script>");
          bind();
@@ -207,10 +212,14 @@ public partial class adminweb : System.Web.UI.Page
 
          int id = Convert.ToInt32(gvuser.DataKeys[e.RowIndex].Value);
          CheckBox cb = gvuser.Rows[e.RowIndex].FindControl("CheckBox1") as CheckBox;
-         int auth = 0;
+         int auth;
          if (cb.Checked)
          {
              auth = 1;
+         }
+         else
+         {
+             auth = 0;
          }
 
          string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
@@ -218,21 +227,10 @@ public partial class adminweb : System.Web.UI.Page
          string delur = "update Admin set suadmin='" + @auth + "' where id='" + @id + "'";
          SqlCommand cmdu = new SqlCommand(delur, conur);
          conur.Open();
-         int ret = cmdu.ExecuteNonQuery();//返回受影响的行数
-         if (ret != 0)
-         {
-             conur.Close();
-             Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
-             gvuser.EditIndex = -1;          
-         }
-         else
-         {
-             conur.Close();
-             Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新失败！');</script>");
-         }
-
-             bind();
-         
+         cmdu.ExecuteNonQuery();
+         conur.Close();
+         Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
+         bind();     
 
      }
 
@@ -269,4 +267,39 @@ public partial class adminweb : System.Web.UI.Page
          }
      }
 
+     protected void btnGuest_Click(object sender, ImageClickEventArgs e)
+     {
+         Response.Redirect("guest.aspx");
+     }
+    //顶部通知
+     protected void topnews()
+     {
+         string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+         SqlConnection cnn = new SqlConnection(connectionString);
+         string st = "select count(*) as number from Admin where code is not null";
+         cnn.Open();
+         SqlCommand cmd = new SqlCommand(st, cnn);
+         SqlDataReader rdr = cmd.ExecuteReader();
+         if (rdr.Read())
+         {
+             if (rdr["number"].ToString() == "0")
+             {
+                 topnew.Visible = false;
+             }
+             else
+             {
+                 lbnew.Text = rdr["number"].ToString();
+                 topnew.Visible = true;
+             }
+             cnn.Close();
+         }
+
+     }
+    //查看顶部消息
+     protected void LinkButton1_Click(object sender, EventArgs e)
+     {
+         divchgpwd.Visible = false;
+         bind();
+         divusers.Visible = true;
+     }
 }

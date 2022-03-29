@@ -20,22 +20,22 @@ public partial class reply : System.Web.UI.Page
 	//载入
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["suadmin"] == null)
+        if (Session["issuper"] == null || Session["ispwd"] == null)
+        {
+            Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
+        }
+        else if (WebHelp.Auth(Session["issuper"].ToString(), Session["ispwd"].ToString()) == false)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
         }
 
         else
         {
-            this.Label1.Text = "欢迎管理员：" + Session["issuper"];
+            this.Label1.Text = "欢迎管理员：" + Encryption.Decode(Session["issuper"]);
             footerload();
             Ismid();
-            string mid = Request.QueryString["mid"];
-            if (mid == null)
-            {
-                lbcom.Text = "评论";
-            }
-            if (!Iscid()&&!Ismid())//同时
+            string mid = Request.QueryString["mid"];           
+            if (!Ismid())
             {
                 Response.Write("<script type='text/javascript'>alert('没有这条信息！');window.opener=null;window.open('','_self');window.close();</script>");
             }
@@ -52,40 +52,23 @@ public partial class reply : System.Web.UI.Page
     protected void btnInsert_Click(object sender, ImageClickEventArgs e)
     {
         string mid = Request.QueryString["mid"];
-        string cid = Request.QueryString["cid"];
         string replys = txtreply.Text.Trim();
         DateTime dt = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "China Standard Time");//转东八区
-        if (mid != null)
-        {
             if (replys == "")
             {
-                aptips.InnerText = "没有输入内容！";
+                replys = null;
             }
-            else
-            {
-                string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
-                SqlConnection cnn = new SqlConnection(connectionString);              
-                string st = "update Mess set reply='" + @replys + "',retime='"+@dt+"' where pid='" + @mid + "'";
+                           string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+                SqlConnection cnn = new SqlConnection(connectionString);
+                string st = "update Mess set reply='" + @replys + "',retime='" + @dt + "' where pid='" + @mid + "'";
                 cnn.Open();
                 SqlCommand cmd = new SqlCommand(st, cnn);
                 cmd.ExecuteNonQuery();
-                //Response.Redirect(Request.Url.ToString());
                 cnn.Close();
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('回复成功！');</script>");
-            }
-        }
-        else
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
-            SqlConnection cnn = new SqlConnection(connectionString);
-            string st = "update Comment set reply='" + @replys + "',retime='"+@dt+"' where comid='" + @cid + "'";
-            cnn.Open();
-            SqlCommand cmd = new SqlCommand(st, cnn);
-            cmd.ExecuteNonQuery();
-            Response.Redirect(Request.Url.ToString());
-            cnn.Close();
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('回复成功！');</script>");
-        }
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
+                Ismid();
+            
+
     }
     //清除按钮
     protected void btnReset_click(object sender, ImageClickEventArgs e)
@@ -117,19 +100,19 @@ public partial class reply : System.Web.UI.Page
         string mid = Request.QueryString["mid"];
         string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
         SqlConnection cnn = new SqlConnection(connectionString);
-        string st = "select * from Mess where pid='"+@mid+"'";
+        string st = "select * from Mess,Guest where Mess.gid=Guest.guid and  pid='"+@mid+"'";
         cnn.Open();
         SqlCommand cmd = new SqlCommand(st, cnn);
         SqlDataReader rdr = cmd.ExecuteReader();
         if (!rdr.Read())
         {
             cnn.Close();
-            return false;
+             return false;
         }
         else
         {
-            lbuser.Text= rdr["pname"].ToString();
-            lbliuyan.Text=rdr["pcontent"].ToString();
+            lbuser.Text = Encryption.Decode(rdr["gname"].ToString());
+            lbliuyan.Text = Encryption.Decode(rdr["pcontent"].ToString());
             if (rdr["reply"].ToString().Trim() == "")
             {
                 lbhuifu.Text = "（暂无回复！）";
@@ -140,63 +123,38 @@ public partial class reply : System.Web.UI.Page
                 lbhuifu.Text = rdr["reply"].ToString();
             }
             cnn.Close();
-            return true;
-        }
-    }
-    private bool Iscid()
-    {
-        string cid = Request.QueryString["cid"];
-        string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
-        SqlConnection cnn = new SqlConnection(connectionString);
-        string st = "select * from Comment where comid='" + @cid + "'";
-        cnn.Open();
-        SqlCommand cmd = new SqlCommand(st, cnn);
-        SqlDataReader rdr = cmd.ExecuteReader();
-        if (!rdr.Read())
-        {
-            cnn.Close();
-            return false;
-        }
-        else
-        {
-            lbuser.Text = rdr["coname"].ToString();
-            if (rdr["reply"].ToString().Trim() == "")
+            int allpub=0;
+            if (CheckBox1.Checked == true)
             {
-               lbhuifu.Text = "（暂无回复！）";
-               btnCeuser.Visible = false;
+                allpub = 1;
             }
-            else
+            else 
             {
-                lbhuifu.Text = rdr["reply"].ToString();
+                allpub = 0;
             }
-            lbliuyan.Text = rdr["comment"].ToString();            
+            string st2 = "update Mess set ispub='" + @allpub + "' where pid='" + @mid + "'";
+            cnn.Open();
+            SqlCommand cmd2 = new SqlCommand(st2, cnn);
+            cmd2.ExecuteNonQuery();
             cnn.Close();
             return true;
         }
+
+
     }
+  
     protected void btnCeuser_Click(object sender, EventArgs e)
     {
         string mid = Request.QueryString["mid"];
-        string cid = Request.QueryString["cid"];
         string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
         SqlConnection cnn = new SqlConnection(connectionString);
-        if (mid != null)
-        {
-            string st = "update Mess set reply=null where pid='"+@mid+"'";
+            string st = "update Mess set reply=null,retime=null where pid='"+@mid+"'";
             cnn.Open();
             SqlCommand cmd = new SqlCommand(st, cnn);
             cmd.ExecuteNonQuery();
             cnn.Close();
             Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert(删除成功！');</script>");
-        }
-        else
-        {
-            string st = "update Comment set reply=null where comid='" + @cid + "'";
-            cnn.Open();
-            SqlCommand cmd = new SqlCommand(st, cnn);
-            cmd.ExecuteNonQuery();
-            cnn.Close();
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('删除成功！');</script>");
-        }
+            Ismid();
+  
     }
 }

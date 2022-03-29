@@ -17,7 +17,11 @@ public partial class image: System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["suadmin"] == null)
+        if (Session["issuper"] == null || Session["ispwd"] == null)
+        {
+            Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
+        }
+        else if (WebHelp.Auth(Session["issuper"].ToString(), Session["ispwd"].ToString()) == false)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
         }
@@ -26,7 +30,7 @@ public partial class image: System.Web.UI.Page
         {
             if (!IsPostBack)
             {
-                this.Label1.Text = "欢迎管理员：" + Session["issuper"];
+                this.Label1.Text = "欢迎管理员：" + Encryption.Decode(Session["issuper"]);
                 footerload();
                 bind();
                 

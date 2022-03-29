@@ -16,4 +16,4 @@ blog:[卡库伊2.0](http://kkii.org).
 
 ## Info
 
-![verison](https://img.shields.io/badge/verison-1.5.13-blue) ![build](https://img.shields.io/badge/build-2014.6.24%2023%3A50-lightgrey) ![.NET](https://img.shields.io/badge/.NET-3.5-brightgreen) ![MS-SQL Server](https://img.shields.io/badge/MS--SQL-2008%20r2-orange) ![copyright](https://img.shields.io/badge/copyright-Sunplace%2C2014-blue)
+![verison](https://img.shields.io/badge/verison-2.7.3-blue) ![build](https://img.shields.io/badge/build-2014.12.5%2020%3A49-lightgrey) ![.NET](https://img.shields.io/badge/.NET-3.5-brightgreen) ![MS-SQL Server](https://img.shields.io/badge/MS--SQL-2008%20r2-orange) ![copyright](https://img.shields.io/badge/copyright-Sunplace%2C2014-blue)

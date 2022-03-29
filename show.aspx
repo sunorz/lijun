@@ -1,5 +1,4 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeFile="show.aspx.cs" Inherits="show"%>
-<%@ Register src="gotop.ascx" tagname="gotop" tagprefix="uc1" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -28,14 +27,36 @@ a:active {
 	text-decoration: none;
 }
     body {
-	background-image: url(imgs/class/14172918940_1f8c6ed0b4_h.jpg);
+	background-image: url(imgs/class/bg2.jpg);
 	background-repeat: repeat;
 	background-attachment: fixed;
 }
-    </style>
+.pager
+ {
+     width:100%;  margin:10px; line-height:20px; display:block;color:#F59223;
+    
+ }
+.pager a, .pager span
+ {
 
+    border: 1px solid #F59223; 
+    line-height: 30px;
+    margin-right: 5px;
+    padding: 2px 6px;
+    background-color:White;color:#F59223;
+ }
+.pager a:hover
+ {border:1 solid #F59223; background-color:#F59223; color:White;  padding: 2px 6px;}
+.pager .current
+{
+     border: 1px solid #F59223; 
+    line-height: 20px;
+    margin: 0 5px;
+    padding: 2px 6px;
+    background-color:#F59223;color:White;
+}
+    </style>
 <body>
-<div id="apDiv2" class="toplnk"><uc1:gotop ID="gotop1" runat="server" /></div>
 <script language="JavaScript" type="text/javascript">
     var lang = navigator.language || navigator.userLanguage;
     if (lang.substr(0, 3) == "zh-") {
@@ -45,48 +66,56 @@ a:active {
     <form id="form1" runat="server">
 <table width="1038" border="0" align="center" cellpadding="0" cellspacing="0">
    <tr>
-    <td height="49px" colspan="8" valign="middle" class="foote"><a href="Default.aspx" title="返回首页"><img src="imgs/logo.gif" width="100px" height="49px" border="0"/></a>丽军数码摄影器材维修中心</td>
-    <td height="49px" align="center" valign="middle" class="foote"><a href="showsea.aspx" title="点此搜索"><img src="imgs/search.gif" width="40" height="48" border="0" /></a></td>
+     <td height="49px" valign="middle" class="foote"><img src="imgs/logo.gif" width="100px" height="49px"  border="0"/>丽军数码摄影器材维修中心<div style="position:absolute; right:20px; bottom:16px;"><a href="showsea.aspx" title="点此搜索"><img src="imgs/search.gif" width="40" height="48" border="0" /></a></div></td>
   </tr>
   <tr>
-    <td height="20" colspan="9">&nbsp;</td>
-    </tr>
-  <tr>
-    <td colspan="9" align="center" bgcolor="#585858"></td>
+    <td height="20" colspan="9"></td>
   </tr>  
   <tr>
-     <td  align="center" valign="middle" bgcolor="#647588"><a href="Default.aspx"><h2>网站首页</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#66CCC1"><h2>配件展示</h2></td>
-    <td  align="center" valign="middle" bgcolor="#647588"><a href="error.aspx"><h2>常见故障</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#647588"><a href="fix.aspx"><h2>报修流程</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#647588"><a href="bbs.aspx"><h2>维修论坛</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#647588"><a href="shop.aspx"><h2>网店介绍</h2></a></td>
-   <td  align="center" valign="middle" bgcolor="#647588"> <a href="staff.aspx"><h2>人才招聘</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#647588"><a href="messages.aspx"><h2>网上留言</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#647588"><a href="connect.aspx"><h2>联系我们</h2></a></td>
-  </tr>  
+  <td colspan="9" height="20"><table align="center" cellspacing="0" width="1035px">
+      <tr>
+     <td  align="center" valign="middle" class="topbar"><a href="Default.aspx" class="ht">
+         网站首页</a></td>
+    <td   align="center" valign="middle"  class="ht" bgcolor="#E96800">配件展示</td>
+    <td  align="center" valign="middle" class="topbar"><a href="error.aspx" class="ht">
+        常见故障</a></td>
+    <td   align="center" valign="middle" class="topbar"><a href="fix.aspx" class="ht">
+        报修流程</a></td>
+    <td  align="center" valign="middle" class="topbar"><a href="bbs.aspx" class="ht">
+        维修论坛</a></td>
+    <td  align="center" valign="middle" class="topbar"><a href="shop.aspx" class="ht">
+        网店介绍</a></td>
+   <td  align="center" valign="middle" class="topbar"> <a href="staff.aspx" class="ht">
+       人才招聘</a></td>
+    <td  align="center" valign="middle" class="topbar"><a href="messages.aspx" class="ht">
+        网上留言</a></td>
+    <td   align="center" valign="middle" class="topbar"><a href="connect.aspx" class="ht">
+        联系我们</a></td></tr>
+      </table>
+      </td>    
+  </tr> 
      <tr>
-    <td colspan="9" align="center" valign="middle" cellpadding="0">
+    <td colspan="9" align="center" valign="middle">
 <table width="100%" border="0" cellspacing="0" cellpadding="12">
 <tr>
 <td colspan="9" align="middle" valign="middle">
-        <img src="imgs/class/img2.gif" width="200" height="194" /><div id="title" runat="server">配件展示</div></td>
+        <img src="imgs/class/img2.gif" width="200" height="194"  /><div id="title" runat="server">
+            配件展示</div></td>
         </tr>
   <tr>
-    <td colspan="9" align="center" bgcolor="#CCCCCC">
+    <td colspan="9" align="center" bgcolor="#333333">
         <table width="100%" border="0" cellspacing="0" cellpadding="12">
           <tr>
-            <td align="center" bgcolor="#CCCCCC">
+            <td align="center" bgcolor="#333333">
               <asp:FormView ID="fvphoto" runat="server" AllowPaging="True" PageSize="1"
                     DataSourceID="SqlDataSource1" DataKeyNames="poid" CellPadding="3" 
-                    BackColor="#CCCCCC" 
-                    BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" 
-                    GridLines="Vertical" HorizontalAlign="Center">
-                    <PagerSettings FirstPageText="第一页&nbsp;" LastPageText="最后一页" 
-                        Mode="NextPreviousFirstLast" NextPageText="下一页&nbsp;" PageButtonCount="5" 
-                        PreviousPageText="上一页&nbsp;" Position="Top" />
-                    <FooterStyle BackColor="#FFFFFF" ForeColor="Black" />
-                    <RowStyle BackColor="#cccccc" ForeColor="White" />
+                    BackColor="#333333" 
+                    BorderColor="#333333" BorderStyle="None" BorderWidth="1px" 
+                    HorizontalAlign="Center" EnableTheming="True" CellSpacing="5" 
+                    Font-Names="Arial" >
+                    <PagerSettings  Position="Top"  Mode="NextPrevious" PageButtonCount="5" NextPageText="下一页" PreviousPageText="上一页" />
+                    <FooterStyle BackColor="#333333"/>
+                    <RowStyle BackColor="#333333" ForeColor="White" />
                     <EditItemTemplate>                       
                     </EditItemTemplate>
                     <InsertItemTemplate>                     
@@ -94,26 +123,33 @@ a:active {
                     <ItemTemplate>
                         <br />
                         <span class="contents"><asp:Label ID="Label4" runat="server" 
-                            Text='<%# Eval("poname") %>' Font-Names="arial,宋体,sans-serif;" ForeColor="Black"></asp:Label></span>
+                            Text='<%# Eval("poname") %>' Font-Names="arial,宋体,sans-serif;" 
+                            ForeColor="White" style="font-size: large"></asp:Label></span>
+                        <br />                                                
+                         <br />
+                        <asp:Image ID="Image1" Width="100%" Height="76%" runat="server" 
+                            ImageUrl='<%# Eval("pourl") %>' BorderStyle="Solid" BorderWidth="3px" BorderColor="White" />
+                            <br />
                         <br />
-                        <br />
-                        <asp:Image ID="Image1" Width="100%" Height="100%" runat="server" ImageUrl='<%# Eval("pourl") %>' />
+                        Page&nbsp;&nbsp;<asp:Label ID="Label1" runat="server" Text='<%# SubStr(Eval("rowsid"),60) %>' 
+                            style="text-align: right; font-weight: 700; font-family: 微软雅黑; font-size: x-large; color: #999999;"></asp:Label>
+                        /<asp:Label ID="lbtotal" runat="server" Text="0"></asp:Label>
+                       <br />                    
+                        
                     </ItemTemplate>
-                    <PagerStyle BackColor="#FF7D23" ForeColor="White"  HorizontalAlign="Center" 
-                        Font-Bold="True" Font-Overline="False" Font-Size="Medium" 
-                        Font-Underline="True"/>
+                    <PagerStyle BackColor="#333333"   HorizontalAlign="Left" 
+                        Font-Bold="True" Font-Size="Medium" 
+                        Font-Underline="True" CssClass="pager" />
                     <EmptyDataTemplate>
-                        没有图片！
+                        <asp:Image ID="Image2" Width="100%" Height="76%" runat="server" 
+                            ImageUrl="~/imgs/nopic.jpg" BorderStyle="Solid" BorderWidth="3px" BorderColor="White"  ToolTip="没有图片" />
                     </EmptyDataTemplate>
                     <HeaderStyle BackColor="#000084" Font-Bold="True" ForeColor="White" />
                     <EditRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
                 </asp:FormView>   
                 <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
                      ConnectionString="<%$ ConnectionStrings:lijunConnectionString %>"
-                    SelectCommand="SELECT * FROM [Photo] WHERE ([alid] = @alid)">
-                    <SelectParameters>
-                        <asp:Parameter DefaultValue="3" Name="alid" Type="Int32" />
-                    </SelectParameters>
+                    SelectCommand="SELECT *,ROW_NUMBER()OVER (order by poid) AS rowsid FROM [Photo] WHERE [alid] =3">
                 </asp:SqlDataSource>
                 <br /><br /><br /><br />
               <div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到i贴吧" class="bshare-itieba" href="javascript:void(0);"></a><a title="分享到Facebook" class="bshare-facebook" href="javascript:void(0);"></a><a title="分享到Twitter" class="bshare-twitter" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;">
@@ -128,7 +164,7 @@ a:active {
   <tr>
     <td height="40" colspan="9" class="footer">
            <p>&nbsp;&nbsp;<asp:Label ID="Label3" runat="server" Text="Label"></asp:Label></p>
-      <p>&nbsp;&nbsp;<a href="adminlogin.aspx" class="foot">管理员登录</a>&nbsp;&nbsp;<a href="http://jsunplace.tumblr.com/" class="foot">关于本站作者</a></p>
+      <p>&nbsp;&nbsp;<a href="adminlogin.aspx" class="foot">登录后台</a>&nbsp;&nbsp;<a href="http://jsunplace.tumblr.com/" class="foot">作者博客</a>&nbsp;&nbsp;<a href="about.html" class="foot">关于本站</a></p>
   </td>
   </tr>
 </table>

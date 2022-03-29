@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeFile="diycnt.aspx.cs" Inherits="diycnt" validateRequest="false" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="diycnt.aspx.cs" Inherits="diycnt" validateRequest="false"  Debug="true"%>
 <%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -56,7 +56,7 @@
                                           <br />
                       <div id="aptips" class="aptips" runat="server"></div><br />
                                               标题：<asp:TextBox ID="txttitle" runat="server" 
-                          BackColor="Silver" CssClass="txt3" MaxLength="70" Width="474px"></asp:TextBox>
+                          BackColor="Silver" CssClass="txt3" MaxLength="10" Width="162px"></asp:TextBox>
                                               <br />
                       <br />文章内容：
                       <p> 
@@ -83,9 +83,9 @@
                 
                           </td>
           </tr>
-          <tr>
-            <td colspan="3" align="center" valign="middle" width="500"><div id="divfooter" class="divcss" runat="server" align="center">
-              <table width="100%" border="0" cellspacing="0" cellpadding="12">
+          <tr> 
+            <td colspan="3" align="center" valign="middle"><div id="divfooter" class="divcss" runat="server" align="center">
+              <table width="100%" border="0" cellspacing="0" cellpadding="12" align="center">
                 <tr>
                   <td align="right" valign="middle"><img src="imgs/seting.gif" alt="" width="32" height="32" /></td>
                   <td align="left"><strong>页脚：</strong></td>

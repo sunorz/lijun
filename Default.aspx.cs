@@ -13,61 +13,13 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using System.Text.RegularExpressions;
 
-public partial class Default: System.Web.UI.Page
+public partial class Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!IsPostBack)
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
-            SqlConnection cnn = new SqlConnection(connectionString);
-            string st = "select * from Class where classid=1";
-            cnn.Open();
-            SqlCommand cmd = new SqlCommand(st, cnn);
-            SqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.Read())
-            {
-                this.Label1.Text = Server.HtmlDecode(rdr["content"].ToString());//读取事先存放在数据库的HTML类型
-                title.InnerText = rdr["cltitle"].ToString();
-                cnn.Close();
-                footerload();
-            }
-            else
-            {
-                this.Label1.Text = "（暂无内容！）";
-                cnn.Close();
-            }
-
-
-        }
-    }
-
-    public string getItems()
-    {
-        StringBuilder sb = new StringBuilder();
-        string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
-        SqlConnection cnn = new SqlConnection(connectionString);
-        string st = "select * from Photo where alid=3 order by poid desc";
-        cnn.Open();
-        SqlDataAdapter adp = new SqlDataAdapter(st, cnn);
-        DataSet ds = new DataSet();
-        adp.Fill(ds, "honour");
-        DataTable dt = ds.Tables["honour"];
-        int rowcount = dt.Rows.Count;
-        for (int i = 0; i < rowcount; i++)
-        {
-            string psmurl = dt.Rows[i]["psmurl"].ToString().Replace("~/imgs", "imgs");
-            string pourl = dt.Rows[i]["pourl"].ToString().Replace("~/imgs", "imgs");
-            sb.Append("theAutoScroll.addItem('" + psmurl + "','" + pourl + "',\"图片1\",\"_blank\")\n");
-        }
-        cnn.Close();
-        return sb.ToString();
-    }
-
-
-   protected void footerload()
-    {
+        show();
         string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
         SqlConnection cnn = new SqlConnection(connectionString);
         string st = "select * from Class where classid=7";
@@ -76,8 +28,67 @@ public partial class Default: System.Web.UI.Page
         SqlDataReader rdr = cmd.ExecuteReader();
         if (rdr.Read())
         {
-            this.Label3.Text = Server.HtmlDecode(rdr["content"].ToString());
+            string data = rdr["content"].ToString();
+            data = data.Replace("&lt;p&gt;&amp;nbsp;&amp;nbsp;", "<br/><br/><br/>");
+            this.Label3.Text = Server.HtmlDecode(data);
             cnn.Close();
+        }
+    }
+
+
+    protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+    {
+        Response.Redirect("intro.aspx");
+    }
+
+    protected void show()
+    {
+        string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+        SqlConnection cnn = new SqlConnection(connectionString);
+        string st = "select * from Class where classid=1";
+        cnn.Open();
+        SqlCommand cmd = new SqlCommand(st, cnn);
+        SqlDataReader rdr = cmd.ExecuteReader();
+        if (rdr.Read())
+        {
+            cutwords(rdr["content"].ToString());
+
+            cnn.Close();
+
+        }
+        else
+        {
+            intro.InnerText = "";
+            cnn.Close();
+        }
+    }
+
+    protected void cutwords(string data)
+    {
+        int i;
+        int j = 0;
+        string data2;
+        for (i = 0; i < data.Length; i++)
+        {
+            if (data.Substring(i, 1) == "。" || data.Substring(i, 1) == "？")
+            {
+                j++;
+
+            }
+            if (j == 3)
+            {
+                j = i;
+                data2=Server.HtmlDecode(data.Substring(0, j + 1));
+                data2=data2.Replace("<p>","    ");
+                data2=data2.Replace("</p>","<br/>");
+                intro.InnerText = data2;
+                break;
+            }
+
+        }
+        if (j < 3)
+        {
+            intro.InnerText = Server.HtmlDecode(data).Replace("<p>","    ");
         }
     }
 }

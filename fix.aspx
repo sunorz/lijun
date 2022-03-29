@@ -25,7 +25,7 @@
 	letter-spacing:8pt;
 }
     body {
-	background-image: url(imgs/class/14172681808_d158d1ddb8_h.jpg);
+	background-image: url(imgs/class/bg4.jpg);
 	background-repeat: repeat;
 	background-attachment: fixed;
 }
@@ -41,6 +41,18 @@ a:hover {
 a:active {
 	text-decoration: none;
 }
+ .pager{ width:100%;  margin:10px; line-height:20px; display:block;}
+.pager span { border:1px solid #F59223; margin: 0 5px; padding: 1px 6px; float:left;background-color:#F59223;color:White;}
+.pager a {
+    border: 1px solid #F59223;
+    display: block;
+    overflow:hidden;
+    float: left;
+    margin: 0 5px;
+    padding: 1px 6px;  color:#F59223;
+    background-color:White; 
+}
+.pager a:hover { border:1 solid #F59223; background-color:#F59223; color:White; margin: 0 5px; padding: 1px 6px;}
 </style></head>
 <body>
 <div id="apDiv2" class="toplnk"><uc2:gotop ID="gotop1" runat="server" /></div>
@@ -51,27 +63,28 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
 </script>
 
     <form id="form1" runat="server">
-<table width="1038" border="0" align="center" cellpadding="0" cellspacing="0" class="layout">
+<table width="1038" border="0" align="center" cellpadding="0" cellspacing="0" class="layoute">
   <tr>
-    <td height="49px" colspan="8" valign="middle" class="foote"><a href="Default.aspx" title="返回首页"><img src="imgs/logo.gif" width="100px" height="49px" border="0"/></a>丽军数码摄影器材维修中心</td>
-    <td height="49px" align="center" valign="middle" class="foote"><a href="showsea.aspx" title="点此搜索"><img src="imgs/search.gif" width="40" height="48" border="0" /></a></td>
-  </tr>
+    <td height="49px" valign="middle" class="foote"><img src="imgs/logo.gif" width="100px" height="49px"  border="0"/>丽军数码摄影器材维修中心<div style="position:absolute; right:20px; bottom:16px;"><a href="showsea.aspx" title="点此搜索"><img src="imgs/search.gif" width="40" height="48" border="0" /></a></div></td>
   <tr>
-    <td height="20" colspan="9">&nbsp;</td>
-    </tr>
-  <tr>
-    <td colspan="9" align="center" bgcolor="#585858"></td>
+    <td height="20" colspan="9"></td>
   </tr>  
   <tr>
-     <td  align="center" valign="middle" bgcolor="#647588"><a href="Default.aspx"><h2>网站首页</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#647588"><a href="show.aspx"><h2>配件展示</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#647588"><a href="error.aspx"><h2>常见故障</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#66CCC1"><h2>报修流程</h2></td>
-    <td  align="center" valign="middle" bgcolor="#647588"><a href="bbs.aspx"><h2>维修论坛</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#647588"><a href="shop.aspx"><h2>网店介绍</h2></a></td>
-   <td  align="center" valign="middle" bgcolor="#647588"> <a href="staff.aspx"><h2>人才招聘</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#647588"><a href="messages.aspx"><h2>网上留言</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#647588"><a href="connect.aspx"><h2>联系我们</h2></a></td>
+  <td colspan="9" height="20"><table align="center" cellspacing="0" width="1035px">
+      <tr>
+
+     <td  align="center" valign="middle" class="topbar"><a href="Default.aspx" class="ht">网站首页</a></td>
+    <td   align="center" valign="middle" class="topbar"><a href="show.aspx" class="ht">配件展示</a></td>
+    <td  align="center" valign="middle" class="topbar"><a href="error.aspx" class="ht">常见故障</a></td>
+    <td   align="center" valign="middle" class="ht" bgcolor="#E96800">报修流程</td>
+    <td  align="center" valign="middle" class="topbar"><a href="bbs.aspx" class="ht">维修论坛</a></td>
+    <td  align="center" valign="middle" class="topbar"><a href="shop.aspx" class="ht">网店介绍</a></td>
+   <td  align="center" valign="middle" class="topbar"> <a href="staff.aspx" class="ht">人才招聘</a></td>
+    <td  align="center" valign="middle" class="topbar"><a href="messages.aspx" class="ht">网上留言</a></td>
+    <td   align="center" valign="middle" class="topbar"><a href="connect.aspx" class="ht">联系我们</a> </tr>
+      </table>
+      </td>
+    
   </tr>  
   <tr>
     <td colspan="9" align="center" valign="middle" cellpadding="0">
@@ -80,9 +93,10 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
         <td colspan="9" align="middle" valign="middle"><img src="imgs/class/img4.gif" width="200" height="194" /><div id="title" runat="server"></div></td>
         </tr>
       <tr>
-        <td  height="169" rowspan="2" align="left" valign="middle" bgcolor="#CCCCCC"><span class="contents"><asp:Label ID="Label1" runat="server" 
-                Text="（暂无内容！）" Width="100%"></asp:Label></span><p><div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到i贴吧" class="bshare-itieba" href="javascript:void(0);"></a><a title="分享到Facebook" class="bshare-facebook" href="javascript:void(0);"></a><a title="分享到Twitter" class="bshare-twitter" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;"></span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></p> 
-          </td>        
+         <td style=" background-color:#FFFFEC;" class="contents">
+                    <asp:Label ID="Label1" runat="server" 
+                Text="" Width="100%" style="margin-top: 0px; text-align: left;"></asp:Label><p><div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到i贴吧" class="bshare-itieba" href="javascript:void(0);"></a><a title="分享到Facebook" class="bshare-facebook" href="javascript:void(0);"></a><a title="分享到Twitter" class="bshare-twitter" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;"></span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></p>
+            <asp:Label ID="labPageNumber" runat="server"  Width="100%"></asp:Label><br/></td>  
         </tr>     
     </table></td>
   </tr>
@@ -92,7 +106,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
   <tr>
     <td height="40" colspan="9" class="footer">
            <p>&nbsp;&nbsp;<asp:Label ID="Label3" runat="server" Text="Label"></asp:Label></p>
-      <p>&nbsp;&nbsp;<a href="adminlogin.aspx" class="foot">管理员登录</a>&nbsp;&nbsp;<a href="http://jsunplace.tumblr.com/" class="foot">关于本站作者</a></p>
+      <p>&nbsp;&nbsp;<a href="adminlogin.aspx" class="foot">登录后台</a>&nbsp;&nbsp;<a href="http://jsunplace.tumblr.com/" class="foot">作者博客</a>&nbsp;&nbsp;<a href="about.html" class="foot">关于本站</a></p>
   </td>
   </tr>
 </table>

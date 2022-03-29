@@ -1,4 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeFile="photomgr.aspx.cs" Inherits="photomgr"%>
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="photomgr.aspx.cs" Inherits="photomgr" Debug="true"%>
+<%@ Register assembly="System.Web.DynamicData, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" namespace="System.Web.DynamicData" tagprefix="cc1" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -20,17 +21,17 @@
   <tr>
     <td colspan="9"  align="center" valign="middle" bgcolor="#585858">&nbsp;</td>
     </tr>
-  <tr>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="Default.aspx" target="_blank"><h2>网站首页</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="show.aspx" target="_blank"><h2>配件展示</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="error.aspx" target="_blank"><h2>常见故障</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="fix.aspx" target="_blank"><h2>报修流程</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="bbs.aspx" target="_blank"><h2>维修论坛</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="shop.aspx" target="_blank"><h2>网店介绍</h2></a></td>
-   <td  align="center" valign="middle" bgcolor="#ff7d23"> <a href="staff.aspx" target="_blank"><h2>人才招聘</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="messages.aspx" target="_blank"><h2>网上留言</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="connect.aspx" target="_blank"><h2>联系我们</h2></a></td>
-  </tr>  
+   <tr height="40">
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="Default.aspx" class="ht" target="_blank">网站首页</a></td>
+    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="show.aspx" class="ht" target="_blank">配件展示</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="error.aspx" class="ht" target="_blank">常见故障</a></td>
+    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="fix.aspx" class="ht" target="_blank">报修流程</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="bbs.aspx" class="ht" target="_blank">维修论坛</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="shop.aspx"  class="ht" target="_blank">网店介绍</a></td>
+   <td  align="center" valign="middle" bgcolor="#ff7d23"> <a href="staff.aspx" class="ht" target="_blank">人才招聘</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="messages.aspx" class="ht" target="_blank">网上留言</a></td>
+    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="connect.aspx" class="ht" target="_blank">联系我们</a></td>
+  </tr> 
   <tr>
     <td height="15" colspan="17" align="center" bgcolor="#FFFFFF"><table width="90%" border="0" cellspacing="0" cellpadding="12">
           <tr>
@@ -71,9 +72,10 @@
                                   ReadOnly="True" SortExpression="alid" Visible="False" >
                               <ItemStyle HorizontalAlign="Center" Width="10%" />
                               </asp:BoundField>
-                              <asp:BoundField DataField="alname" HeaderText="相册名" >
-                              <ItemStyle HorizontalAlign="Center" Width="40%" />
-                              </asp:BoundField>
+                              <asp:HyperLinkField DataNavigateUrlFields="alid" 
+                                  DataNavigateUrlFormatString="photo.aspx?id={0}" Text="相册名" 
+                                  DataTextField="alname">
+                              </asp:HyperLinkField>
                               <asp:TemplateField HeaderText="加密">
                                   <ItemTemplate>
                                       <asp:CheckBox ID="CheckBox1" runat="server" Checked='<%# Bind("islock") %>' 
@@ -84,19 +86,22 @@
                                   </EditItemTemplate>
                                   <ItemStyle HorizontalAlign="Center" Width="7%" />
                               </asp:TemplateField>
-                              <asp:HyperLinkField DataNavigateUrlFields="alid" 
-                                  DataNavigateUrlFormatString="photo.aspx?id={0}" Text="详细" Target= "_blank">
-                              <ItemStyle HorizontalAlign="Center" Width="7%" />
-                              </asp:HyperLinkField>
-                              <asp:CommandField ButtonType="Button" EditText="修改" ShowEditButton="True" 
-                                  ShowCancelButton="False" >
+                              <asp:TemplateField ShowHeader="False">
+                                  <EditItemTemplate>
+                                      <asp:Button ID="Button1" runat="server" CausesValidation="True" 
+                                          CommandName="Update" Text="保存" ValidationGroup="EVC" />
+                                  </EditItemTemplate>
+                                  <ItemTemplate>
+                                      <asp:Button ID="Button2" runat="server" CausesValidation="False" 
+                                          CommandName="Edit" Text="修改" />
+                                  </ItemTemplate>
                                   <ControlStyle BackColor="#FF7D23" BorderColor="#FF7D23" BorderStyle="Solid" 
                                       Font-Bold="True" Font-Names="宋体" Font-Size="Medium" ForeColor="White" />
-                              <ItemStyle HorizontalAlign="Center" />
-                              </asp:CommandField>
+                                  <ItemStyle HorizontalAlign="Center" />
+                              </asp:TemplateField>
                               <asp:TemplateField ShowHeader="False">
                                   <ItemTemplate>
-                                      <asp:Button ID="Button1" runat="server" CausesValidation="False" 
+                                      <asp:Button ID="Button3" runat="server" CausesValidation="False" 
                                             CommandName="Delete" Text="删除" 
                                             OnClientClick="javascript:return confirm('被删除的相册可能包含照片！您确定删除该相册吗？');" />
                                   </ItemTemplate>

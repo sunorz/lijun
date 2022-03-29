@@ -35,15 +35,16 @@ public partial class forget: System.Web.UI.Page
         //用户名已经输入
         else
         {
-            Session["fgpwd"] = txtname;
-            string st1="select adname from Admin where adname='" + @txtname + "'";
+            Session["fgpwd"] = Encryption.Encode(txtname);
+            string cname = Encryption.Encode(txtname);
+            string st1="select adname from Admin where adname='" + @cname + "'";
             cnn.Open();
             SqlCommand cmd1=new SqlCommand(st1,cnn);
             SqlDataReader reader1 = cmd1.ExecuteReader();
             if (reader1.Read())//数据库有用户名
             {
                 cnn.Close();
-                string st2 = "select id from Admin where code is null and adname='" + @txtname + "'";
+                string st2 = "select id from Admin where code is null and adname='" + @cname + "'";
                 cnn.Open();
                 SqlCommand cmd2 = new SqlCommand(st2, cnn);
                 SqlDataReader reader2 = cmd2.ExecuteReader();
@@ -57,12 +58,12 @@ public partial class forget: System.Web.UI.Page
                     SqlDataReader read6 = cmd6.ExecuteReader();
                     if (read6.Read())//避免验证码重复
                     {
-                        flag = Rdom();
+                        flag=Rdom();
                     }
                     else
                     {
                         cnn.Close();
-                        string st3 = "update Admin set code='" + @flag + "' where adname='" + @txtname + "'";
+                        string st3 = "update Admin set code='" + @flag + "' where adname='" + @cname + "'";
                         cnn.Open();
                         SqlCommand cmd3 = new SqlCommand(st3, cnn);
                         cmd3.ExecuteNonQuery();
@@ -129,24 +130,16 @@ public partial class forget: System.Web.UI.Page
         }
         else
         {
-
+            string confs = Encryption.Auth(conf);
             string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
             SqlConnection cnn = new SqlConnection(connectionString);
-            string st = "update Admin set adpwd='" + @conf + "',code=null where adname='" + @Session["fgpwd"] + "'";
+            string st = "update Admin set adpwd='" + @confs + "',code=null where adname='" + Session["fgpwd"] + "'";
             cnn.Open();
             SqlCommand cmd = new SqlCommand(st, cnn);
-            int ret = cmd.ExecuteNonQuery();//返回受影响的行数
-            if (ret != 0)
-            {
-                cnn.Close();
-                Response.Write("<script type='text/javascript'>alert('重置成功,请重新登录！');window.location.href='adminlogin.aspx';</script>");
-                
-            }
-            else
-            {
-                aptips.InnerText = "重置失败！";
-                cnn.Close();
-            }
+            cmd.ExecuteNonQuery();
+            cnn.Close();
+            Response.Write("<script type='text/javascript'>alert('设置成功,请重新登录！');window.location.href='adminlogin.aspx';</script>");
+          
         }
     }
     protected void btnrescode_Click(object sender, ImageClickEventArgs e)//验证码

@@ -19,16 +19,20 @@ public partial class adminusers : System.Web.UI.Page
 	//载入
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["suadmin"] == null)
+        if (Session["issuper"] == null || Session["ispwd"] == null)
+        {
+            Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
+        }
+        else if (WebHelp.Auth(Session["issuper"].ToString(), Session["ispwd"].ToString())==false)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
         }
 
         else
         {
-            this.Label1.Text = "欢迎管理员：" + Session["issuper"];
+            this.Label1.Text = "欢迎管理员：" + Encryption.Decode(Session["issuper"]);
             footerload();
-            
+
         }    
     }
 	protected void btnLogout_click(object sender, ImageClickEventArgs e)
@@ -41,9 +45,9 @@ public partial class adminusers : System.Web.UI.Page
 
     protected void btnInsert_Click(object sender, ImageClickEventArgs e)
     {
-        string txtname = yhm.Text.Trim();
-        string txtpwd = mima.Text.Trim();
-        string txtcfpwd = mimaqu.Text.Trim();
+        string txtname =Encryption.Encode(yhm.Text.Trim());
+        string txtpwd = Encryption.Auth(mima.Text.Trim());
+        string txtcfpwd = Encryption.Auth(mimaqu.Text.Trim());
         int chaoji = 0;
         if (cksuper.Checked == true)
         {
@@ -84,18 +88,11 @@ public partial class adminusers : System.Web.UI.Page
             string st = "insert into Admin(adname,adpwd,suadmin) values('" + @txtname + "','" + @txtpwd + "','" + @chaoji + "') ";
             SqlCommand cmd = new SqlCommand(st, cnn);
             cnn.Open();
-            int ret = cmd.ExecuteNonQuery();//返回受影响的行数
-            if (ret != 0)
-            {
-                cnn.Close();
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('添加成功！');window.location.href=window.location.href; </script>");
-                yhm.Text = "";
-            }
-            else
-            {
-                cnn.Close();
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('添加失败！');window.location.href=window.location.href; </script>");
-            }
+            cmd.ExecuteNonQuery();
+            cnn.Close();
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('添加成功！');window.location.href=window.location.href; </script>");
+            yhm.Text = "";
+           
         }
         
     }
@@ -112,8 +109,7 @@ public partial class adminusers : System.Web.UI.Page
 //判断用户名是否重复
     public bool isname()
     {
-        yhm.Text = yhm.Text.Replace(" ", "");
-        string txtname = yhm.Text.Trim();
+        string txtname = Encryption.Encode(yhm.Text.Trim());
         string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
         SqlConnection cno = new SqlConnection(connectionString);
         string ftr = "select adname from Admin where adname='" + @txtname + "'";

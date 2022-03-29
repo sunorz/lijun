@@ -21,14 +21,18 @@ public partial class diycnt : System.Web.UI.Page
 	//载入
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["suadmin"] == null)
+        if (Session["issuper"] == null || Session["ispwd"] == null)
+        {
+            Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
+        }
+        else if (WebHelp.Auth(Session["issuper"].ToString(), Session["ispwd"].ToString()) == false)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
         }
 
         else
         {
-            this.Label1.Text = "欢迎管理员：" + Session["issuper"];
+            this.Label1.Text = "欢迎管理员：" + Encryption.Decode(Session["issuper"]);
              footerload();
         }    
     }
@@ -64,18 +68,10 @@ public partial class diycnt : System.Web.UI.Page
             string st = "update Class set content='" + @tcontent + "',cltitle='" + @title + "' where classid='" + @id + "'";
             cnn.Open();
             SqlCommand cmd = new SqlCommand(st, cnn);
-            int ret = cmd.ExecuteNonQuery();//返回受影响的行数
-            if (ret != 0)
-            {
-                cnn.Close();
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
-                content.Text = "";
-            }
-            else
-            {
-                cnn.Close();
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新失败！');</script>");
-            }
+            cmd.ExecuteNonQuery();
+            cnn.Close();
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
+            content.Text = "";
         }
     }
  
@@ -108,19 +104,13 @@ public partial class diycnt : System.Web.UI.Page
             string st = "update Class set content='" + @footer + "' where classid=7";
             cnn.Open();
             SqlCommand cmd = new SqlCommand(st, cnn);
-            int ret = cmd.ExecuteNonQuery();//返回受影响的行数
-            if (ret != 0)
-            {
-                cnn.Close();
+            cmd.ExecuteNonQuery();
+                            cnn.Close();
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
                 tbfooter.Text = "";
                 aptips3.InnerText = "";
-            }
-            else
-            {
-                cnn.Close();
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新失败！');</script>");
-            }
+                footerload();           
+          
         }
 
     }

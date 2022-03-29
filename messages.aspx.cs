@@ -15,7 +15,10 @@ using System.Data.SqlClient;
 
 public partial class messages : System.Web.UI.Page
 {
-    private int rowscount = 0;
+    protected SqlDataAdapter da;
+    protected DataSet ds;
+    protected SqlCommand comm;
+    private int rowscount = 0; 
     protected int RowsCount
     {
 
@@ -25,60 +28,62 @@ public partial class messages : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        footerload();
-        Page();
+         if (!IsPostBack)
+        {
+            footerload();
+            bind();
+            authmess();
+        }
       }
     protected void btnCommit_click(object sender, ImageClickEventArgs e)
     {
-        txtcname.Text = txtcname.Text.Replace(" ", "");//去空格
-        txtcmail.Text = txtcmail.Text.Replace(" ", "");
-         string pname = txtcname.Text;
-        string pmail = txtcmail.Text;
-        string pcontent = txtccontent.Text;
-        if (pcontent.Length > 280)
-        {
-            Response.Write("<script type='text/javascript'>alert('超过字数限制！');window.location.href=window.location.href; </script>");
-        }
-        else
-        {
-            if (pcontent.Trim() == "" || pcontent.Trim() == "报修请直接联系我们，请不要在此输入！")
-            {
-                Response.Write("<script type='text/javascript'>alert('没有新内容！');window.location.href=window.location.href; </script>");
-            }
-            else
-            {
-                int ispub=1;
-                if (cbpub.Checked==false)
-                {
-                    ispub = 0;
+            txtcname.Text = txtcname.Text.Replace(" ", "");//去空格
+            txtcmail.Text = txtcmail.Text.Replace(" ", "");
+            string pname =Encryption.Encode( txtcname.Text.Trim());
+            string pmail =Encryption.Encode( txtcmail.Text.Trim());
+            string pcontent = Encryption.Encode(txtccontent.Text);
+            ckuser(pname, pmail);
+            string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            DateTime dt = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "China Standard Time");//转东八区
+            string st2 = "select * from Guest where gname='" + @pname + "' and gmail='" + @pmail + "'";
+            con.Open();
+            SqlCommand cmd2 = new SqlCommand(st2, con);
+            SqlDataReader rdrr = cmd2.ExecuteReader();
+                    if (rdrr.Read())
+                    {
+                        if (rdrr["gflag"].ToString() == "True")
+                        {
+                            Response.Write("<script type='text/javascript'>alert('你已经被管理员禁言！');window.location.href='messages.aspx?Page=1'; </script>");
+                            con.Close();
+                        }
+                        else
+                        {
+                            int gid = Convert.ToInt32(rdrr["guid"]);
+                            con.Close();
+                            string st = "insert into Mess (pcontent,pposttime,ispub,gid) values('" + @pcontent + "','" + @dt + "','0','" + @gid + "')";
+                            SqlCommand cmd = new SqlCommand(st, con);
+                            con.Open();
+                            cmd.ExecuteNonQuery();
+                            con.Close();
+                            txtcname.Text = "";
+                            txtcmail.Text = "";
+                            txtccontent.Text = " ";
+                            Response.Write("<script type='text/javascript'>alert('谢谢您的支持！');window.location.href='messages.aspx?Page=1'; </script>");
+                            dvmess.Visible = false;
+                            close.Visible = false;
+                            bind();
+                        }
+                    }                    
+                    else
+                    {
+                        con.Close();
+                        Response.Write("<script type='text/javascript'>alert('昵称和邮箱不匹配，请重新输入！');window.location.href='messages.aspx?Page=1'; </script>");
+                    }
                 }
-                string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
-                SqlConnection con = new SqlConnection(connectionString);
-                DateTime dt = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "China Standard Time");//转东八区
-                string st = "insert into Mess (pname,pmail,pcontent,pposttime,ispub) values('" + @pname + "','" + @pmail + "','" + @pcontent + "','"+@dt+"','" + @ispub + "')";
-                con.Open();
-                SqlCommand cmd = new SqlCommand(st, con);
-                int ret = cmd.ExecuteNonQuery();//返回受影响的行数
-                if (ret!=0)
-                {
-                    con.Close();
-                    txtcname.Text = "";
-                    txtcmail.Text = "";
-                    txtccontent.Text = " ";
-                    Response.Write("<script type='text/javascript'>alert('谢谢您的支持！');window.location.href='messages.aspx?Page=1'; </script>");
-                    dvmess.Visible = false;
-                    close.Visible = false;
-                    Page();
-                }
-                else
-                {
-                    con.Close();
-                    Response.Write("<script type='text/javascript'>alert('发送失败！');window.location.href=window.location.href; </script>");
+            
+       
 
-                }
-            }
-        }
-    }
                
 	
 	protected void btnReset_click(object sender,ImageClickEventArgs e)
@@ -112,14 +117,17 @@ public partial class messages : System.Web.UI.Page
         txtccontent.Attributes.Add("OnBlur", "if(this.value==''){this.value='报修请直接联系我们，请不要在此输入！'}");
  
     }
-  public void Page() { 
+    private void bind()
+    {
+
         string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
         SqlConnection cnn = new SqlConnection(connectionString);
-        string st = "select * from Mess where ispub=1 order by pid";
+        string st = "select * from Mess,Guest where Guest.guid=Mess.gid and ispub=1 order by pid desc";
         cnn.Open();
         SqlDataAdapter da = new SqlDataAdapter(st, cnn);
         DataSet ds = new DataSet();
         da.Fill(ds);
+        this.dlmess.DataSource = ds.Tables[0].DefaultView;
         DataColumn col = ds.Tables[0].Columns.Add("state", typeof(bool));//自定义列state，判断reply是否为空，绑定Datalist中的“回复：”
         RowsCount = ds.Tables[0].Rows.Count;//为RowsCount赋值
         for (int k = 0; k < ds.Tables[0].Rows.Count; k++)//遍历DataTable，将自定义的state列赋值
@@ -137,66 +145,16 @@ public partial class messages : System.Web.UI.Page
             }
         }
         DataColumn col2 = ds.Tables[0].Columns.Add("rowsid", typeof(int));//序号
-                   for (int i = 0; i < RowsCount; i++) {
-                       ds.Tables[0].Rows[i]["rowsid"] = i + 1;
-            }
-        ds.AcceptChanges();//保存更改
-        PagedDataSource objPds = new PagedDataSource(); //自定义分页绑定
-        objPds.DataSource = ds.Tables[0].DefaultView; 
-        objPds.AllowPaging = true; 
-        objPds.PageSize = 5; 
-              if (dlmess == null || RowsCount<= 0)
+        for (int i = 0; i < RowsCount; i++)
         {
-            dvpage.Visible = false;
+            ds.Tables[0].Rows[i]["rowsid"] =RowsCount- i ;
         }
-        int CurPage;
-        string pagers=Request.QueryString["Page"] ;
-        CurPage=Convert.ToInt32(pagers);
-      if(pagers==null)//如果pagers为空
-      {
-          CurPage=1;
-      }
-      else if(CurPage>objPds.PageCount||CurPage<1)  //如果pagers不在范围内
-      {
-           CurPage=1;
-      }
-      else
-        {
-            CurPage = Convert.ToInt32(Request.QueryString["Page"]);
-        }       
-       objPds.CurrentPageIndex = CurPage-1;
-      lblCurrentPage.Text = "当前页："+ CurPage.ToString();
-
-      if (!objPds.IsFirstPage)
-      {
-          lnkPrev.NavigateUrl = Request.CurrentExecutionFilePath + "?Page=" + Convert.ToString(CurPage - 1);//上一页
-          lnkFirst.NavigateUrl = Request.CurrentExecutionFilePath + "?Page=1";//第一页
-      }
-      else
-      {
-          lnkPrev.Visible = false;
-          lnkFirst.Visible = false;
-      }
-
-      if (!objPds.IsLastPage)
-      {
-          lnkNext.NavigateUrl = Request.CurrentExecutionFilePath + "?Page=" + Convert.ToString(CurPage + 1);//下一页
-          lnkLast.NavigateUrl = Request.CurrentExecutionFilePath + "?Page=" + Convert.ToString(objPds.PageCount);//最后一页
-      }
-      else
-      {
-          lnkNext.Visible = false;
-          lnkLast.Visible = false;
-      }
-      DataTable dt = ds.Tables[0];//倒序显示在DataList
-      DataView dv = new DataView();
-      dv.Table = dt;
-      dv.Sort = "pid desc";
-      dlmess.DataSource=dv; 
-      dlmess.DataBind();
-      cnn.Close();
-
- }
+        ds.AcceptChanges();//保存更改
+        this.labPageNumber.Text = PageNums.GetPageNum(ds, dlmess, 5); //传入DataSet,DataList名称和分页大小
+        dlmess.DataBind();
+        cnn.Close();      
+    }  
+ 
   //缩短
   public string SubStr(object caption, int nLeng)
   {
@@ -211,8 +169,60 @@ public partial class messages : System.Web.UI.Page
           sNewStr = sNewStr + "..."; return sNewStr;
       }
   }
+  //检查用户
+  protected void ckuser(string name, string mail)
+  {
+      string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+      SqlConnection cnn = new SqlConnection(connectionString);
+      string st = "select * from Guest where gname='" + @name + "' or gmail='" + @mail + "'";
+      cnn.Open();
+      SqlCommand cmd = new SqlCommand(st, cnn);
+      SqlDataReader rdr = cmd.ExecuteReader();
+      if (rdr.Read())
+      {
+              cnn.Close();       
+      }
+      else
+      {
+          cnn.Close();
+          cnn.Open();
+          string st2 = "insert into Guest(gname,gmail) values('" + @name + "','" + @mail + "')";
+          SqlCommand cmd2 = new SqlCommand(st2, cnn);
+          cmd2.ExecuteNonQuery();
+          cnn.Close();
+      }
+
+  }
+    //禁止留言
+  protected void authmess()
+  {
+      string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+      SqlConnection cnn = new SqlConnection(connectionString);
+      string st = "select * from Auth";
+      cnn.Open();
+      SqlCommand cmd = new SqlCommand(st, cnn);
+      SqlDataReader rdr = cmd.ExecuteReader();
+      if (rdr.Read())
+      {
+          if (rdr["mess"] .ToString()== "True")
+          {
+              cnn.Close();
+              btnnew.Enabled = false;
+              btnnew.Text="管理员关闭了留言功能！";
+          }
+          else
+          {
+              cnn.Close();
+          }
+      }
+      else
+      {
+          cnn.Close();         
+      }
+  }
+      }
  
-}
+
 
     
          

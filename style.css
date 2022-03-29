@@ -1,64 +1,56 @@
 ﻿@charset "utf-8";
 /* CSS Document */
 <style type="text/css">
-
-.layout {
+.layoute {
 	margin:0px auto;
 	font-size: 0.3em;
+	 height:100%;
 }
-h2 {
-	font-size: 15px;
+.topbar{ background-color:#F29740;}
+.topbar:hover{ background-color:#FAC2A4;}
+.ht{
+	font-weight:bold;
+	color:#FFF; 
+	height:40px; 
+}
+a.ht:link{
 	color:#FFF;
-	font-style:inherit;
-	font-family:"宋体";
+	text-decoration: none; 
+	font-weight:bold;
 }
-h2:link{
-	color:#FFF;
-	text-decoration: none;
-}
-h2:hover{
+a.ht:hover{
 	color: #FFF;
-	text-decoration:underline;
+	text-decoration:none;
+	font-weight:bold;
 
 }
-h2:visited{
+a.ht:visited{
 	color:#FFF;
 	text-decoration: none;
+	font-weight:bold;
 	}
 body {
 	background-color: #585858;
 	margin-top: 0px;
 }
-.d1{
-	background-color:#000000;
-	position:absolute;
-	top:337px;
-	width:181px;
-	height:30px;
-	right: 168px;
-	filter:Alpha(opacity=80);
-	opacity: 0.8;
-	text-align: left;
-	font-family:"Times New Roman", Times, serif;
-	}
-
 .footer{
 	line-height:5pt;
-	font-family:"楷书";
+	font-family:宋体,Times New Roman;
 	font-size:12px;
 	background-color:#585858;
   	filter:Alpha(opacity=50);
 	opacity: 0.5;
 	color:#FFF;
+    text-align: left;
 }
 .foote{
-	font-family:Tahoma, Geneva, sans-serif;
+	font-family:黑体,sans-serif;
 	line-height:80px;
 	font-size:24px;
 	background-color:#585858;
   	filter:Alpha(opacity=50);
 	opacity: 0.5;
-	color:#FFF;
+	color:#FFF; margin-right:20px;position:relative;font-weight:bold;
 }
 .foote img{
 	vertical-align: middle;
@@ -82,7 +74,7 @@ body {
 	border: 2px solid #ff7d23;
 	clip: rect(10px,10px,10px,10px);
 	width: 800px;
-	text-align: center;
+	text-align: left;
 }
 .divcss2
 {
@@ -137,12 +129,20 @@ color:#FFF;
   a.newl:link{
 color:#000;
 font-size:0.8em;
- }
-  a.newl:visited{
-color:#000;font-size:0.8em;
- }
-   a.newl:hover{
-color:#000;font-size:0.8em;
 
  }
-</style>
+  a.newl:visited{
+color:#000;
+font-size:0.8em;
+ }
+   a.newl:hover{
+color:#000;
+font-size:0.8em;
+
+ } 
+ 
+
+ 
+ 
+ </style>
+

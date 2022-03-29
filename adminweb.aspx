@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeFile="adminweb.aspx.cs" Inherits="adminweb"%>
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="adminweb.aspx.cs" Inherits="adminweb"  Debug="true"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,17 +19,19 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
     </tr>
   <tr>
     <td height="15" colspan="17" bgcolor="#585858"></td>
+    </tr>
+   <tr height="40">
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="Default.aspx" class="ht" target="_blank">网站首页</a></td>
+    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="show.aspx" class="ht" target="_blank">配件展示</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="error.aspx" class="ht" target="_blank">常见故障</a></td>
+    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="fix.aspx" class="ht" target="_blank">报修流程</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="bbs.aspx" class="ht" target="_blank">维修论坛</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="shop.aspx"  class="ht" target="_blank">网店介绍</a></td>
+   <td  align="center" valign="middle" bgcolor="#ff7d23"> <a href="staff.aspx" class="ht" target="_blank">人才招聘</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="messages.aspx" class="ht" target="_blank">网上留言</a></td>
+    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="connect.aspx" class="ht" target="_blank">联系我们</a></td>
+  </tr>  
   <tr>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="Default.aspx" target="_blank"><h2>网站首页</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="show.aspx" target="_blank"><h2>配件展示</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="error.aspx" target="_blank"><h2>常见故障</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="fix.aspx" target="_blank"><h2>报修流程</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="bbs.aspx" target="_blank"><h2>维修论坛</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="shop.aspx" target="_blank"><h2>网店介绍</h2></a></td>
-   <td  align="center" valign="middle" bgcolor="#ff7d23"> <a href="staff.aspx" target="_blank"><h2>人才招聘</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="messages.aspx" target="_blank"><h2>网上留言</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="connect.aspx" target="_blank"><h2>联系我们</h2></a></td>
-  </tr>  <tr>
   <td height="15" colspan="17" align="center" bgcolor="#FFFFFF">
         <p><br />
         </p>
@@ -38,11 +40,13 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
           <tr>
             <td width="157" align="left"><h1>后台管理</h1>
              </td>
-            <td width="324" align="right" nowrap="nowrap">
+            <td width="300px" align="right" nowrap="nowrap">
                 <asp:Label ID="Label1" runat="server" Text=""></asp:Label></td>
-            <td width="381" align="right">
+            <td width="500px" align="right">
                 &nbsp;<asp:ImageButton ID="btnUser" runat="server" ImageUrl="~/imgs/user.gif" 
                     Height="32" Width="32" title="用户管理" OnClick="btnUser_Click"/>
+                &nbsp;<asp:ImageButton ID="btnGuest" runat="server" ImageUrl="~/imgs/guest.gif" 
+                    Height="32" Width="32" title="访客管理" OnClick="btnGuest_Click"/>
                      &nbsp;<asp:ImageButton ID="btnSet" runat="server" ImageUrl="~/imgs/seting.gif" 
                     Height="32" Width="32" title="板块更新" OnClick="btnSet_Click"/>
                      &nbsp;<asp:ImageButton ID="btnArt" runat="server" ImageUrl="~/imgs/artcle.gif" 
@@ -57,7 +61,11 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
           </tr>
           <tr>
             <td colspan="3" align="center" valign="middle">
-            <!--修改密码-->
+            <!--通知-->
+                <div id="topnew" runat="server">有<asp:Label ID="lbnew" runat="server" style="text-align: left; color:Red; font-weight:bold;"></asp:Label>位管理员正在申请重置密码！<asp:LinkButton
+                    ID="linb" runat="server" Font-Underline="True" onclick="LinkButton1_Click">点此查看</asp:LinkButton></div>
+            <!--修改密码-->                
+                <br />
             <div id="divchgpwd" class="divcss" runat="server" align="center" visible="False">
               <table width="100%" border="0" cellspacing="0" cellpadding="12">
                 <tr>
@@ -116,9 +124,15 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                                 <asp:BoundField DataField="id" HeaderText="id" ReadOnly="true" Visible="False">
                                 <ItemStyle HorizontalAlign="Left" />
                                 </asp:BoundField>
-                                <asp:BoundField DataField="adname" HeaderText="用户名" ReadOnly="true"> 
-                                <ItemStyle HorizontalAlign="Left" />
-                                </asp:BoundField>
+                                <asp:TemplateField HeaderText="用户名">
+                                    <ItemTemplate>
+                                        <asp:Label ID="Label1" runat="server" Text='<%# Encryption.Decode(Eval("adname")) %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                      <asp:Label ID="Label63" runat="server" Text='<%# Encryption.Decode(Eval("adname")) %>'></asp:Label>
+                                    </EditItemTemplate>
+                                    <ItemStyle HorizontalAlign="Left" />
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="超级用户">
                                     <ItemTemplate>
                                         <asp:CheckBox ID="CheckBox1" runat="server" Checked='<%# Bind("suadmin") %>' />
@@ -128,9 +142,15 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                                     </EditItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" />
                                 </asp:TemplateField>
-                                <asp:BoundField DataField="code" HeaderText="验证码" ReadOnly="True" >
-                                <ItemStyle HorizontalAlign="Center" />
-                                </asp:BoundField>
+                                <asp:TemplateField HeaderText="验证码">
+                                    <ItemTemplate>
+                                        <asp:Label ID="Label2" runat="server" Text='<%# Eval("code") %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:Label ID="Label1" runat="server" Text='<%# Encryption.Decode(Eval("code")) %>'></asp:Label>
+                                    </EditItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" />
+                                </asp:TemplateField>
                                 <asp:CommandField ButtonType="Button" EditText="管理权限" ShowEditButton="True" 
                                     UpdateText="保存" ShowCancelButton="False" >
                                     
@@ -175,6 +195,20 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
         </table>
 
           <p>
+              &nbsp;</p>
+        <p>
+            &nbsp;</p>
+        <p>
+            &nbsp;</p>
+        <p>
+            &nbsp;</p>
+        <p>
+            &nbsp;</p>
+        <p>
+            &nbsp;</p>
+        <p>
+            &nbsp;</p>
+        <p>
             <br />
             <br />
             
@@ -186,11 +220,8 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
   </tr>
 
   <tr>
-    <td colspan="9" align="center" valign="middle" bgcolor="#FFFFFF" cellpadding="0">
-        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<p><br />
-             <br />
-            <br />
-             <br /></p></td>
+    <td colspan="9" align="center" valign="middle" bgcolor="#FFFFFF">
+        &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</td>
   </tr>
   <tr>
     <td height="40" colspan="9" bgcolor="#A1A1A1"  class="footer"><p>&nbsp;</p>

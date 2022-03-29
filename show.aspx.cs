@@ -13,12 +13,16 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-public partial class show: System.Web.UI.Page
+public partial class show : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        footerload();
+        if (!IsPostBack)
+        {
+            footerload();
+
         }
+    }
 
     protected void footerload()
     {
@@ -35,9 +39,10 @@ public partial class show: System.Web.UI.Page
         }
     }
 
-       //Ëõ¶Ì
+    //Ëõ¶Ì
     public string SubStr(object caption, int nLeng)
     {
+        totalpage();
         string sString = caption.ToString().Trim();
         if (sString.Length <= nLeng)
         {
@@ -49,4 +54,22 @@ public partial class show: System.Web.UI.Page
             sNewStr = sNewStr + "..."; return sNewStr;
         }
     }
+    protected void totalpage()
+    {
+        string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+        SqlConnection cnn = new SqlConnection(connectionString);
+        string st = "select count(*) as total from Photo where alid=3";
+        cnn.Open();
+        SqlCommand cmd = new SqlCommand(st, cnn);
+        SqlDataReader rdr = cmd.ExecuteReader();
+        if (rdr.Read())
+        {
+            Label totl = fvphoto.FindControl("lbtotal") as Label;
+
+            totl.Text = rdr["total"].ToString();
+           cnn.Close();
+        }
+    }
+
 }
+

@@ -6,42 +6,36 @@ h1 {
 	color: #000;
 	font-family:"黑体";
 }
-
-h2 {
-	font-size: 15px;
-	color:#000000;
-	font-style:inherit;
-	font-family:"宋体";
-}
 h4{
 	font-size: larger;
 	color: #F60;
 	font-family:"宋体";
 	font-style:inherit;
-	
 }
+.ht{
+	font-weight:bold;
+	color:#000;
+
+}
+a.ht:link{
+	color:#FFF;
+	text-decoration: none; 
+	font-weight:bold;
+}
+a.ht:hover{
+	color: #fff;
+	text-decoration:underline;
+	font-weight:bold;
+
+}
+a.ht:visited{
+	color:#FFF;
+	text-decoration: none;
+	font-weight:bold;
+	}
 h4:link{color:#F60;}
 h4:hover{color:#F60;}
 h4.visted{color:#F60;}
-h2:link{
-	color:#000;
-	text-decoration: none;
-}
-h2:hover{
-	color: #fff;
-	text-decoration: none;
-
-}
-h2.visited{
-	color:#000;
-	text-decoration: none;
-	}
-h3 {
-	font-size: 15px;
-	color: #fff;
-	font-style:inherit;
-	font-family:"宋体";
-}
 a:link {text-decoration: none;
 	       color : #000;}
 a:visited {	text-decoration: none;
@@ -56,22 +50,6 @@ body {
 	background-color: #585858;
 	margin-top: 0px;
 }
-.d1{
-	background-color:#000000;
-	position:absolute;
-	top:337px;
-	width:181px;
-	height:30px;
-	right: 168px;
-	filter:Alpha(opacity=80);
-	opacity: 0.8;
-	text-align: left;
-	font-family:"Times New Roman", Times, serif;
-	}
-	a:link.s1{color:#ffffff;}
-    a:visited.s1{color:#ffffff;}
-    a:havor.s1{color:#FFFFFF;}
-	a:active.s1{color:#ffffff;}
 .footer{
 	line-height:5pt;
 	font-family:"楷书";
@@ -111,16 +89,6 @@ body {
 	font-weight: bold;
     width: 390px;
 }
-.toplnk {
-	right: 80px;
-	bottom: 10px;
-	position: fixed;
-	z-index: 99;
-	height: 32px;
-	width: 32px;
-        clear:both;
- }
-
  .style1{
 font-size: large;
 font-weight: bold;

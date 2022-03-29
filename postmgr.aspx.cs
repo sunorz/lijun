@@ -23,14 +23,18 @@ public partial class postmgr : System.Web.UI.Page
         {
                   footerload();
         }
-        if (Session["suadmin"] == null)
+        if (Session["issuper"] == null || Session["ispwd"] == null)
+        {
+            Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
+        }
+        else if (WebHelp.Auth(Session["issuper"].ToString(), Session["ispwd"].ToString()) == false)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
         }
 
         else
         {
-            this.Label1.Text = "欢迎管理员：" + Session["issuper"];
+            this.Label1.Text = "欢迎管理员：" + Encryption.Decode(Session["issuper"]);
 
             
         }    
@@ -62,9 +66,9 @@ public partial class postmgr : System.Web.UI.Page
         string delur = "delete from Article where artid='" + @poid + "'";
         SqlCommand cmdu = new SqlCommand(delur, conur);
         conur.Open();
-        cmdu.ExecuteNonQuery();//返回受影响的行数
+        cmdu.ExecuteNonQuery();
         conur.Close();
-        Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('删除成功！');</script>");
+        Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('删除成功！');window.location.href='postmgr.aspx';</script>");
         }
     protected void footerload()
     {

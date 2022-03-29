@@ -7,10 +7,6 @@ using System.Web.UI.WebControls;
 
 public partial class articlelist : System.Web.UI.UserControl
 {
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        GridView1.HeaderRow.Visible = false;
-    }
     //缩短
     public string SubStr(object caption, int nLeng)
     {

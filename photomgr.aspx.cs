@@ -19,7 +19,11 @@ public partial class photomgr : System.Web.UI.Page
     //载入
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["suadmin"] == null)
+        if (Session["issuper"] == null || Session["ispwd"] == null)
+        {
+            Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
+        }
+        else if (WebHelp.Auth(Session["issuper"].ToString(), Session["ispwd"].ToString()) == false)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
         }
@@ -28,7 +32,7 @@ public partial class photomgr : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
-                this.Label1.Text = "欢迎管理员：" + Session["issuper"];
+                this.Label1.Text = "欢迎管理员：" + Encryption.Decode(Session["issuper"]);
                 bind();
                 footerload();
 
@@ -56,7 +60,10 @@ public partial class photomgr : System.Web.UI.Page
         }
         else
         {
-            insertalb();
+            if (ckalname(0, newbl))
+            {
+                insertalb();
+            }
         }
     }
     //新建相册
@@ -79,7 +86,7 @@ public partial class photomgr : System.Web.UI.Page
     {
 
         int id = Convert.ToInt32(gvalb.DataKeys[e.RowIndex].Value);
-        if (id == 5)
+        if (id == 5||id==3)
         {
             aptips.InnerText = "系统相册不允许删除！";
         }
@@ -91,7 +98,7 @@ public partial class photomgr : System.Web.UI.Page
             string delur = "delete from Album where alid='" + @id + "'";
             SqlCommand cmdu = new SqlCommand(delur, conur);
             conur.Open();
-            cmdu.ExecuteNonQuery();//返回受影响的行数
+            cmdu.ExecuteNonQuery();
             conur.Close();
             Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('删除成功！');</script>");
             bind();
@@ -101,11 +108,7 @@ public partial class photomgr : System.Web.UI.Page
     protected void gvalb_RowEdt(object sender, GridViewEditEventArgs e)
     {
         int id = Convert.ToInt32(gvalb.DataKeys[e.NewEditIndex].Value);//获得点击的id
-        if (id == 5)//不允许修改指定的相册
-        {
-            aptips.InnerText = "系统相册不允许修改！";
-        }
-        else if (id == 3)
+        if (id == 5||id==3)//不允许修改指定的相册
         {
             aptips.InnerText = "系统相册不允许修改！";
         }
@@ -118,41 +121,36 @@ public partial class photomgr : System.Web.UI.Page
     //更新
     protected void gvalb_RowUpd(object sender, GridViewUpdateEventArgs e)
     {
-        string alname = ((TextBox)gvalb.Rows[e.RowIndex].Cells[2].Controls[0]).Text.Trim();
+        TextBox tb=gvalb.Rows[e.RowIndex].FindControl("TextBox1") as TextBox;
         CheckBox cb = gvalb.Rows[e.RowIndex].FindControl("CheckBox1") as CheckBox;
+        string alname = tb.Text.Trim();
         int id = Convert.ToInt32(gvalb.DataKeys[e.RowIndex].Value);
-        int locker = 0;
-            if (cb.Checked)
-            {
-                locker = 1;
-            }
-            if (alname.Trim() == "")
-            {
-                aptips.InnerText = "请输入相册名！";
-            }
-            else
-            {
+        int locker;
+        if (cb.Checked)
+        {
+            locker = 1;
+        }
+        else
+        {
+            locker = 0;
+        }
+      if( ckalname(id,alname))
+{
                 string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
                 SqlConnection conur = new SqlConnection(connectionString);
                 string delur = "update Album set alname='" + @alname + "',islock='" + @locker + "' where alid='" + @id + "'";
                 SqlCommand cmdu = new SqlCommand(delur, conur);
                 conur.Open();
-                int ret = cmdu.ExecuteNonQuery();//返回受影响的行数
-                if (ret != 0)
-                {
-                    conur.Close();
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
-                    gvalb.EditIndex = -1;
-                    bind();
-                    aptips.InnerText = "";
-                }
-                else
-                {
-                    conur.Close();
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新失败！');</script>");
-                }
+                cmdu.ExecuteNonQuery();
+                conur.Close();
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
+                gvalb.EditIndex = -1;
+                bind();
+                aptips.InnerText = "";
+               
+}
             
-        }
+        
     }
     //绑定
     private void bind()
@@ -207,6 +205,28 @@ public partial class photomgr : System.Web.UI.Page
             string sNewStr = sString.Substring(0, nLeng);
             sNewStr = sNewStr + "..."; return sNewStr;
         }
+    }
+    //检查相册名是否重复
+    private bool ckalname(int alid,string name)
+    {
+        string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+        SqlConnection cnn = new SqlConnection(connectionString);
+        string st = "select  * from Album where alname = '"+@name+"' and alid<>'"+@alid+"'";
+        cnn.Open();
+        SqlCommand cmd = new SqlCommand(st, cnn);
+        SqlDataReader rdr = cmd.ExecuteReader();
+        if (rdr.Read())
+        {
+            cnn.Close();
+            aptips.InnerText = "输入的相册名已存在！";
+            return false;
+        }
+        else
+        {
+            cnn.Close();
+            return true;
+        }       
+
     }
 }
 

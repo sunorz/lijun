@@ -13,26 +13,27 @@ if(lang.substr(0, 3) == "zh-"){
 document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}</style>"); }
 </script>
     <form id="form1" runat="server" autocomplete="off">
-<table width="1038" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="1038" border="0" align="center" cellpadding="0" cellspacing="0" 
+        height="100%">
+<tr>
     <td colspan="9" align="left" valign="middle" bgcolor="#ff7d23" class="style1">丽军数码</td>
     </tr>
-      <tr>
-    <td height="15" colspan="17" bgcolor="#585858"></td>
   <tr>
+    <td colspan="9">&nbsp; </td>
+    </tr>  
+  <tr height="40">
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="Default.aspx" class="ht" target="_blank">网站首页</a></td>
+    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="show.aspx" class="ht" target="_blank">配件展示</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="error.aspx" class="ht" target="_blank">常见故障</a></td>
+    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="fix.aspx" class="ht" target="_blank">报修流程</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="bbs.aspx" class="ht" target="_blank">维修论坛</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="shop.aspx"  class="ht" target="_blank">网店介绍</a></td>
+   <td  align="center" valign="middle" bgcolor="#ff7d23"> <a href="staff.aspx" class="ht" target="_blank">人才招聘</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="messages.aspx" class="ht" target="_blank">网上留言</a></td>
+    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="connect.aspx" class="ht" target="_blank">联系我们</a></td>
+  </tr>  
   <tr>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="Default.aspx" target="_blank"><h2>网站首页</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="show.aspx" target="_blank"><h2>配件展示</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="error.aspx" target="_blank"><h2>常见故障</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="fix.aspx" target="_blank"><h2>报修流程</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="bbs.aspx" target="_blank"><h2>维修论坛</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="shop.aspx" target="_blank"><h2>网店介绍</h2></a></td>
-   <td  align="center" valign="middle" bgcolor="#ff7d23"> <a href="staff.aspx" target="_blank"><h2>人才招聘</h2></a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="messages.aspx" target="_blank"><h2>网上留言</h2></a></td>
-    <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="connect.aspx" target="_blank"><h2>联系我们</h2></a></td>
-  </tr>  <tr>
-  <td height="15" colspan="17" align="center" bgcolor="#FFFFFF">
-          <p><br /></p>
-        <h1>&nbsp;&nbsp;</h1>
+  <td colspan="9" align="center" bgcolor="#FFFFFF">
         <table width="90%" border="0" cellspacing="0" cellpadding="12">
           <tr>
             <td align="center"><h1>后台管理</h1></td>
@@ -60,10 +61,21 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
  <br />            
   </tr>
   <tr>
-    <td colspan="9" align="center" valign="middle" bgcolor="#FFFFFF" cellpadding="0">&nbsp;&nbsp;&nbsp;&nbsp; <asp:ImageButton ID="btnLogin" runat="server" ImageUrl="~/imgs/loginbtn.gif" OnClick="btnLogin_click"/>&nbsp;&nbsp;&nbsp;&nbsp;<asp:ImageButton ID="btnReset" runat="server" ImageUrl="~/imgs/clearbtn.gif" OnClick="btnReset_click"/>            <p><br />
-             <br />
-            <br />
-             <br /></p></td>
+    <td colspan="9" align="center" valign="middle" bgcolor="#FFFFFF" cellpadding="0">&nbsp;&nbsp;&nbsp;&nbsp; <asp:ImageButton ID="btnLogin" runat="server" ImageUrl="~/imgs/loginbtn.gif" OnClick="btnLogin_click"/>&nbsp;&nbsp;&nbsp;&nbsp;<asp:ImageButton ID="btnReset" runat="server" ImageUrl="~/imgs/clearbtn.gif" OnClick="btnReset_click"/>    
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+</td>
   </tr>
   <tr>
     <td height="40" colspan="9" bgcolor="#A1A1A1"  class="footer"><p>&nbsp;</p>

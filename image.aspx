@@ -12,7 +12,11 @@
         <style type="text/css">
             .style2
             {
-                width: 396px;
+                text-align: right;
+            }
+            .style3
+            {
+                text-align: left;
             }
             </style>
 <body>
@@ -36,24 +40,25 @@
        
         <table width="90%" border="0" cellspacing="0" cellpadding="12">
           <tr>
-            <td align="left" class="style2"><h1>后台管理</h1>
+            <td align="left" class="style2"><h1 class="style3">后台管理</h1>
                 <asp:Label ID="Label1" runat="server" Text=""></asp:Label>
                 &nbsp;<asp:ImageButton ID="btnBack" runat="server" ImageUrl="~/imgs/back.gif" Height="32" Width="32" title="返回" OnClick="btnBack_click"/>
                 &nbsp;&nbsp;<asp:ImageButton ID="btnLogout" runat="server" ImageUrl="~/imgs/logout.gif" Height="32" Width="32" title="登出" OnClick="btnLogout_click"/></td>
           </tr>
           <tr>
-            <td align="center" valign="middle" width="500">
-
+            <td align="center" valign="middle">
+<div style="margin:auto; text-align:center; width:100%;" align="center">
                
-                <asp:FormView ID="fvimage" runat="server" DataKeyNames="poid" >
+                <asp:FormView ID="fvimage" runat="server" DataKeyNames="poid" 
+                    HorizontalAlign="Center" >
                     <EditItemTemplate>                        
                     </EditItemTemplate>
                     <InsertItemTemplate>
                     </InsertItemTemplate>
                     <ItemTemplate>
                         &nbsp;<asp:Label ID="poidLabel" runat="server" Text='<%# Eval("poid") %>' 
-                            Visible="False" />
-                        <br />
+                            Visible="False" /><asp:Label runat="server" Text='<%# Eval("poname") %>'></asp:Label>
+                        <br /><br />
                         <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("pourl") %>' 
                             Height="100%" Width="100%" />
                         &nbsp;<br />
@@ -61,7 +66,7 @@
                     <EmptyDataTemplate>
                         此图片不存在或者已经被删除！
                     </EmptyDataTemplate>
-                </asp:FormView>              
+                </asp:FormView>   </div>           
             </td>
           </tr>
         </table>

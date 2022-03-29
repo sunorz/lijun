@@ -41,7 +41,7 @@
                           </td>
           </tr>
           <tr>
-            <td colspan="3" align="center" valign="middle" width="500">
+            <td colspan="3" align="center" valign="middle">
             <div id="divpost" class="divcss" runat="server" align="center">
               <table width="100%" border="0" cellspacing="0" cellpadding="12">
                 <tr>
@@ -51,12 +51,12 @@
                 <tr>
                   <td colspan="2"><p>&nbsp;&nbsp;标题：
                           <asp:TextBox ID="tbtitle" runat="server" BackColor="Silver" class="txt3" 
-                          maxlength="70"></asp:TextBox>
+                          maxlength="25" Width="402px"></asp:TextBox>
                         </p>
                         <p><br />
                         &nbsp;&nbsp;作者：
                         <asp:TextBox ID="tbposter" runat="server" BackColor="Silver" class="txt3" 
-                                maxlength="50"></asp:TextBox>
+                                maxlength="25" Width="402px"></asp:TextBox>
                         </p>
                                               <div id="aptips" class="aptips" runat="server"></div>
                                               <p>文章内容：</p>

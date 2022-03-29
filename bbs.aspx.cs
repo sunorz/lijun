@@ -35,7 +35,6 @@ public partial class bbs: System.Web.UI.Page
 
             DateTime dt = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "China Standard Time");
             Calendar1.TodaysDate = dt;
-            gvart.HeaderRow.Visible = false;
         }
     }
    private void bind2()

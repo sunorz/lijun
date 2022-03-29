@@ -39,15 +39,15 @@
                           </td>
           </tr>
           <tr>
-            <td colspan="3" align="center" valign="middle">
-              <table border="0" cellspacing="0" cellpadding="12" style="width: 111%">
+            <td colspan="3" align="center" valign="middle" width="500">
+              <table border="0" cellspacing="0" cellpadding="12">
                 <tr>
                   <td align="right">
                       <asp:Image ID="Image1" runat="server" ImageUrl="~/imgs/photod.gif" />
                     </td>
-                  <td align="left"><strong>相片管理：<strong>              </tr>
+                  <td align="left"><strong>相片管理：</strong></td></tr>
                 <tr>
-                  <td colspan="2">
+                  <td colspan="2" style="text-align: center"><div id="divpic" class="divcss2" runat="server" align="center"><br /> <br /> 
          上传到：<asp:DropDownList ID="ddlclass" runat="server" 
                           BackColor="Silver" CssClass="txt3" 
                           DataTextField="alname" DataValueField="alid">
@@ -67,27 +67,27 @@
                           CssClass="txt3" Width="263px" />
                           <br />
                       <br />                                               
-                   <div id="aptips" runat="server" class="aptips"></div>
+                   上传图片不能大于200k，不能为其他非图片文件！<div id="aptips" runat="server" class="aptips"></div>
                           <br />
                           <asp:Button ID="btnnew" runat="server" BackColor="#FF7D23" 
                               BorderColor="#FF7D23" BorderStyle="Solid" class="txt3" Font-Bold="True" 
                               ForeColor="White" OnClick="btnnew_Click" Text="上传" />
-                      <br /> 
+                      <br /> <br /> </div>
                        </td>
                 </tr>
                 </table>
 </td>
           </tr>
           <tr>
-            <td colspan="3" align="center" valign="middle" width="500">
+            <td colspan="3" align="center" valign="middle">
                 <asp:Label ID="Label2" runat="server" Text=""></asp:Label>：<br />
 &nbsp;<asp:GridView ID="gvphoto" runat="server" AllowPaging="True"  Pagesize="15"
                     AutoGenerateColumns="False" BackColor="LightGoldenrodYellow" BorderColor="Tan" 
                     BorderWidth="1px" CellPadding="2" DataKeyNames="poid,Expr1" 
                     ForeColor="Black" 
-                    Width="900px" 
+                    Width="1000px" 
                     style="margin-right: 0px" DataSourceID="SqlDataSource1" 
-                    onrowdeleting="gvphoto_RowDele">
+                    onrowdeleting="gvphoto_RowDele" HorizontalAlign="Center">
                     <PagerSettings FirstPageText="第一页&nbsp;" LastPageText="最后一页" 
                         Mode="NextPreviousFirstLast" NextPageText="下一页&nbsp;" PreviousPageText="上一页&nbsp;" />
                     <Columns>
@@ -101,17 +101,14 @@
                             ReadOnly="True" SortExpression="poid" Visible="False" />
                         <asp:TemplateField HeaderText="缩略图">
                             <ItemTemplate>
-                                <asp:Image ID="Image1" runat="server" ImageUrl='<%# Eval("psmurl") %>'  Width="100px" Height="100px"/>
+                                <asp:HyperLink ID="HyperLink1" runat="server" 
+                                    NavigateUrl='<%# Eval("poid", "image.aspx?pid={0}") %>' Target="_blank" 
+                                    ImageUrl='<%# Eval("psmurl") %>' ToolTip="查看大图">[HyperLink1]</asp:HyperLink>
                             </ItemTemplate>
-                            <ItemStyle HorizontalAlign="Center"/>
+                            <FooterStyle Width="10%" />
+                            <HeaderStyle Width="10%" />
+                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle"/>
                         </asp:TemplateField>
-                        <asp:HyperLinkField HeaderText="查看原图" Text="详细" DataNavigateUrlFields="poid" 
-                            Target="_blank" DataNavigateUrlFormatString="image.aspx?pid={0}" >
-                        <ControlStyle Width="80%" />
-                        <FooterStyle Width="10%" />
-                        <HeaderStyle Width="10%" />
-                        <ItemStyle HorizontalAlign="Center" Width="10%" />
-                        </asp:HyperLinkField>
                         <asp:TemplateField HeaderText="图片名" SortExpression="poname">
                             <ItemTemplate>
                                 <asp:Label ID="Label1" runat="server" Text='<%# SubStr(Eval("poname"),10) %>' ToolTip='<%#Eval("poname") %>'></asp:Label>

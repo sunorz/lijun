@@ -27,7 +27,7 @@ public partial class cnts: System.Web.UI.Page
             SqlDataReader rdr = cmd.ExecuteReader();
             if (rdr.Read())
             {
-                this.Label1.Text = Server.HtmlDecode(rdr["content"].ToString());//读取事先存放在数据库的HTML类型
+                this.Label1.Text = OutputByLine(rdr["content"].ToString());//读取事先存放在数据库的HTML类型
                 title.InnerText = rdr["cltitle"].ToString();
                 cnn.Close();
                 footerload();
@@ -56,6 +56,61 @@ public partial class cnts: System.Web.UI.Page
             cnn.Close();
         }
     }
-    //缩短
+    public string OutputByLine(string strContent)//通过设定的行数分页 
+    {
+        int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);//每页显示行数从CONFIG文件中取出 
+        string lineBreak = ConfigurationManager.AppSettings["lineBreak"];//换行符从CONFIG文件中取出 
+        strContent = strContent.Replace("\r\n", "");
+        string[] strLined = strContent.Split(new string[] { lineBreak }, StringSplitOptions.RemoveEmptyEntries);//以DIV为换行符 
+        int pageCount = strLined.Length / pageSize;
+        int pageCountPlus = strLined.Length % pageSize == 0 ? 0 : 1;//非满页 
+        pageCount = pageCount + pageCountPlus;//总页数 
+        int currentPage = 1;//当前页码 
+        string displayText = null;
+        string epage = Request.QueryString["page"];
+        if (epage != null) //获取翻页页码 
+        {
+            if (epage.Trim() == "")        //错误处理
+            {
+                currentPage = 1;
+            }
+            else
+            {
+                currentPage = Convert.ToInt32(epage);
+                if (currentPage < 1 || currentPage > pageCount)
+                {
+                    currentPage = 1;
+                }
+            }
+        }
+        else
+        {
+            currentPage = 1;
+        }
+        string pageInfo = "";//页数信息 
+        for (int i = 1; i < pageCount + 1; i++)
+        {
+            if (i == currentPage)
+            {
+                pageInfo += "<span>" + i + "</span>";
+                pageInfo = "<div class='pager'>" + pageInfo + "<div>";
+            }
+            else
+            {
+                pageInfo += "<a href=connect.aspx?" + "page=" + i + ">" + i + "</a>";
+                pageInfo = "<div class='pager'>" + pageInfo + "<div>";
+            }
+        }
+        if (pageCount == 1)
+        {
+            labPageNumber.Visible = false;
+        }
+        labPageNumber.Text = pageInfo;
+        for (int i = (currentPage - 1) * pageSize; i < currentPage * pageSize && i < strLined.Length; i++)
+        {
+            displayText += "<div>" + strLined[i] + "</div>";
+        }
+        return displayText;
+    }
   
 }

@@ -22,9 +22,8 @@ public partial class adminlogin : System.Web.UI.Page
     }
 	protected void btnLogin_click(object sender,ImageClickEventArgs e)
 	{
-        admin.Text =admin.Text.Replace(" ", "");//去空格
-        string adname = admin.Text;
-        string adpwd = pwd.Text;
+        string adname =Encryption.Encode(admin.Text.Trim());
+        string adpwd = Encryption.Auth(pwd.Text);
         if (adname.Trim() == "")
         {
             aptips.InnerText = "请输入用户名！ ";
@@ -46,6 +45,7 @@ public partial class adminlogin : System.Web.UI.Page
             if (reader.Read())
             {
                 Session["issuper"] = reader["adname"].ToString();
+                Session["ispwd"] = reader["adpwd"].ToString();
                 Session["suadmin"] = reader["suadmin"].ToString();
                 con.Close();
                 Response.Redirect("adminweb.aspx");

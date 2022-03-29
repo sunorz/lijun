@@ -29,8 +29,52 @@ public partial class showsea : System.Web.UI.Page
                 this.Label1.Text = Server.HtmlDecode(rdr["content"].ToString());
                 cnn.Close();
             }
-        }
+            //if (UrlIsExist("http://facebook.com/"))
+            //{
+            //    google.Visible = true;
+            //    google.Disabled = false;
+            //    baidu.Visible = false;
+            //    baidu.Disabled = true;
+            //}
+            //else
+            //{
+            google.Visible = false;
+            google.Disabled = true;
+            baidu.Visible = true;
+            baidu.Disabled = false;
+            //}
+        
+    }
 
-  
-   
+
+    //private bool UrlIsExist(String url)
+    //{
+    //    System.Uri u = null;
+    //    try
+    //    {
+    //        u = new Uri(url);
+    //    }
+    //    catch { return false; }
+    //    bool isExist = false;
+    //    System.Net.HttpWebRequest r = System.Net.HttpWebRequest.Create(u) as System.Net.HttpWebRequest;
+    //    r.Method = "HEAD";
+    //    r.Timeout = 2000;
+    //    try
+    //    {
+    //        System.Net.HttpWebResponse s = r.GetResponse() as System.Net.HttpWebResponse;
+    //        if (s.StatusCode == System.Net.HttpStatusCode.OK)
+    //        {
+    //            isExist = true;
+    //        }
+    //    }
+    //    catch (System.Net.WebException x)
+    //    {
+    //        try
+    //        {
+    //            isExist = ((x.Response as System.Net.HttpWebResponse).StatusCode != System.Net.HttpStatusCode.NotFound);
+    //        }
+    //        catch { isExist = (x.Status == System.Net.WebExceptionStatus.Success); }
+    //    }
+    //    return isExist;
+    //}  
 }

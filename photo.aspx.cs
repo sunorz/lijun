@@ -18,14 +18,18 @@ public partial class photo : System.Web.UI.Page
 {
      protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["suadmin"] == null)
+        if (Session["issuper"] == null || Session["ispwd"] == null)
+        {
+            Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
+        }
+        else if (WebHelp.Auth(Session["issuper"].ToString(), Session["ispwd"].ToString()) == false)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
         }
 
         else
         {
-            this.Label1.Text = "欢迎管理员：" + Session["issuper"];
+            this.Label1.Text = "欢迎管理员：" + Encryption.Decode(Session["issuper"]);
             footerload();
             showname();             
             bind2();
@@ -91,7 +95,7 @@ public partial class photo : System.Web.UI.Page
         }
         else
         {
-            aptips.InnerText = "图片格式不正确！";
+            aptips.InnerText = "格式不支持！";
         }
     }
     private void ResizeImage(int height, string fileName)

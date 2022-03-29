@@ -52,30 +52,31 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
             <td colspan="3" align="center" valign="middle" width="500">
             <!--修改密码-->
             <div id="divuseradd" class="divcss" runat="server" align="center">
-              <table width="100%" border="0" cellspacing="0" cellpadding="12">
+              <table width="100%" border="0" cellspacing="0" cellpadding="20">
                 <tr>
                   <td align="right"><img src="imgs/content.gif" width="32" height="32" /></td>
                   <td align="left"><strong>回复消息：</strong></td>
                 </tr>
                 <tr>
                   <td colspan="2"><p>&nbsp;</p>
-                      <p>您正在回复<asp:Label ID="lbuser" runat="server" 
+                      <p style="text-align: left">您正在回复<asp:Label ID="lbuser" runat="server" 
                               style="color: #FF7D23; font-weight: 700" Text="用户"></asp:Label>
                           的<asp:Label ID="lbcom" runat="server" Text="留言"></asp:Label>
                           &nbsp;：</p>
-                      <p>
+                      <p style="text-align: left">
                           <asp:TextBox ID="txtreply" runat="server" BackColor="Silver" CssClass="txt3" 
                               Height="160px" MaxLength="140" TextMode="MultiLine" Width="652px"></asp:TextBox>
                         </p>
-                      <div id="aptips" class="aptips" runat="server"></div><p style="text-align: left">&nbsp;
+                      <p style="text-align: left">
+                          <asp:CheckBox ID="CheckBox1" runat="server" Text="公开本留言"  Checked="true"/>
                           </p>
                       <p style="text-align: left">
-                          &nbsp;&nbsp;&nbsp;
+                       
                           <asp:Label ID="lbtt" runat="server" Text="留言"></asp:Label>内容：<asp:Label 
                               ID="lbliuyan" runat="server" Text="Label"></asp:Label>
                       </p>
                       
-                      <div id="rpy" runat="server">&nbsp;&nbsp;&nbsp; 回复内容：                   
+                      <div id="rpy" runat="server">回复内容：                   
                           <asp:Label ID="lbhuifu" runat="server" Text="（暂无内容！）"></asp:Label>
                           <asp:Button ID="btnCeuser" runat="server" class="txt3" Text="删除该回复" 
                     BackColor="#FF7D23" BorderStyle="Solid" Font-Bold="True" 
