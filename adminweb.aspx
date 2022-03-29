@@ -62,8 +62,6 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
           <tr>
             <td colspan="3" align="center" valign="middle">
             <!--通知-->
-                <div id="topnew" runat="server">有<asp:Label ID="lbnew" runat="server" style="text-align: left; color:Red; font-weight:bold;"></asp:Label>位管理员正在申请重置密码！<asp:LinkButton
-                    ID="linb" runat="server" Font-Underline="True" onclick="LinkButton1_Click">点此查看</asp:LinkButton></div>
             <!--修改密码-->                
                 <br />
             <div id="divchgpwd" class="divcss" runat="server" align="center" visible="False">
@@ -133,6 +131,21 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                                     </EditItemTemplate>
                                     <ItemStyle HorizontalAlign="Left" />
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="邮箱">
+                                    <ItemTemplate>
+                                        <asp:Label ID="Label3" runat="server" Text='<%# Encryption.Decode(Eval("admail")) %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:TextBox ID="txtcmail" runat="server" Text='<%# Encryption.Decode(Eval("admail")) %>'></asp:TextBox>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
+                                          ControlToValidate="txtcmail" CssClass="aptips" ErrorMessage="必填" 
+                                            Display="Dynamic"></asp:RequiredFieldValidator>
+                                      <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
+                                          ControlToValidate="txtcmail" CssClass="aptips" ErrorMessage="邮箱格式有误！" 
+                                          ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" 
+                                            Display="Dynamic"></asp:RegularExpressionValidator>
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="超级用户">
                                     <ItemTemplate>
                                         <asp:CheckBox ID="CheckBox1" runat="server" Checked='<%# Bind("suadmin") %>' />
@@ -147,11 +160,11 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                                         <asp:Label ID="Label2" runat="server" Text='<%# Eval("code") %>'></asp:Label>
                                     </ItemTemplate>
                                     <EditItemTemplate>
-                                        <asp:Label ID="Label1" runat="server" Text='<%# Encryption.Decode(Eval("code")) %>'></asp:Label>
+                                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("code") %>'></asp:Label>
                                     </EditItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" />
                                 </asp:TemplateField>
-                                <asp:CommandField ButtonType="Button" EditText="管理权限" ShowEditButton="True" 
+                                <asp:CommandField ButtonType="Button" ShowEditButton="True" 
                                     UpdateText="保存" ShowCancelButton="False" >
                                     
                                     <ControlStyle BackColor="#FF7D23" BorderColor="#FF7D23" BorderStyle="Solid" 

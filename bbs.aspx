@@ -126,7 +126,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                             <ItemTemplate>
                                 <asp:HyperLink ID="HyperLink1" runat="server" 
                                     NavigateUrl='<%# Eval("artid", "detail.aspx?id={0}") %>' 
-                                    Text='<%# SubStr(Eval("artitle"),26) %>' ToolTip='<%# Eval("artitle") %>' 
+                                    Text='<%# Eval("artitle")%>' 
                                                                           ></asp:HyperLink>
                             </ItemTemplate>                       
                             <ControlStyle CssClass="bbs" />

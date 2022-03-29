@@ -6,9 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="style.css" />
 <title>丽军数码-维修论坛</title>
-        
-
-        <style type="text/css">
+         <style type="text/css">
             #title{
 	line-height:5pt;
 	font-family:"楷书";
@@ -22,6 +20,7 @@
 	background-repeat: repeat;
 	background-attachment: fixed;
 }
+
     a:link {
 	text-decoration: none;
 }
@@ -175,7 +174,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
             <td colspan="2" align="left" class="style5"><div id="commpo" runat="server">
                <div id="reply" runat="server" visible="False" class="style3"><p style="text-align:right">
                    <asp:ImageButton ID="ibtnclose" runat="server" ImageUrl="imgs/close.gif"  
-                       ToolTip="关闭" onclientclick="ibtnclose_Click"/>&nbsp;&nbsp;
+                       ToolTip="关闭" onclick="ibtnclose_Click" />&nbsp;&nbsp;
                    </p>
                    <div>
                     昵称： <asp:TextBox ID="txtname" runat="server" BackColor="Silver" CssClass="txt3" MaxLength="20"></asp:TextBox>
@@ -191,6 +190,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                 <br />                
                    邮箱：               <asp:TextBox ID="txtmail" runat="server" BackColor="Silver" CssClass="txt3" 
                     MaxLength="20"></asp:TextBox>
+                   
                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
                     ControlToValidate="txtmail" CssClass="aptips" ErrorMessage="邮箱格式不正确！" 
                     ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>

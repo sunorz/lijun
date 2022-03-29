@@ -4,7 +4,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="style.css" />
-<title>丽军数码-网上留言</title></head>
+<title>丽军数码-网上留言</title>
+ <script src="js/jquery.js"  type="text/javascript"></script></head>
 <style type="text/css">
         
 #title{
@@ -31,6 +32,10 @@ a:hover {
 }
 a:active {
 	text-decoration: none;
+}
+#myemail, .newemail, .newemailtitle{    
+	cursor:default;
+	line-height:30px;
 }
         .style3
         {
@@ -123,7 +128,148 @@ a:active {
               <br />
               </span><br />
             <asp:Label ID="Label1" runat="server" Text="邮箱地址："></asp:Label>
-            <asp:TextBox ID="txtcmail" runat="server" Width="285px" BackColor="Silver" class="txt3" maxlength="30"></asp:TextBox>
+            <asp:TextBox ID="txtcmail" runat="server" Width="285px" BackColor="Silver" 
+                  class="txt3" maxlength="30" AutoCompleteType="Disabled"></asp:TextBox>
+            <script type="text/javascript">
+                var nowid;
+                var totalid;
+                var can1press = false;
+                var emailafter;
+                var emailbefor;
+                $(document).ready(function() {
+                    $("#txtcmail").focus(function() { //文本框获得焦点，插入Email提示层
+                        $("#myemail").remove();
+                        $(this).after("<div id='myemail' style='width:288px; height:auto; background:#fff; color:#6B6B6B; position:absolute; left:380px; top:675px; border:1px solid #ccc;z-index:5px; '></div>");
+                        if ($("#myemail").html()) {
+                            $("#myemail").css("display", "block");
+                            $(".newemail").css("width", $("#myemail").width());
+                            can1press = true;
+                        } else {
+                            $("#myemail").css("display", "none");
+                            can1press = false;
+                        }
+                    }).keyup(function() { //文本框输入文字时，显示Email提示层和常用Email
+                        var press = $("#txtcmail").val();
+                        if (press != "" || press != null) {
+                            var emailtxt = "";
+                            var emailvar = new Array(
+"@sina.com",
+"@163.com",
+"@qq.com",
+"@126.com",
+"@vip.sina.com",
+"@sina.cn",
+"@hotmail.com",
+"@gmail.com",
+"@sohu.com",
+"@139.com",
+"@wo.com.cn",
+"@189.cn",
+"@21cn.com",
+"@live.cn",
+"@vip.qq.com",
+"@yeah.net");
+                            totalid = emailvar.length;
+                            var emailmy = "<div class='newemail' style='width:170px; color:#6B6B6B; overflow:hidden;'><font color='#ff6d25'>" + press + "</font></div>";
+                            if (!(isEmail(press))) {
+                                for (var i = 0; i < emailvar.length; i++) {
+                                    emailtxt = emailtxt + "<div class='newemail' style='width:170px; color:#626262; overflow:hidden;'><font color='#000000'>" + press + "</font>" + emailvar[i] + "</div>"
+                                }
+                            } else {
+                                emailbefor = press.split("@")[0];
+                                emailafter = "@" + press.split("@")[1];
+                                for (var i = 0; i < emailvar.length; i++) {
+                                    var theemail = emailvar[i];
+                                    if (theemail.indexOf(emailafter) == 0) {
+                                        emailtxt = emailtxt + "<div class='newemail' style='width:170px; color:#6B6B6B; overflow:hidden;'><font color='#ff6d25'>" + emailbefor + "</font>" + emailvar[i] + "</div>"
+                                    }
+                                }
+                            }
+                            $("#myemail").html(emailmy + emailtxt);
+                            if ($("#myemail").html()) {
+                                $("#myemail").css("display", "block");
+                                $(".newemail").css("width", $("#myemail").width());
+                                can1press = true;
+                            } else {
+                                $("#myemail").css("display", "none");
+                                can1press = false;
+                            }
+                            beforepress = press;
+                        }
+                        if (press == "" || press == null) {
+                            $("#myemail").html("");
+                            $("#myemail").css("display", "none");
+                        }
+                    })
+                    $(document).click(function() { //文本框失焦时删除层
+                        if (can1press) {
+                            $("#myemail").remove();
+                            can1press = false;
+                            if ($("#txtcmail").focus()) {
+                                can1press = false;
+                            }
+                        }
+                    })
+                    $(".newemail").live("mouseover", function() { //鼠标经过提示Email时，高亮该条Email
+                        $(".newemail").css("background", "#FFF");
+                        $(this).css("background", "#FFCC99");
+                        $(this).focus();
+                        nowid = $(this).index();
+                    }).live("click", function() { //鼠标点击Email时，文本框内容替换成该条Email，并删除提示层
+                        var newhtml = $(this).html();
+                        newhtml = newhtml.replace(/<.*?>/g, "");
+                        $("#txtcmail").val(newhtml);
+                        $("#myemail").remove();
+                    })
+                    $(document).bind("keydown", function(e) {
+                        if (can1press) {
+                            switch (e.which) {
+                                case 38:
+                                    if (nowid > 0) {
+                                        $(".newemail").css("background", "#FFF");
+                                        $(".newemail").eq(nowid).prev().css("background", "#FFCC99").focus();
+                                        nowid = nowid - 1;
+                                    }
+                                    if (!nowid) {
+                                        nowid = 0;
+                                        $(".newemail").css("background", "#FFF");
+                                        $(".newemail").eq(nowid).css("background", "#FFCC99");
+                                        $(".newemail").eq(nowid).focus();
+                                    }
+                                    break;
+
+                                case 40:
+                                    if (nowid < totalid) {
+                                        $(".newemail").css("background", "#FFF");
+                                        $(".newemail").eq(nowid).next().css("background", "#FFCC99").focus();
+                                        nowid = nowid + 1;
+                                    }
+                                    if (!nowid) {
+                                        nowid = 0;
+                                        $(".newemail").css("background", "#FFF");
+                                        $(".newemail").eq(nowid).css("background", "#FFCC99");
+                                        $(".newemail").eq(nowid).focus();
+                                    }
+                                    break;
+
+                                case 13:
+                                    var newhtml = $(".newemail").eq(nowid).html();
+                                    newhtml = newhtml.replace(/<.*?>/g, "");
+                                    $("#txtcmail").val(newhtml);
+                                    $("#myemail").remove();
+                            }
+                        }
+                    })
+                })
+                //检查email邮箱
+                function isEmail(str) {
+                    if (str.indexOf("@") > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+</script>
             <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
                                     ControlToValidate="txtcmail" ErrorMessage="邮箱格式错误！" Font-Bold="True" 
                                     ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>            

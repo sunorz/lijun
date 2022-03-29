@@ -12,6 +12,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Net.Mail;
 
 
 public partial class forget: System.Web.UI.Page
@@ -25,19 +26,22 @@ public partial class forget: System.Web.UI.Page
     {
         yhm.Text = yhm.Text.Replace(" ", "");
         string txtname = yhm.Text;
+        ylyx.Text = ylyx.Text.Replace(" ", "");
+        string txtmail = ylyx.Text;
         string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
         SqlConnection cnn = new SqlConnection(connectionString);
-        //用户名未输入
-        if (txtname == "")
+        //未输入
+        if (txtname == ""||txtmail=="")
         {
-            aptips.InnerText = "请输入用户名！ ";            
+            aptips.InnerText = "请输入用户名和邮箱！ ";            
         }
-        //用户名已经输入
+        //已经输入
         else
         {
             Session["fgpwd"] = Encryption.Encode(txtname);
             string cname = Encryption.Encode(txtname);
-            string st1="select adname from Admin where adname='" + @cname + "'";
+            string cmail= Encryption.Encode(txtmail);
+            string st1="select adname from Admin where adname='" + @cname + "'and admail='"+@cmail+"'";
             cnn.Open();
             SqlCommand cmd1=new SqlCommand(st1,cnn);
             SqlDataReader reader1 = cmd1.ExecuteReader();
@@ -67,7 +71,8 @@ public partial class forget: System.Web.UI.Page
                         cnn.Open();
                         SqlCommand cmd3 = new SqlCommand(st3, cnn);
                         cmd3.ExecuteNonQuery();
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('请耐心等待管理员联系！');window.location.href='adminlogin.aspx';</script>");
+                        sendmail(txtmail, flag);//发送验证邮件
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('验证码已发送至你的邮箱，请登录邮箱进行验证！');window.location.href='adminlogin.aspx';</script>");
                         cnn.Close();
                     }
                 }
@@ -82,7 +87,7 @@ public partial class forget: System.Web.UI.Page
             else
             {
                 cnn.Close();
-                aptips.InnerText = "没有这个用户！ "; 
+                aptips.InnerText = "请检查你的输入信息！ "; 
             }
         }
         
@@ -204,5 +209,57 @@ public partial class forget: System.Web.UI.Page
                 this.Label3.Text = Server.HtmlDecode(rdr["content"].ToString());
                 cnn.Close();
             }
+        }
+    //发送邮件
+        protected void sendmail(string tomail,string code)
+        {
+            MailAddress MessageFrom = new MailAddress("admin@lijun0772.com"); //发件人邮箱地址 
+            string MessageTo = tomail; //收件人邮箱地址 
+            string MessageSubject = "丽军数码-重置密码"; //邮件主题 
+            string MessageBody = "你在尝试重置密码，请将验证码：<strong>"+code+"</strong>&nbsp;&nbsp;&nbsp;&nbsp;填入以下网址完成确认：<a href=\"http://lijun0772.com/forget.aspx \" target=\"_blank\">点此确认 </a>。"; //邮件内容 
+
+            if (Send(MessageFrom, MessageTo, MessageSubject, MessageBody))
+            {
+                Response.Write("发送邮件成功");
+            }
+            else
+            {
+                Response.Write("发送邮件失败");
+            }
+        }
+    //发送邮件函数
+        public bool Send(MailAddress MessageFrom, string MessageTo, string MessageSubject, string MessageBody)
+        {
+            MailMessage message = new MailMessage();
+
+            // if (FileUpload1.PostedFile.FileName != "")
+            // {
+            // Attachment att = new Attachment("d://test.txt");//发送附件的内容
+            //    message.Attachments.Add(att);
+            // }
+
+            message.From = MessageFrom;
+            message.To.Add(MessageTo); //收件人邮箱地址可以是多个以实现群发 
+            message.Subject = MessageSubject;
+            message.Body = MessageBody;
+            //message.Attachments.Add(objMailAttachment);
+            message.IsBodyHtml = true; //是否为html格式 
+            message.Priority = MailPriority.High; //发送邮件的优先等级 
+
+            SmtpClient sc = new SmtpClient();
+            sc.Host = "smtp.mxhichina.com"; //指定发送邮件的服务器地址或IP 
+            sc.Port = 25; //指定发送邮件端口 
+            sc.Credentials = new System.Net.NetworkCredential("admin@lijun0772.com", "m10669588"); //指定登录服务器的用户名和密码(发件人的邮箱登陆密码)
+
+            try
+            {
+                sc.Send(message); //发送邮件 
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+
         }
 }

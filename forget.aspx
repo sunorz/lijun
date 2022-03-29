@@ -51,7 +51,9 @@
                   <td colspan="2"><p>&nbsp;&nbsp;用户名：
                           <asp:TextBox ID="yhm" runat="server" BackColor="Silver" class="txt3" 
                           maxlength="20" CssClass="txt3"></asp:TextBox>
-                        </p>
+                        </p><p>预留邮箱：<asp:TextBox ID="ylyx" runat="server" BackColor="Silver" CssClass="txt3" 
+                            MaxLength="20"></asp:TextBox>
+                                              </p>
                                               <div id="aptips" class="aptips" runat="server"></div></td>
                 </tr>
                 <tr>
@@ -69,8 +71,7 @@
               <table width="100%" border="0" cellspacing="0" cellpadding="12">
                 <tr>
                   <td align="right"><img src="imgs/user.gif" alt="" width="32" height="32" /></td>
-                  <td align="left"><strong>重置密码：</strong></td>
-                </tr>
+                  <td align="left"><strong>重置密码：              </tr>
                 <tr>
                   <td colspan="2"><p>&nbsp;&nbsp;新密码：<asp:TextBox ID="newpwd" runat="server" 
                           BackColor="Silver" CssClass="txt3" MaxLength="20" TextMode="Password"></asp:TextBox>

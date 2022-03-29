@@ -48,6 +48,7 @@ public partial class adminusers : System.Web.UI.Page
         string txtname =Encryption.Encode(yhm.Text.Trim());
         string txtpwd = Encryption.Auth(mima.Text.Trim());
         string txtcfpwd = Encryption.Auth(mimaqu.Text.Trim());
+        string txtylyx = Encryption.Encode(ylyx.Text.Trim());
         int chaoji = 0;
         if (cksuper.Checked == true)
         {
@@ -85,7 +86,7 @@ public partial class adminusers : System.Web.UI.Page
 
             string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
             SqlConnection cnn = new SqlConnection(connectionString);
-            string st = "insert into Admin(adname,adpwd,suadmin) values('" + @txtname + "','" + @txtpwd + "','" + @chaoji + "') ";
+            string st = "insert into Admin(adname,adpwd,suadmin,admail) values('" + @txtname + "','" + @txtpwd + "','" + @chaoji + "','"+@txtylyx+"') ";
             SqlCommand cmd = new SqlCommand(st, cnn);
             cnn.Open();
             cmd.ExecuteNonQuery();
