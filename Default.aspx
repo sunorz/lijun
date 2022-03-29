@@ -58,8 +58,19 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
          <br />
         <asp:ImageButton ID="ImageButton1" runat="server"   
             ImageUrl="~/imgs/class/more.gif" onclick="ImageButton1_Click" 
-            ToolTip="了解更多" />
-        <br />
+            ToolTip="了解更多" /><script>
+
+                                 //document.getElementById('a1').title='testaaa';
+                                 var aa = document.getElementsByTagName('img');
+                                 for (var i = 0; i < aa.length; i++) {
+                                     if (aa[i].getAttribute("data-tag") == null)
+                                         aa[i].setAttribute("data-tag", "img_1");
+                                 }
+
+                                 //或document.getElementById('a1').setAttribute("title","testaaa")
+
+</script>
+        <br /></div>
       </td>
   </tr>
    <tr height="40">
@@ -84,11 +95,12 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
       <p><a href="adminlogin.aspx" class="foot">登录后台</a>&nbsp;&nbsp;<a href="http://jsunplace.tumblr.com/" class="foot">作者博客</a>&nbsp;&nbsp;<a href="about.html" class="foot">关于本站</a>&nbsp;&nbsp;<script type="text/javascript">                              var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1253756923'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1253756923%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script></p></div>
       
       <div style="float:right; width:250px;">
-          <asp:Image ID="Image1" runat="server" AlternateText="微信" BorderStyle="None" 
-              Height="100px" ToolTip="微信" Width="100px"  ImageUrl="~/imgs/class/qrcodewx.jpg" />&nbsp;&nbsp;<asp:Image 
+          <a href="http://weixin.qq.com/" target="_blank"><asp:Image ID="Image1" runat="server" AlternateText="微信" BorderStyle="None" 
+              Height="100px" ToolTip="微信扫一扫" Width="100px"  ImageUrl="~/imgs/class/qrcodewx.jpg" /></a>&nbsp;&nbsp;<a href="http://wpa.qq.com/msgrd?v=3&uin=340648962&site=丽军数码&menu=yes" target="_blank"><asp:Image 
               ID="Image2" runat="server" AlternateText="QQ" BorderStyle="None" 
-              Height="100px" ImageUrl="~/imgs/class/qrcodeqq.jpg" ToolTip="QQ" 
-              Width="100px" /></div></div> </form>
+              Height="100px" ImageUrl="~/imgs/class/qrcodeqq.jpg" ToolTip="点击直接发送QQ消息..." 
+              Width="100px" /></a></div></div> </form>
+<script src="js/bdshare.js" charset="utf-8"></script>            
               
 </body>
 </html>

@@ -90,14 +90,26 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
     <td colspan="9" align="center" valign="middle" cellpadding="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="12">
       <tr>
-        <td colspan="9" align="middle" valign="middle"><img src="imgs/class/img4.gif" width="200" height="194" /><div id="title" runat="server"></div></td>
+        <td colspan="9" align="middle" valign="middle"><img src="imgs/class/img4.gif" width="200" height="194" data-tag="hdimg" /><div id="title" runat="server"></div></td>
         </tr>
       <tr>
          <td style=" background-color:#FFFFEC;" class="contents">
                     <asp:Label ID="Label1" runat="server" 
-                Text="" Width="100%" style="margin-top: 0px; text-align: left;"></asp:Label><p><div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到i贴吧" class="bshare-itieba" href="javascript:void(0);"></a><a title="分享到Facebook" class="bshare-facebook" href="javascript:void(0);"></a><a title="分享到Twitter" class="bshare-twitter" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;"></span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></p>
+                Text="" Width="100%" style="margin-top: 0px; text-align: left;"></asp:Label>
+<script>
+
+    var aa = document.getElementsByTagName('img');
+    for (var i = 0; i < aa.length; i++) {
+        if (aa[i].getAttribute("data-tag") == null)
+            aa[i].setAttribute("data-tag", "img_1");
+    }
+
+
+
+</script>
+             <p></p>
             <asp:Label ID="labPageNumber" runat="server"  Width="100%"></asp:Label><br/></td>  
-        </tr>     
+        </tr>  <tr><td style="background-color:white;"><div class="bdsharebuttonbox" data-tag="ppt"><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_print" data-cmd="print" title="分享到打印"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div></td></tr>          
     </table></td>
   </tr>
   <tr>
@@ -110,6 +122,6 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
   </td>
   </tr>
 </table>
-    </form>
+    </form><script src="js/bdshare.js" charset="utf-8"></script>
 </body>
 </html>

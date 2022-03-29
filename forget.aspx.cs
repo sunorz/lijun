@@ -167,14 +167,14 @@ public partial class forget: System.Web.UI.Page
                     if (reader3.Read())//避免验证码重复
                     {
                         flag = Rdom();
-                        cnn.Close();                       
+                        cnn.Close();
                     }
                     else
                     {
-                        cnn.Close();                     
-                       
+                        cnn.Close();
+
                     }
-                    
+
 
                 }
                 else//不为空
@@ -186,7 +186,7 @@ public partial class forget: System.Web.UI.Page
                     SqlDataReader reader4 = cmd4.ExecuteReader();
                     if (reader4.Read())
                     {
-                        flag=reader4["code"].ToString();
+                        flag = reader4["code"].ToString();
                         cnn.Close();
                     }
                     else
@@ -201,8 +201,13 @@ public partial class forget: System.Web.UI.Page
                 cmd5.ExecuteNonQuery();
                 string tomail = Encryption.Decode(txtmail);
                 sendmail(tomail, flag);//发送验证邮件
-                aptips.InnerText = "验证码发送成功，请查看邮箱！";
+
                 cnn.Close();
+            }
+            else
+            {
+                //信息错误
+                aptips.InnerText = "请核对后重新输入！";
             }
         }
       
@@ -225,7 +230,7 @@ public partial class forget: System.Web.UI.Page
         protected void sendmail(string tomail, string code)
         {
             MailAddress MessageFrom = new MailAddress("admin@lijun0772.com"); //发件人邮箱地址 
-            string MessageTo = tomail;//收件人邮箱地址 
+            string MessageTo = tomail;//收件人邮箱地址             
             string MessageSubject = "[丽军数码]重置密码"; //邮件主题 
             string MessageBody = "<p>您正在尝试重置密码，请将验证码：<h2>" + code + "</h2>填入以完成确认。</p><p align=\"right\">丽军数码</p>"; //邮件内容
             Send(MessageFrom, MessageTo, MessageSubject, MessageBody);
@@ -247,20 +252,19 @@ public partial class forget: System.Web.UI.Page
             message.Body = MessageBody;
             //message.Attachments.Add(objMailAttachment);
             message.IsBodyHtml = true; //是否为html格式 
-            message.Priority = MailPriority.High; //发送邮件的优先等级 
+            //message.Priority = MailPriority.High; //发送邮件的优先等级 
 
             SmtpClient sc = new SmtpClient();
-            sc.Host = "smtp.qq.com"; //指定发送邮件的服务器地址或IP 
+            sc.Host = "smtp.hichina.com"; //指定发送邮件的服务器地址或IP 
             sc.Port = 25; //指定发送邮件端口 
-            sc.Credentials = new System.Net.NetworkCredential("admin@lijun0772.com", "YZVpS2016s"); //指定登录服务器的用户名和密码(发件人的邮箱登陆密码)
-
+            sc.Credentials = new System.Net.NetworkCredential("admin@lijun0772.com", "mADDtN34"); //指定登录服务器的用户名和密码(发件人的邮箱登陆密码)
             try
             {
                 sc.Send(message); //发送邮件 
             }
-            catch
+            catch(Exception ex)
             {
-                return false;
+               aptips.InnerText=ex.Message;
             }
             return true;
 

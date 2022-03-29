@@ -280,7 +280,7 @@ public partial class cntmgr : System.Web.UI.Page
         if (e.CommandName == "Ups")
         {
             int id = Convert.ToInt32(e.CommandArgument.ToString());
-            string st1 = "select * from Mess where gid='" + @id + "'";
+            string st1 = "select * from Mess where pid='" + @id + "'";
             SqlDataReader rea = DBHelp.cn(st1).ExecuteReader();
             string i = null;
             if (rea.Read())
@@ -293,7 +293,7 @@ public partial class cntmgr : System.Web.UI.Page
                 {
                     i = "0";
                 }
-                string st2 = "update Mess set ispub='" + @i + "' where gid='" + @id + "'";
+                string st2 = "update Mess set ispub='" + @i + "' where pid='" + @id + "'";
                 DBHelp.cn(st2).ExecuteNonQuery();
                 gvmess.DataBind();
             }

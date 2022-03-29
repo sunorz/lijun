@@ -157,7 +157,7 @@
                               </asp:TemplateField>
                               <asp:TemplateField ShowHeader="False" HeaderText="ÉóºË×´Ì¬">
                                   <ItemTemplate>
-                                      <asp:Button ID="Button1" runat="server" CausesValidation="False" CommandArgument='<%# Eval ("gid") %>'
+                                      <asp:Button ID="Button1" runat="server" CausesValidation="False" CommandArgument='<%# Eval ("pid") %>'
                                           CommandName="Ups" Text='<%# Eval ("state2") %>' 
                                            />
                                   </ItemTemplate>

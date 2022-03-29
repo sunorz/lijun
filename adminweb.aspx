@@ -51,11 +51,11 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
        
         <table width="90%" border="0" cellspacing="0" cellpadding="12">
           <tr>
-            <td width="157" align="left"><h1>后台管理</h1>
+            <td style="width:200px" align="left"><h1>后台管理</h1>
              </td>
-            <td width="300px" align="right" nowrap="nowrap">
+            <td align="right" nowrap="nowrap">
                 <asp:Label ID="Label1" runat="server" Text=""></asp:Label></td>
-            <td width="500px" align="right">
+            <td width="600px" align="right">
                 &nbsp;<asp:ImageButton ID="btnUser" runat="server" ImageUrl="~/imgs/user.gif" 
                     Height="32" Width="32" title="用户管理" OnClick="btnUser_Click"/>
                 &nbsp;<asp:ImageButton ID="btnGuest" runat="server" ImageUrl="~/imgs/guest.gif" 
@@ -127,7 +127,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                                 DataKeyNames="id" BackColor="LightGoldenrodYellow" BorderColor="Tan" 
                                 BorderWidth="1px" CellPadding="2" ForeColor="Black" 
                             class="txt3" Height="84px" Width="700px" onrowdeleting="gvuser_RowDele" 
-                          onrowediting="gvuser_RowEdt" onrowupdating="gvuser_RowUpd" HorizontalAlign="Center" 
+                          onrowediting="gvuser_RowEdt" onrowupdating="gvuser_RowUpd" HorizontalAlign="Center" EnableModelValidation="True" 
                           >
                             <Columns>
                                 <asp:TemplateField>
@@ -188,7 +188,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                                     <ItemStyle HorizontalAlign="Center" />
                                 </asp:TemplateField>
                                 <asp:CommandField ButtonType="Button" ShowEditButton="True" 
-                                    ShowCancelButton="False" EditText="修改" >
+                                    ShowCancelButton="False" EditText="修改" UpdateText="保存" >
                                     
                                     <ControlStyle BackColor="#FF7D23" BorderColor="#FF7D23" BorderStyle="Solid" 
                                         Font-Bold="True" Font-Names="宋体" Font-Size="Medium" ForeColor="White" />

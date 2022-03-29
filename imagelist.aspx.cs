@@ -51,6 +51,7 @@ public partial class imagelist: System.Web.UI.Page
         if (rdr.Read())//在用rdr[]之前必须用if
         {
             Label1.Text = "来自相册《" + rdr["alname"].ToString() + "》中的照片：";
+
         }
         else//id输入错误
         {
@@ -73,4 +74,6 @@ public partial class imagelist: System.Web.UI.Page
             sNewStr = sNewStr + "..."; return sNewStr;
         }
     }
+
+   
 }

@@ -39,7 +39,7 @@ a:active {
 }
         .style3
         {
-            font-size: small;
+            font-size: small; color:gray;
         }
         .pager{ width:100%;  margin:10px; line-height:20px; display:block;}
 .pager span { border:1px solid #F59223; margin: 0 5px; padding: 1px 6px; float:left;background-color:#F59223;color:White;}
@@ -121,15 +121,16 @@ a:active {
             <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" 
                     ControlToValidate="txtcname" CssClass="aptips" 
                     ErrorMessage="昵称不符合规定！" 
-                    ValidationExpression="^[\u4E00-\u9FA5A\a-zA-Z][\u4E00-\u9FA5A-Za-z0-9]{4,14}$" Display="Dynamic"></asp:RegularExpressionValidator>
+                    ValidationExpression="^[\u4E00-\u9FA5A\a-zA-Z][\u4E00-\u9FA5A-Za-z0-9]{3,14}$" Display="Dynamic"></asp:RegularExpressionValidator>
               <br /><span class="style3">
               <br />
-              昵称请不要以数字开头，不能输入标点符号，且控制长度在5至15个字。
+              <img src="imgs/info.png" height="18" width="18" />&nbsp;昵称请不要以数字开头，不能输入标点符号，且控制长度在4至15个字。
               <br />
               </span><br />
             <asp:Label ID="Label1" runat="server" Text="邮箱地址："></asp:Label>
             <asp:TextBox ID="txtcmail" runat="server" Width="285px" BackColor="Silver" 
-                  class="txt3" maxlength="30" AutoCompleteType="Disabled"></asp:TextBox>
+                  class="txt3" maxlength="50" AutoCompleteType="Disabled" 
+                  ></asp:TextBox>
             <script type="text/javascript">
                 var nowid;
                 var totalid;
@@ -273,23 +274,27 @@ a:active {
             <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
                                     ControlToValidate="txtcmail" ErrorMessage="邮箱格式错误！" Font-Bold="True" 
                                     ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>            
+              <span class="style3">
+              <br /><br />
+              <img src="imgs/info.png" height="18" width="18" />&nbsp;只有邮箱验证通过，留言才有效。
               <br />
-              <br />
-              <br /><div style="text-align: left">
+              </span>
+                           <br /><div style="text-align: left">
               <asp:Label ID="Label2" runat="server" Text="留言内容（限140字）："></asp:Label>   
             
-            <br />
+            <br /><span class="style3">
+              <br />
+              <img src="imgs/info.png" height="18" width="18" />&nbsp;报修请直接联系我们，请不要在此输入！
+                           </span>
                   <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" 
-                  ErrorMessage="留言字数不符合要求！" CssClass=aptips ControlToValidate="txtccontent" 
+                  ErrorMessage="留言字数不符合要求！" CssClass="aptips" ControlToValidate="txtccontent" 
                       ValidationExpression="^[\s\S][\d\D]{3,139}$"></asp:RegularExpressionValidator></div>             
 
               <p style="text-align: left">
-
-          <br />
             <asp:TextBox 
                     id="txtccontent" runat="server" Columns="125" Rows="8" 
                     BackColor="Silver" class="txt3" Height="121px" TextMode="MultiLine" 
-                    Width="650px">报修请直接联系我们，请不要在此输入！</asp:TextBox>
+                    Width="650px"></asp:TextBox>
               </p>
                        <br/> 
               <p style="text-align: center">

@@ -12,6 +12,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Net.Mail;
 
 public partial class detail: System.Web.UI.Page
 {
@@ -31,7 +32,8 @@ SqlCommand cmd = new SqlCommand(st, cnn);
 SqlDataReader rdr = cmd.ExecuteReader();
 if (!rdr.Read())//如果id未输入或者错误
 {
-commpo.Visible = false;
+tr2.Visible = false;
+tr1.Visible = false;
 share.Visible = false;
 Label1.Visible = true;
 btngood.Visible = false;
@@ -47,9 +49,6 @@ bind1();
 authcom();
 showgood();
 cnn.Close();
-txtcomment.Attributes.Add("Value", "请不要输入包含个人隐私（账号密码等）的内容，谢谢！");
-txtcomment.Attributes.Add("OnFocus", "if(this.value=='请不要输入包含个人隐私（账号密码等）的内容，谢谢！'){this.value=''}");
-txtcomment.Attributes.Add("OnBlur", "if(this.value==''){this.value='请不要输入包含个人隐私（账号密码等）的内容，谢谢！'}");
 }
 showfoot();
 deletethis();
@@ -73,7 +72,7 @@ protected void btngood_Click(object sender, ImageClickEventArgs e)
 //提交评论
 protected void btnPost_Click(object sender, EventArgs e)
 {
-
+	//初始化变量
 string comment = txtcomment.Text.ToString().Trim();
 string cmail = txtmail.Text.ToString().Trim();
 string coname = txtname.Text.ToString().Trim();
@@ -81,48 +80,69 @@ string coname = txtname.Text.ToString().Trim();
 coname = Encryption.Encode(coname);
 cmail = Encryption.Encode(cmail);
 comment = Encryption.Encode(comment);
-
-ckuser(coname, cmail);
 string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
 SqlConnection cnn = new SqlConnection(connectionString);
 string newid = Request.QueryString["id"];
-DateTime dt = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "China Standard Time");//转东八区               
+DateTime dt = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "China Standard Time");//转东八区  
+    
+//查询用户是否存在     
 string st2 = "select * from Guest where gname='" + @coname + "' and gmail='" + @cmail + "' and gflag=0";
 cnn.Open();
 SqlCommand cmd2 = new SqlCommand(st2, cnn);
 SqlDataReader rdrr = cmd2.ExecuteReader();
+//找到该用户
 if (rdrr.Read())
 {
-int fids = getfloors();
-int gid = Convert.ToInt32(rdrr["guid"]);
-cnn.Close();
-string st = "";
-if (lbif.Visible == true)
-{
-st = "insert into Comment (aid,gid,comment,cposttime,fid) values('" + @newid + "','" + @gid + "','" + @comment + "','" + @dt + "','" + @fids + "')";
+//邮件验证通过
+
+    if (rdrr["mailv"].ToString() == "True")
+    {     
+
+        int fids = getfloors();
+        int gid = Convert.ToInt32(rdrr["guid"]);
+        cnn.Close();
+        string st = "";
+		//评论
+        if (lbif.Visible == true)
+        {
+            st = "insert into Comment (aid,gid,comment,cposttime,fid) values('" + @newid + "','" + @gid + "','" + @comment + "','" + @dt + "','" + @fids + "')";
+        }
+		//回复
+        else
+        {
+            int repid = Convert.ToInt32(Session["repis"]);
+            st = "insert into Comment (aid,gid,repid,comment,cposttime,fid) values('" + @newid + "','" + @gid + "','" + @repid + "','" + @comment + "','" + @dt + "','" + @fids + "')";
+        }
+        SqlCommand cmd = new SqlCommand(st, cnn);
+        cnn.Open();
+        cmd.ExecuteNonQuery();
+        Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('回复成功！');window.location.href=window.location.href; </script>");
+        bind1();
+        cnn.Close();
+    }
+    else
+    {
+
+        //重发验证邮件
+        mailv(cmail, coname);
+        Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('请登录你的邮箱验证邮件！');window.location.href=window.location.href; </script>");
+    }
+
 }
 else
 {
-    int repid = Convert.ToInt32(Session["repis"]); 
-st = "insert into Comment (aid,gid,repid,comment,cposttime,fid) values('" + @newid + "','" + @gid + "','" + @repid + "','" + @comment + "','" + @dt + "','" + @fids + "')";
+	ckuser(coname,cmail);
+    //是否存在相关用户名和密码
+
 }
-SqlCommand cmd = new SqlCommand(st, cnn);
-cnn.Open();
-cmd.ExecuteNonQuery();
-Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('回复成功！');window.location.href=window.location.href; </script>");
-bind1();
 cnn.Close();
-}
-else
-{
-cnn.Close();
-Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('邮箱地址和昵称不匹配！');window.location.href=window.location.href; </script>");
-
-}
-
 
 
 }
+
+
+
+
 protected void btnReset_Click(object sender, EventArgs e)
 {
 txtname.Text = "";
@@ -169,7 +189,7 @@ string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectio
 SqlConnection cnn = new SqlConnection(connectionString);
 string newid = Request.QueryString["id"];
 //对两个查询表进行查询
-string st = "Select  a.fid,rfid,ismgr,a.gname,rcomment,rname,comment,cposttime,a.comid,cflag,comon from (Select * from Comment,Guest,Article where Comment.gid=Guest.guid and aid=artid and aid='" + @newid + "') as a left join (Select comid,gname as rname,repid,fid as rfid,comment as rcomment from Comment,Guest where Comment.gid=Guest.guid and comid in (Select repid from Comment)) as b on a.repid=b.comid and aid='" + @newid + "' order by a.comid";
+string st = "Select  a.fid,rfid,ismgr,a.gname,rcomment,rname,comment,cposttime,a.comid,cflag,comon,a.mailv from (Select * from Comment,Guest,Article where Comment.gid=Guest.guid and aid=artid and aid='" + @newid + "') as a left join (Select comid,gname as rname,repid,fid as rfid,comment as rcomment from Comment,Guest where Comment.gid=Guest.guid and comid in (Select repid from Comment)) as b on a.repid=b.comid and aid='" + @newid + "' where a.mailv=1 or a.ismgr=1 order by a.comid";
 cnn.Open();
 SqlDataAdapter da = new SqlDataAdapter(st, cnn);
 DataSet ds = new DataSet();
@@ -287,24 +307,21 @@ SqlCommand cmd = new SqlCommand(st, cnn);
 SqlDataReader rdr = cmd.ExecuteReader();
 if (rdr.Read())
 {
-if (rdr["gflag"].ToString() == "True")
-{
-cnn.Close();
-Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('你已被管理员禁言！');window.location.href=window.location.href; </script>");
-}
-else
-{
-cnn.Close();
-}
+   
+Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('邮箱或昵称输入错误！');window.location.href=window.location.href; </script>");
 }
 else
 {
 cnn.Close();
 cnn.Open();
-string st2 = "insert into Guest(gname,gmail,gflag,ismgr) values('" + @name + "','" + @mail + "','0','0')";
+string st2 = "insert into Guest(gname,gmail,gflag,mailv,ismgr) values('" + @name + "','" + @mail + "','0','0','0')";
 SqlCommand cmd2 = new SqlCommand(st2, cnn);
 cmd2.ExecuteNonQuery();
 cnn.Close();
+//插入评论
+//发送验证邮件
+mailv(mail,name);
+Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('请登录你的邮箱验证邮件！');window.location.href=window.location.href; </script>");
 }
 
 }
@@ -504,5 +521,88 @@ protected bool ckcomm()
         return false;
     }
 }
+    //发送验证邮件
+    protected void mailv(string mailto,string usr)
+{
+    MailAddress MessageFrom = new MailAddress("admin@lijun0772.com"); //发件人邮箱地址
+    string mailtoe = Encryption.Decode(mailto);
+    string MessageTo = mailtoe;//收件人邮箱地址 
+    string MessageSubject = "[丽军数码]验证邮箱地址"; //邮件主题 
+    string user = Encryption.Auth(usr);//MD5
+    string mail = Encryption.Auth(mailto);//MD5
+    string url = "http://lijun0772.com/mailv.aspx?key="+Encryption.Auth("黑我网站速度死！"+user)+mail;
+    string MessageBody = "<p>"+Encryption.Decode(usr)+"，你好：<br/>请点击以下链接完成验证：<br/><a href=\""+url+"\" target=\"_blank\">验证链接</a><br />如果你没有在本站评论或留言，请不要理会。</p><p align=\"right\">丽军数码</p>"; //邮件内容
+    WebHelp.Send(MessageFrom, MessageTo, MessageSubject, MessageBody);
+    }    
+    //发送通知邮件
+    protected void mailno()
+    {
+        MailAddress MessageFrom = new MailAddress("admin@lijun0772.com"); //发件人邮箱地址 
+        string MessageTo = "237549738@qq.com";//收件人邮箱地址 
+        string MessageSubject = "[丽军数码]有人发表了新评论！"; //邮件主题 
+        string MessageBody = "<p>http://lijun0772.com/adminlogin.aspx</p>"; //邮件内容
+        WebHelp.Send(MessageFrom, MessageTo, MessageSubject, MessageBody);
+    }
 
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+
+        //初始化变量
+
+        string cmail = txtmail.Text.ToString().Trim();
+        string coname = txtname.Text.ToString().Trim();
+
+        if (coname == ""||cmail=="") {
+
+            lbmail.Text = "昵称和邮箱都要填完哦。";
+            lbmail.ForeColor = System.Drawing.Color.Red;
+        }
+
+        else
+        {
+
+            coname = Encryption.Encode(coname);
+            cmail = Encryption.Encode(cmail);
+
+            string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+            SqlConnection cnn = new SqlConnection(connectionString);
+            string newid = Request.QueryString["id"];
+            DateTime dt = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "China Standard Time");//转东八区  
+
+            //查询用户是否存在     
+            string st2 = "select * from Guest where gname='" + @coname + "' and gmail='" + @cmail + "' and gflag=0";
+            cnn.Open();
+            SqlCommand cmd2 = new SqlCommand(st2, cnn);
+            SqlDataReader rdrr = cmd2.ExecuteReader();
+            //找到该用户
+            if (rdrr.Read())
+            {
+                //邮件验证通过
+
+                if (rdrr["mailv"].ToString() == "True")
+                {
+                    lbmail.Text = "该邮件已验证。";
+                    lbmail.ForeColor = System.Drawing.Color.Green;
+                }
+                else
+                {
+                    //重发验证邮件
+                    mailv(cmail, coname);
+                    lbmail.Text = "验证邮件已发送。";
+                    lbmail.ForeColor = System.Drawing.Color.FromArgb(179, 95, 150);
+                }
+
+            }
+            else
+            {
+                ckuser(coname, cmail);
+                //是否存在相关用户名和密码
+
+            }
+            cnn.Close();
+
+
+
+        }
+    }
 }

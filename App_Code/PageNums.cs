@@ -30,13 +30,16 @@ public class PageNums
         if (HttpContext.Current.Request.QueryString["page"] != null)
         {
             page = Convert.ToInt32(HttpContext.Current.Request.QueryString["page"]);
-            if(page>total||page<total)
+            if (page > total )
             {
                 page = 1;
-            }         
+            }
+            
         }
         else
-        page = 1;
+        {
+            page = 1;
+        }
         objPds.CurrentPageIndex = page - 1;
         datalistname.DataSource = objPds;
         datalistname.DataBind();
@@ -62,12 +65,7 @@ public class PageNums
         if (startcount < 1 || startcount > allpage) { startcount = 1; } //为了避免输出的时候产生负数，设置如果小于1就从序号1开始
         if (allpage < endcount) { endcount = allpage; } //页码+5的可能性就会产生最终输出序号大于总页码，那么就要将其控制在页码数之内
         //中间页处理，这个增加时间复杂度，减小空间复杂度
-        if (page == allpage)
-        {
-            pagestr = "";
-        }
-        else
-        {
+       
             for (int i = startcount; i <= endcount; i++)
             {
                 if (i == page)
@@ -81,7 +79,8 @@ public class PageNums
                     pagestr = "<div class='pager'>" + pagestr + "<div>";
                 }
             }
-        }
+            if (total<=pagesize) { pagestr = ""; }//如果只有一页，则不显示页码
+        
         return pagestr;
     }
 }

@@ -153,7 +153,11 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                 </asp:SqlDataSource>
               </td>
             <td align="center" style=" vertical-align:top; text-align:left; padding:20px;" bgcolor="#FFFFFF">
-          <asp:Calendar ID="Calendar1" runat="server" BackColor="White" 
+                <asp:ScriptManager ID="ScriptManager1" runat="server">
+                </asp:ScriptManager>
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                <ContentTemplate>
+                 <asp:Calendar ID="Calendar1" runat="server" BackColor="White" 
                     BorderColor="#E4C25C" CellPadding="4" DayNameFormat="Shortest" 
                     Font-Names="Verdana" Font-Size="Small" ForeColor="Black" Height="180px" 
                     Width="200px" onprerender="Calendar1_PreRender" ToolTip="ÈÕÀú" 
@@ -168,6 +172,9 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                         Font-Names="ËÎÌå" ForeColor="White" />
                     <TitleStyle BackColor="#FBDD9F" Font-Bold="True" ForeColor="White" />
                 </asp:Calendar>
+                </ContentTemplate>
+                </asp:UpdatePanel>
+         
               </td>
           </tr>
        

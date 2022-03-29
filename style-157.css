@@ -31,3 +31,4 @@ ul, ol, li {list-style-type:none;vertical-align:0}
 .mkeLbtn { background: url(imgs/class/kelBtn.png) no-repeat; height: 60px; width: 60px; position: absolute; left: 6px; top: 165px; cursor: pointer; z-index: 10; }
 .mkeRbtn { position: absolute; top: 165px; right: 6px; background: url(imgs/class/kerBtn.png) no-repeat; height: 60px; width: 60px; cursor: pointer; z-index: 10; }
 /* 效果CSS结束 */
+

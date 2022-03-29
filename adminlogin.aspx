@@ -39,20 +39,20 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
             <td align="center"><h1>后台管理</h1></td>
           </tr>
           <tr>
-            <td align="center">            
-                用户名
+            <td>            
+                <div style="text-align:left; width:400px; margin:0 auto;">用户名
               <asp:TextBox ID="admin" runat="server" Width="200px" class="txt3" BackColor="Silver" maxlength="30"></asp:TextBox>
               <br />
               <br />
               <br />
               <br />
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 密码
+              密&nbsp;码
               <asp:TextBox ID="pwd" runat="server" Width="200px" class="txt3" 
                     BackColor="Silver" maxlength="30" textmode="password" Font-Bold="False"></asp:TextBox>
                 <asp:Button ID="btnCeuser" runat="server" BackColor="#FF7D23" 
                     BorderColor="#FF7D23" BorderStyle="Solid" class="txt3" Font-Bold="True" 
                     ForeColor="White" OnClick="btnForget_Click" Text="忘记密码？" 
-                    UseSubmitBehavior="False" />
+                    UseSubmitBehavior="False" /></div>
             </td>
           </tr>
         </table>

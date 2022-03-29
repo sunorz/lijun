@@ -58,7 +58,7 @@ a:active {
     background-color:#F59223;color:White;
 }
 
-    </style>
+    </style>        
 <script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <div id="apDiv2" class="toplnk"><uc1:gotop ID="gotop1" runat="server" /></div>
@@ -98,7 +98,7 @@ a:active {
       <tr>
         <td colspan="9" align="middle" valign="middle"><a href="bbs.aspx" title="论坛首页">
             <img src="imgs/class/img5.gif" width="200" height="194" 
-                border="0"  /></a><div id="title" runat="server">业界新闻</div></td>
+                border="0" data-tag="hdimg"  /></a><div id="title" runat="server">业界新闻</div></td>
       </tr>
   <tr bgcolor="#FFFFFF">
             <td>&nbsp;</td>
@@ -107,7 +107,8 @@ a:active {
           </tr>
           <tr bgcolor="#FFFFFF">
             <td rowspan="2" align="left" valign="top">
- <asp:Label ID="Label1" runat="server" Text=""></asp:Label><p id="share" runat="server"><div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到i贴吧" class="bshare-itieba" href="javascript:void(0);"></a><a title="分享到Facebook" class="bshare-facebook" href="javascript:void(0);"></a><a title="分享到Twitter" class="bshare-twitter" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;"></span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></p>
+ <asp:Label ID="Label1" runat="server" Text=""></asp:Label><p id="share" runat="server"><div class="bshare-custom icon-medium"><div class="bsPromo bsPromo2"></div><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到微信" class="bshare-weixin" href="javascript:void(0);"></a><a title="分享到打印" class="bshare-printer" href="javascript:void(0);"></a><a title="分享到复制网址" class="bshare-clipboard" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+</p>
                 
 <div id="content"><asp:ListView ID="ListView1" runat="server" DataKeyNames="poid" 
                     DataSourceID="SqlDataSource1" GroupItemCount="3" 
@@ -124,7 +125,7 @@ a:active {
                             <td id="Td2" runat="server" width="200px" height="300px"  
                                 style="background-color:#333333;color: #FFFFFF; text-align: center; font-size:small;">
                                 <br />
-                                <asp:HyperLink ID="openimg" runat="server" 
+                                <asp:HyperLink ID="openimg" runat="server"
                                     NavigateUrl='<%# Eval("pourl") %>' Target="_blank" ImageUrl='<%# Eval("psmurl") %>' CssClass="newl" Font-Size="small" BorderStyle="Solid" BorderWidth="1px" BorderColor="White"  ToolTip='<%#Eval("poname") %>'><%#Eval("poname") %></asp:HyperLink>
                                  <br /><p style="text-align:left;">&nbsp;
                                 <span>标题:</span> 
@@ -202,7 +203,8 @@ a:active {
                         </GroupTemplate>
                         <SelectedItemTemplate>                           
                         </SelectedItemTemplate>
-                    </asp:ListView></div>  <script src="js/jquery.min123.js"></script>
+                    </asp:ListView></div>
+ <script src="js/jquery.min123.js"></script>
 <script src="js/jquery.imgbox.pack.js"></script>
 <script language="javascript" type="text/javascript">
     $(function() {
@@ -212,9 +214,10 @@ a:active {
             'alignment': 'center',
             'overlayShow': true,
             'allowMultiple': false
-        });
-        
+        });      
+       
     });
+
 </script>
                 <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
                     ConnectionString="<%$ ConnectionStrings:lijunConnectionString %>"

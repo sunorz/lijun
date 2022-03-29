@@ -113,6 +113,7 @@
                                   </EditItemTemplate>
                                   <ItemTemplate>
                                       <asp:Label ID="Label2" runat="server" Text='<%# Encryption.Decode(Eval("gmail")) %>'></asp:Label>
+                                      <img src='imgs/<%# showImg(Eval("mailv"))%>' />
                                   </ItemTemplate>
                               </asp:TemplateField>
                               <asp:TemplateField HeaderText="½ûÑÔ" SortExpression="gflag">

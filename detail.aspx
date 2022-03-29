@@ -42,7 +42,7 @@ a:active {
             }
             .style2
             {
-                font-size: small;
+                font-size: small; color:gray;
             }
             #reply
             { 
@@ -59,7 +59,7 @@ a:active {
     padding: 1px 6px;  color:#F59223;
     background-color:White; 
 }
-.pager a:hover { border:1 solid #F59223; background-color:#F59223; color:White; margin: 0 5px; padding: 1px 6px; }
+.pager a:hover { border:1px solid #F59223; background-color:#F59223; color:White; margin: 0 5px; padding: 1px 6px; }
             .style5
             {
                 background-color: #FFFFEC;
@@ -105,7 +105,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
     <td colspan="9" align="center" valign="middle" cellpadding="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="12">
       <tr>
-        <td colspan="9" align="middle" valign="middle"><a href="bbs.aspx" title="论坛首页"><img src="imgs/class/img5.gif" width="200" height="194" border="0" /></a>          <div id="title" runat="server">
+        <td colspan="9" align="middle" valign="middle"><a href="bbs.aspx" title="论坛首页"><img src="imgs/class/img5.gif" width="200" height="194" border="0" data-tag="hdimg" /></a>          <div id="title" runat="server">
             业界新闻</div></td>
         </tr>
         <tr>
@@ -141,30 +141,40 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                         <asp:Label ID="arttimeLabel" runat="server" Font-Size="Small" 
                             style="color: #FF7D23" Text='<%# Eval("arttime","{0:yyyy年M月d日}") %>'/>
                         <br />
-                        <span class="bbsdel"><asp:Label ID="artcntLabel" runat="server" Text='<%#OutputByLine(Eval("artcnt"))%>' /></asp:Label></span>
+                        <span class="bbsdel"><asp:Label ID="artcntLabel" runat="server" Text='<%#OutputByLine(Eval("artcnt"))%>' /></span>
                         <br />
                         <br />
                         <br />
                         &nbsp;<br />
                     </ItemTemplate>
                 </asp:FormView>
-                <p id="share" runat ="server"><div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到i贴吧" class="bshare-itieba" href="javascript:void(0);"></a><a title="分享到Facebook" class="bshare-facebook" href="javascript:void(0);"></a><a title="分享到Twitter" class="bshare-twitter" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;"></span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></p>
-                <asp:Label ID="labPageNumber" runat="server"  Width=100% CssClass="txt3"
+<script>
+
+        var aa = document.getElementsByTagName('img');
+        for (var i = 0; i < aa.length; i++) {
+            if (aa[i].getAttribute("data-tag") == null)
+                aa[i].setAttribute("data-tag", "img_1");
+        }
+
+
+
+</script>
+               <asp:Label ID="labPageNumber" runat="server"  Width=100% CssClass="txt3"
                 ></asp:Label>
                 </td>
           </tr>
           <tr>
             <td colspan="2" align="center" class="style5">
-                                      <asp:ImageButton ID="btngood" runat="server" ImageUrl="~/imgs/good.jpg" 
+<p id="share" runat ="server"><div class="bdsharebuttonbox" data-tag="ppt"><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_print" data-cmd="print" title="分享到打印"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div><asp:ImageButton ID="btngood" runat="server" ImageUrl="~/imgs/good.jpg" 
                             OnClick="btngood_Click" title="赞一下？" />
-                        <asp:Label ID="Label4" runat="server" ForeColor="#FF7D23" Text=""></asp:Label></td>
+                        <asp:Label ID="Label4" runat="server" ForeColor="#FF7D23" Text=""></asp:Label></p></td>
           </tr>
-          <tr>
+          <tr id="tr1" runat="server">
               
             <td colspan="2" align="center" class="style5" style="text-align:right;"><div style="width:95%;">
                 <asp:HyperLink ID="HyperLink1" runat="server">修改</asp:HyperLink>&nbsp;<asp:HyperLink ID="HyperLink2" runat="server">删除</asp:HyperLink></div></td>
           </tr>
-          <tr>
+          <tr  id="tr2" runat="server" >
             <td colspan="2" align="left" class="style5"><div id="reply" runat="server">
                    
                     昵称： <asp:TextBox ID="txtname" runat="server" BackColor="White" CssClass="txt3" 
@@ -172,21 +182,33 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                 <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" 
                     ControlToValidate="txtname" CssClass="aptips" 
                     ErrorMessage="昵称不符合规定！" 
-                    ValidationExpression="^[\u4E00-\u9FA5A\a-zA-Z][\u4E00-\u9FA5A-Za-z0-9]{3,15}$" Display="Dynamic"></asp:RegularExpressionValidator>
+                    ValidationExpression="^[\u4E00-\u9FA5A\a-zA-Z][\u4E00-\u9FA5A-Za-z0-9]{3,14}$" Display="Dynamic"></asp:RegularExpressionValidator>
                        <br />
-                <br />
-                <span class="style2">昵称请昵称请不要以数字开头，不能输入标点符号，且控制长度在4至16个字符。</span>
+                         <span class="style2"><img src="imgs/info.png" width="18" height="18">&nbsp;昵称请不要以数字开头，不能输入标点符号，且长度控制在4至15个字符。</span>
                        <br />
                 
                 <br />                
-                   邮箱：               <asp:TextBox ID="txtmail" runat="server" 
+                   邮箱：       <asp:ScriptManager ID="ScriptManager1" runat="server">
+                </asp:ScriptManager> 
+                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                <ContentTemplate> 
+                                <asp:TextBox ID="txtmail" runat="server" 
                            BackColor="White" CssClass="txt3" 
-                    MaxLength="20" BorderColor="#F78B43" BorderStyle="Solid" BorderWidth="1px"></asp:TextBox>
+                    MaxLength="50" BorderColor="#F78B43" BorderStyle="Solid" BorderWidth="1px" 
+                        Width="371px"></asp:TextBox>&nbsp;<asp:Button ID="Button1" runat="server" onclick="Button1_Click" Text="验证我的邮箱" />
+                                    <asp:Label ID="lbmail" runat="server" Text=""></asp:Label>         
                    
                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
                     ControlToValidate="txtmail" CssClass="aptips" ErrorMessage="邮箱格式不正确！" 
                     ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
-                <br />
+                       
+                    </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="Button1" EventName="Click" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+                <br /><br />
+<span class="style2"><img src="imgs/info.png" alt="" width="18" height="18"/>&nbsp;<b>请先验证邮箱后再评论！</b>只有邮箱验证通过，评论才会显示。</span><br/>
                 <br class="txt3" />
                    输入回复：
                   <asp:Label ID="lbr1" runat="server" Text="正在回复" Visible="False"></asp:Label>
@@ -198,11 +220,11 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                    <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" 
                        ControlToValidate="txtcomment" CssClass="aptips" ErrorMessage="字数不符合要求！" 
                        ValidationExpression="^[\s\S][\d\D]{3,139}$" Display="Dynamic"></asp:RegularExpressionValidator>
-                   <br />
-                <br />
+                        <br />
+                          <span class="style2"><img src="imgs/info.png" width="18" height="18">&nbsp;请不要输入包含个人隐私（账号密码等）的内容，谢谢！</span><br/>
   <asp:TextBox ID="txtcomment" runat="server" BackColor="White" CssClass="txt3" 
                     Height="150px" TextMode="MultiLine" Width="603px" MaxLength="3" 
-                           BorderColor="#F78B43" BorderStyle="Solid" BorderWidth="1px">请不要输入包含个人隐私（账号密码等）的内容，谢谢！</asp:TextBox>
+                           BorderColor="#F78B43" BorderStyle="Solid" BorderWidth="1px"></asp:TextBox>
                 <br />
                 <br />
                  
@@ -230,7 +252,8 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                     <SelectedItemStyle BackColor="DarkSlateBlue" ForeColor="GhostWhite" />
                     <HeaderStyle BackColor="Tan" Font-Bold="True" />
                     <ItemTemplate>
-                          <div style="padding:10px;"><div style="float:left;font-size: 11pt;"><asp:Label ID="floor"   runat="server" Text='<%#Eval("fid","{0}楼")%>' 
+                          <div style="padding:10px;">
+                              <div style="float:left;font-size: 11pt;"><asp:Label ID="floor"   runat="server" Text='<%#Eval("fid","{0}楼")%>' 
                               style="color: #FF7D23"></asp:Label><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                          <div style="position:relative;">
                              <asp:Label 
@@ -245,17 +268,26 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                                      Text="@"  Visible='<%# Eval("state") %>' ></asp:Label><asp:Label ID="Label8" runat="server"
                                          Text='<%#Encryption.Decode(Eval("rname")) %>' Visible='<%# Eval("state") %>'></asp:Label></samp><asp:Label
                                              ID="Label9" runat="server" Text=":" Visible='<%# Eval("state") %>'></asp:Label>
-                              <asp:Label ID="Label6" runat="server" Text='<%#Encryption.Decode(Eval("comment")) %>' ></asp:Label><br />
-                             <br /><div style="margin-left:36pt;"><asp:Table ID="Table1" runat="server" BorderColor="#FF9900" BorderStyle="Solid" 
+                              <asp:Label ID="Label6" runat="server" Text='<%#Encryption.Decode(Eval("comment")) %>' ></asp:Label><br /><br />
+                       
+                             <div style="width:100%;"><asp:Panel ID="plbtn" runat="server" Visible='<%# ((bool)Eval("comon") ? false : true)%>' Width="100%">
+                           
+                              <asp:Button ID="btnR" runat="server" BackColor="#FF7D23" 
+                    BorderColor="#FF7D23" BorderStyle="Solid" class="txt3" Font-Bold="True" 
+                    ForeColor="White" Text="回复" Width="60px" onclick="btnR_Click" 
+                                  CommandArgument='<%# Eval("comid") %>' Visible='<%# Eval("cflag") %>'  />
+                              &nbsp;&nbsp; </asp:Panel> <br/> </div> 
+                             <div>
+                             <asp:Table ID="Table1" runat="server" BorderColor="#FF9900" BorderStyle="Solid" 
                                  BorderWidth="1px" BackColor="#FFFFCC" CellPadding="20" CellSpacing="20" 
-                                 HorizontalAlign="Left" Visible='<%# Eval("state") %>' Width="60%" CssClass="tableo"><asp:TableRow>
+                                 HorizontalAlign="Left" Visible='<%# Eval("state") %>' Width="90%" CssClass="tableo"><asp:TableRow>
                              <asp:TableCell> 
                                  <samp style="font-family:Arial; color:#FF7D23;"><asp:Label ID="Label11" runat="server"
                                      Text="@"  Visible='<%# Eval("state") %>' ></asp:Label><asp:Label ID="Label12" runat="server"
                                          Text='<%#Encryption.Decode(Eval("rname")) %>' Visible='<%# Eval("state") %>'></asp:Label></samp><asp:Label
                                              ID="Label13" runat="server" Text=":" Visible='<%# Eval("state") %>'></asp:Label>
                                  <asp:Label ID="Label10" runat="server" Text='<%#Encryption.Decode(Eval("rcomment")) %>' Visible='<%# Eval("state") %>'></asp:Label>
-</asp:TableCell>
+                             </asp:TableCell>
      
                              </asp:TableRow>
    
@@ -265,13 +297,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                               </div>
                          
                                               
-                          <div style="text-align:right"> <asp:Panel ID="plbtn" runat="server" Visible='<%# ((bool)Eval("comon") ? false : true)%>'>
-                           
-                              <asp:Button ID="btnR" runat="server" BackColor="#FF7D23" 
-                    BorderColor="#FF7D23" BorderStyle="Solid" class="txt3" Font-Bold="True" 
-                    ForeColor="White" Text="回复" Width="60px" onclick="btnR_Click" 
-                                  CommandArgument='<%# Eval("comid") %>' Visible='<%# Eval("cflag") %>'  />
-                              &nbsp;&nbsp;  </asp:Panel></div></div>                 
+                                     
                     </ItemTemplate>
                 </asp:DataList>
                 <br />
@@ -291,6 +317,8 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
 </td>
   </tr>
 </table>
+
     </form>
+    <script src="js/bdshare.js" charset="utf-8"></script>  
 </body>
 </html>

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Drawing;
+using System.Net.Mail;
 public partial class guest : System.Web.UI.Page
 {
      protected void Page_Load(object sender, EventArgs e)
@@ -113,13 +114,25 @@ public partial class guest : System.Web.UI.Page
         int guid=Convert.ToInt32(gvguest.DataKeys[e.RowIndex].Value);
         if (ckguest(guid, name, mail))
         {
+            string ppt = "";
+            if (ckmail(guid,mail))
+            {
+                ppt = ",mailv=0";
+                //验证邮箱
+                mailv(mail, name);
+            }
+            else
+            {
+                ppt = "";
+            }
             string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
             SqlConnection conur = new SqlConnection(connectionString);
-            string delur = "update Guest set gname='" + @name + "',gmail='" + @mail + "',gflag='" + @locker + "',ismgr='" + @isadmin + "' where guid='" + @guid + "'";
+            string delur = "update Guest set gname='" + @name + "',gmail='" + @mail + "',gflag='" + @locker + "',ismgr='" + @isadmin + "'"+ppt+" where guid='" + @guid + "'";
             SqlCommand cmdu = new SqlCommand(delur, conur);
             conur.Open();
             cmdu.ExecuteNonQuery();
             conur.Close();
+            
             Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
             bind();
             gvguest.EditIndex = -1;
@@ -143,6 +156,7 @@ public partial class guest : System.Web.UI.Page
         }
         else
         {
+           
             cnn.Close();
            return true;
         }
@@ -249,6 +263,93 @@ public partial class guest : System.Web.UI.Page
         {
             return true;
         }
+
+    }
+    protected string showImg(object type)
+    {
+        string imgSrc = "";
+        switch (Convert.ToInt32(type))
+        {
+            case 0:
+                imgSrc = "mailu.png";
+                break;
+            case 1:
+                imgSrc = "mailv.png";
+                break;
+            default:
+                imgSrc = "mailu.png";
+                break;
+        }
+        return imgSrc;
+    }
+    //检查邮箱是否被修改如果被修改，则需要重新激活（对管理员无效）
+    protected bool ckmail(int guid,string mail)
+    {
+        string st = "select * from Guest where guid='"+@guid+"' and ismgr=0 ";
+        SqlDataReader rea = DBHelp.cn(st).ExecuteReader();
+        if (rea.Read())
+        {
+            if (rea["gmail"].ToString() == mail)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    //修改邮箱后
+    //发送验证邮件
+    protected void mailv(string mailto, string usr)
+    {
+        MailAddress MessageFrom = new MailAddress("admin@lijun0772.com"); //发件人邮箱地址
+        string mailtoe = Encryption.Decode(mailto);
+        string MessageTo = mailtoe;//收件人邮箱地址 
+        string MessageSubject = "[丽军数码]验证邮箱地址"; //邮件主题 
+        string user = Encryption.Auth(usr);//MD5
+        string mail = Encryption.Auth(mailto);//MD5
+        string url = "http://lijun0772.com/mailv.aspx?uid=" + user + "&tn=" + mail;
+        string MessageBody = "<p>请点击以下链接完成验证：<br/>" + url + "</p><p align=\"right\">丽军数码</p>"; //邮件内容
+        Send(MessageFrom, MessageTo, MessageSubject, MessageBody);
+    }
+    //发送邮件函数
+    public bool Send(MailAddress MessageFrom, string MessageTo, string MessageSubject, string MessageBody)
+    {
+        MailMessage message = new MailMessage();
+
+        // if (FileUpload1.PostedFile.FileName != "")
+        // {
+        // Attachment att = new Attachment("d://test.txt");//发送附件的内容
+        //    message.Attachments.Add(att);
+        // }
+
+        message.From = MessageFrom;
+        message.To.Add(MessageTo); //收件人邮箱地址可以是多个以实现群发 
+        message.Subject = MessageSubject;
+        message.Body = MessageBody;
+        //message.Attachments.Add(objMailAttachment);
+        message.IsBodyHtml = true; //是否为html格式 
+        //message.Priority = MailPriority.High; //发送邮件的优先等级 
+
+        SmtpClient sc = new SmtpClient();
+        sc.Host = "smtp.hichina.com"; //指定发送邮件的服务器地址或IP 
+        sc.Port = 25; //指定发送邮件端口 
+        sc.Credentials = new System.Net.NetworkCredential("admin@lijun0772.com", "mADDtN34"); //指定登录服务器的用户名和密码(发件人的邮箱登陆密码)
+
+        try
+        {
+            sc.Send(message); //发送邮件 
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
 
     }
    

@@ -84,7 +84,7 @@ a:active {
 <table width="100%" border="0" cellspacing="0" cellpadding="12">
 <tr>
 <td colspan="9" align="middle" valign="middle">
-        <img src="imgs/class/img2.gif" width="200" height="194"  /><div id="title" runat="server">
+        <img src="imgs/class/img2.gif" width="200" height="194" data-tag="hdimg"  /><div id="title" runat="server">
             配件展示</div></td>
         </tr>
   <tr>
@@ -141,10 +141,17 @@ a:active {
 
 </script>
 <!--效果html结束-->
+                                <script>
+
+                                    var aa = document.getElementsByTagName('img');
+                                    for (var i = 0; i < aa.length; i++) {
+                                        if (aa[i].getAttribute("data-tag") == null)
+                                            aa[i].setAttribute("data-tag", "img_1");
+                                    }
+</script>
 </div>
-              <div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到i贴吧" class="bshare-itieba" href="javascript:void(0);"></a><a title="分享到Facebook" class="bshare-facebook" href="javascript:void(0);"></a><a title="分享到Twitter" class="bshare-twitter" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;">
-                  </span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></td>
-          </tr>
+              </td>
+          </tr><tr><td style="background-color:white;"><div class="bdsharebuttonbox" data-tag="ppt"><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_print" data-cmd="print" title="分享到打印"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div></td></tr>
           </table> </table>   
         <br />
         <br />
@@ -158,6 +165,6 @@ a:active {
   </td>
   </tr>
 </table>
-    </form>
+    </form><script src="js/bdshare.js" charset="utf-8"></script>
 </body>
 </html>

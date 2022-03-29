@@ -12,6 +12,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Net.Mail;
 
 public partial class messages : System.Web.UI.Page
 {
@@ -111,10 +112,7 @@ public partial class messages : System.Web.UI.Page
     }
     protected void btnnew_Click(object sender, EventArgs e)
     {
-        dvmess.Visible = true;
-        txtccontent.Attributes.Add("Value", "报修请直接联系我们，请不要在此输入！");
-        txtccontent.Attributes.Add("OnFocus", "if(this.value=='报修请直接联系我们，请不要在此输入！'){this.value=''}");
-        txtccontent.Attributes.Add("OnBlur", "if(this.value==''){this.value='报修请直接联系我们，请不要在此输入！'}");
+        dvmess.Visible = true;      
  
     }
     private void bind()
@@ -182,7 +180,24 @@ public partial class messages : System.Web.UI.Page
           SqlDataReader rdr = cmd.ExecuteReader();
           if (rdr.Read())
           {
-              cnn.Close();
+              if (rdr["gflag"].ToString() == "True")
+              {
+                  cnn.Close();
+                  Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('你已被管理员禁言！');window.location.href=window.location.href; </script>");
+              }
+              else
+              {
+                  if (rdr["mailv"].ToString() == "False")
+                  {
+                      mailv(mail, name);
+                  }
+                  else
+                  {
+                      //已经通过验证，发送通知邮件
+                      mailno();
+                      cnn.Close();
+                  }
+              }
           }
           else
           {
@@ -192,6 +207,8 @@ public partial class messages : System.Web.UI.Page
               SqlCommand cmd2 = new SqlCommand(st2, cnn);
               cmd2.ExecuteNonQuery();
               cnn.Close();
+              //发送验证邮件
+              mailv(mail, name);
           }
       }
 
@@ -222,6 +239,63 @@ public partial class messages : System.Web.UI.Page
       {
           cnn.Close();         
       }
+  }
+  //发送验证邮件
+  protected void mailv(string mailto, string usr)
+  {
+      MailAddress MessageFrom = new MailAddress("admin@lijun0772.com"); //发件人邮箱地址
+      string mailtoe = Encryption.Decode(mailto);
+      string MessageTo = mailtoe;//收件人邮箱地址 
+      string MessageSubject = "[丽军数码]验证邮箱地址"; //邮件主题 
+      string user = Encryption.Auth(usr);//MD5
+      string mail = Encryption.Auth(mailto);//MD5
+      string url = "http://lijun0772.com/mailv.aspx?key=" + Encryption.Auth("黑我网站速度死！" + user) + mail;
+      string MessageBody = "<p>" + Encryption.Decode(usr) + "，你好：<br/>请点击以下链接完成验证：<br/><a href=\"" + url + "\" target=\"_blank\">验证链接</a><br />如果你没有在本站评论或留言，请不要理会。</p><p align=\"right\">丽军数码</p>"; //邮件内容
+      Send(MessageFrom, MessageTo, MessageSubject, MessageBody);
+  }
+  //发送通知邮件
+  protected void mailno()
+  {
+      MailAddress MessageFrom = new MailAddress("admin@lijun0772.com"); //发件人邮箱地址 
+      string MessageTo = "237549738@qq.com";//收件人邮箱地址 
+      string MessageSubject = "[丽军数码]有人发表了新留言！"; //邮件主题 
+      string MessageBody = "<p>http://lijun0772.com/</p>"; //邮件内容
+      WebHelp.Send(MessageFrom, MessageTo, MessageSubject, MessageBody);
+  }
+  //发送邮件函数
+  public bool Send(MailAddress MessageFrom, string MessageTo, string MessageSubject, string MessageBody)
+  {
+      MailMessage message = new MailMessage();
+
+      // if (FileUpload1.PostedFile.FileName != "")
+      // {
+      // Attachment att = new Attachment("d://test.txt");//发送附件的内容
+      //    message.Attachments.Add(att);
+      // }
+
+      message.From = MessageFrom;
+      message.To.Add(MessageTo); //收件人邮箱地址可以是多个以实现群发 
+      message.Subject = MessageSubject;
+      message.Body = MessageBody;
+      //message.Attachments.Add(objMailAttachment);
+      message.IsBodyHtml = true; //是否为html格式 
+      //message.Priority = MailPriority.High; //发送邮件的优先等级 
+
+      SmtpClient sc = new SmtpClient();
+      sc.Host = "smtp.hichina.com"; //指定发送邮件的服务器地址或IP 
+      sc.Port = 25; //指定发送邮件端口 
+      sc.Credentials = new System.Net.NetworkCredential("admin@lijun0772.com", "mADDtN34"); //指定登录服务器的用户名和密码(发件人的邮箱登陆密码)
+
+      try
+      {
+          sc.Send(message); //发送邮件 
+      }
+      catch
+      {
+          return false;
+      }
+      return true;
+
   }
       }
  
