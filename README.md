@@ -4,9 +4,7 @@ lijun0772_V1
 
 ### Without database
 
-Any questions plz send to [sunplace@live.cn](mailto:sunplace@live.cn).
-
-my blog:[卡库伊2.0](http://kkii.org).
+blog:[卡库伊2.0](http://kkii.org).
 
 [ChangeLog](ChangeLog.md)
 
@@ -18,14 +16,12 @@ my blog:[卡库伊2.0](http://kkii.org).
 
 ## Info
 
-Verison 1.5.13
+![verison](https://img.shields.io/badge/verison-1.5.13-blue)
 
-Build:2014.6.24 23:50
+![build](https://img.shields.io/badge/build-2014.6.24%2023%3A50-lightgrey)
 
-.NET 3.5
+![.NET](https://img.shields.io/badge/.NET-3.5-brightgreen)
 
-MS-SQL Server 2008 r2
+![MS-SQL Server](https://img.shields.io/badge/MS--SQL-2008%20r2-orange)
 
-Copyright By Sunplace,2014
-
-![sunplace](http://kkii.org/copyright_by_sunplace.png)
+![copyright](https://img.shields.io/badge/copyright-Sunplace%2C2014-blue)
