@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="style.css" />
 <title>丽军数码-网上留言</title>
- <script src="js/jquery.js"  type="text/javascript"></script></head>
+ <script src="js/jquery.js"  type="text/javascript"></script><script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <style type="text/css">
         
 #title{
@@ -82,7 +82,7 @@ a:active {
     <td   align="center" valign="middle" class="topbar"><a href="show.aspx" class="ht">配件展示</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="error.aspx" class="ht">常见故障</a></td>
     <td   align="center" valign="middle" class="topbar"><a href="fix.aspx" class="ht">报修流程</a></td>
-    <td  align="center" valign="middle" class="topbar"><a href="bbs.aspx" class="ht">维修论坛</a></td>
+    <td  align="center" valign="middle" class="topbar"><a href="bbs.aspx" class="ht">业界新闻</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="shop.aspx" class="ht">网店介绍</a></td>
    <td  align="center" valign="middle" class="topbar"><a href="staff.aspx" class="ht">人才招聘</a></td>
     <td  align="center" valign="middle" class="ht" bgcolor="#E96800">网上留言</td>
@@ -311,34 +311,30 @@ a:active {
                   <HeaderStyle BackColor="Tan" Font-Bold="True" />
                   <ItemTemplate>
                           <div class="style4">
-                              <asp:Label ID="Label12" runat="server" Text='<%# Eval("rowsid","{0}楼") %>'></asp:Label>
-                              <asp:Label ID="Label5" runat="server" style="color: #FF7D23;" 
-                                  Text='<%#  Encryption.Decode(Eval("gname")) %>'></asp:Label>
-                              <br />
-                              <br />
-                              &nbsp;&nbsp;
-                              <asp:Label ID="Label6" runat="server" Text='<%#Encryption.Decode(Eval("pcontent"))%>'></asp:Label>
-                              <br />
-                              <br />
-                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="style2">留言时间：</span>
-                              <asp:Label ID="Label7" runat="server" 
-                                  Text='<%# Eval("pposttime","{0:yyyy-M-d HH:mm:ss}") %>'></asp:Label>
-                              <br />
-                              <br />
-                              &nbsp;&nbsp;
-                              <asp:Label ID="Label9" runat="server" style="color: #FF7D23" Text="欧阳师傅" 
-                                  Visible='<%# Eval("state") %>'></asp:Label>
-                              &nbsp;<asp:Label ID="Label10" runat="server" Text="回复于" 
-                                  Visible='<%# Eval("state") %>'></asp:Label>
-                              &nbsp;<asp:Label ID="Label11" runat="server" 
-                                  Text='<%# Eval("retime","{0:yyyy-M-d HH:mm:ss}：") %>' 
-                                  Visible='<%# Eval("state") %>'></asp:Label>
-                              <br />
-                              <br />
-                              &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="Label8" runat="server" Text='<%# Eval("reply") %>'></asp:Label>
-                              <br />
-                              <br />
-                          </div>
+                             <div style="padding:10px;"><div style="float:left;font-size: 11pt;"><asp:Label ID="floor"   runat="server" Text='<%#Eval("rowsid","{0}楼")%>' 
+                              style="color: #FF7D23"></asp:Label><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                         <div style="position:relative;">
+                             <asp:Label 
+                              ID="commentLabel" runat="server" Text='<%#Encryption.Decode(Eval("gname") )%>' 
+                              style="color: #666666; font-size: 11pt;"  />                         
+                          <br /><asp:Label ID="cposttimeLabel" runat="server" 
+                            Text='<%# Eval("pposttime","{0:yyyy年M月d日}") %>' 
+                              style="color: #999999; font-size: small;"  /><br />                               
+                              <asp:Label ID="Label6" runat="server" Text='<%#Encryption.Decode(Eval("pcontent")) %>' ></asp:Label><br/><br/>
+                              
+                              
+                              <asp:Table ID="Table1" runat="server"  Visible='<%# Eval("state") %>'><asp:TableRow>
+                             <asp:TableCell> 
+                                <div id="repanl" runat="server" style="background-color:#fff3e1; padding:10px; border-bottom:solid 1px Orange; border-right:solid 1px Orange; word-wrap:break-word; width:900px;">
+                                  <asp:Label ID="Label7" runat="server" Text="回复：" style="color: #808080"></asp:Label><asp:Label ID="Label5" runat="server" Text='<%#Eval("reply") %>' ></asp:Label></div>
+                          </div> 
+     </asp:TableCell>
+                             </asp:TableRow>
+   
+                             </asp:Table>
+                             
+                             
+                             
                         
                   </ItemTemplate>
               </asp:DataList>

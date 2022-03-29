@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="style.css" />
-<title>丽军数码-维修论坛</title>
+<title>丽军数码-业界新闻</title>
          <style type="text/css">
             #title{
 	line-height:5pt;
@@ -46,12 +46,7 @@ a:active {
             }
             #reply
             { 
-            border: 1px outset red;
-                position:fixed; 
-                z-index:999;
-                 bottom:0px;
-                 background-color:White;
-                 right:0px;
+          
                 }
  .pager{ width:100%;  margin:10px; line-height:20px; display:block;}
 .pager span { border:1px solid #F59223; margin: 0 5px; padding: 1px 6px; float:left;background-color:#F59223;color:White;}
@@ -65,19 +60,15 @@ a:active {
     background-color:White; 
 }
 .pager a:hover { border:1 solid #F59223; background-color:#F59223; color:White; margin: 0 5px; padding: 1px 6px; }
-            .style3
-            {
-                text-align: left;padding:0 0 40px 40px;
-                 
-            }
             .style5
             {
                 background-color: #FFFFEC;
             }
+            .tableo{border-collapse:collapse;table-layout:fixed;word-wrap:break-word;}
         </style>
 
         
-</head>
+<script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <div id="apDiv2" class="toplnk"><uc1:gotop ID="gotop1" runat="server" /></div>
 <script language="JavaScript" type="text/javascript">
@@ -100,7 +91,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
     <td align="center" valign="middle" class="topbar"><a href="show.aspx"  class="ht">配件展示</a></td>
     <td align="center" valign="middle" class="topbar"><a href="error.aspx"  class="ht">常见故障</a></td>
     <td align="center" valign="middle" class="topbar"><a href="fix.aspx"  class="ht">报修流程</a></td>
-    <td  align="center" valign="middle" class="ht" bgcolor="#E96800">维修论坛</td>
+    <td  align="center" valign="middle" class="ht" bgcolor="#E96800">业界新闻</td>
     <td  align="center" valign="middle" class="topbar"><a href="shop.aspx" class="ht">网店介绍</a></td>
    <td  align="center" valign="middle" class="topbar"> <a href="staff.aspx" class="ht">人才招聘</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="messages.aspx" class="ht">网上留言</a></td>
@@ -115,7 +106,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
 <table width="100%" border="0" cellspacing="0" cellpadding="12">
       <tr>
         <td colspan="9" align="middle" valign="middle"><a href="bbs.aspx" title="论坛首页"><img src="imgs/class/img5.gif" width="200" height="194" border="0" /></a>          <div id="title" runat="server">
-            维修论坛</div></td>
+            业界新闻</div></td>
         </tr>
         <tr>
             <td align="right" bgcolor="#FFFFFF" style="background-color: #FFFFEC"><asp:ImageButton ID="btnBack" runat="server" ImageUrl="~/imgs/back.gif" Height="32" Width="32" title="返回" OnClick="btnBack_click"/></td>
@@ -137,9 +128,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                     <ItemTemplate>
                         &nbsp;<p style="text-align:right"><asp:Label ID="artidLabel" runat="server" Text='<%# Eval("artid") %>' 
                             Visible="False" style="text-align: right" />
-                            <asp:ImageButton ID="btnRly" ToolTip="回复本帖" 
-                                runat="server" ImageUrl="~/imgs/rebtn.gif" onclick="btnRly_Click" 
-                               /></p>
+                            </p>
                         <br />
                         <p align="center"><asp:Label ID="artitleLabel" runat="server" Text='<%# Eval("artitle") %>' 
                             Font-Bold="True" style="font-size: large" /></p>
@@ -171,13 +160,15 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                         <asp:Label ID="Label4" runat="server" ForeColor="#FF7D23" Text=""></asp:Label></td>
           </tr>
           <tr>
-            <td colspan="2" align="left" class="style5"><div id="commpo" runat="server">
-               <div id="reply" runat="server" visible="False" class="style3"><p style="text-align:right">
-                   <asp:ImageButton ID="ibtnclose" runat="server" ImageUrl="imgs/close.gif"  
-                       ToolTip="关闭" onclick="ibtnclose_Click" />&nbsp;&nbsp;
-                   </p>
-                   <div>
-                    昵称： <asp:TextBox ID="txtname" runat="server" BackColor="Silver" CssClass="txt3" MaxLength="20"></asp:TextBox>
+              
+            <td colspan="2" align="center" class="style5" style="text-align:right;"><div style="width:95%;">
+                <asp:HyperLink ID="HyperLink1" runat="server">修改</asp:HyperLink>&nbsp;<asp:HyperLink ID="HyperLink2" runat="server">删除</asp:HyperLink></div></td>
+          </tr>
+          <tr>
+            <td colspan="2" align="left" class="style5"><div id="reply" runat="server">
+                   
+                    昵称： <asp:TextBox ID="txtname" runat="server" BackColor="White" CssClass="txt3" 
+                           MaxLength="20" BorderColor="#F78B43" BorderStyle="Solid" BorderWidth="1px"></asp:TextBox>
                 <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" 
                     ControlToValidate="txtname" CssClass="aptips" 
                     ErrorMessage="昵称不符合规定！" 
@@ -188,8 +179,9 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                        <br />
                 
                 <br />                
-                   邮箱：               <asp:TextBox ID="txtmail" runat="server" BackColor="Silver" CssClass="txt3" 
-                    MaxLength="20"></asp:TextBox>
+                   邮箱：               <asp:TextBox ID="txtmail" runat="server" 
+                           BackColor="White" CssClass="txt3" 
+                    MaxLength="20" BorderColor="#F78B43" BorderStyle="Solid" BorderWidth="1px"></asp:TextBox>
                    
                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
                     ControlToValidate="txtmail" CssClass="aptips" ErrorMessage="邮箱格式不正确！" 
@@ -198,29 +190,19 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                 <br class="txt3" />
                    输入回复：
                   <asp:Label ID="lbr1" runat="server" Text="正在回复" Visible="False"></asp:Label>
-                   <asp:DropDownList ID="ddlfloors" runat="server" CssClass="txt3" BackColor="Silver"
-                          DataTextField="fid" DataValueField="comid"
-                       DataSourceID="SqlDataSource1" Visible="False"  Width="67px">
-                   </asp:DropDownList>&nbsp;<asp:Label ID="lbr2" runat="server" Text="楼的评论" 
+                       <asp:Label ID="lbre" runat="server" style="color: #FF7D23" Text=""></asp:Label>
+                       <asp:Label ID="lbr2" runat="server" Text="的评论" 
                        Visible="False"></asp:Label>                      
-                   </div>
-                   <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
-                    ConnectionString="<%$ ConnectionStrings:lijunConnectionString %>"
-                    
-                       SelectCommand="SELECT [fid],[comid] FROM [Comment] WHERE ([aid] = @aid)" 
-                       ProviderName="System.Data.SqlClient">
-                       <SelectParameters>
-                           <asp:QueryStringParameter Name="aid" QueryStringField="id" Type="Int32" />
-                       </SelectParameters>
-                </asp:SqlDataSource>
-                   <div>
+                  
+                   
                    <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" 
                        ControlToValidate="txtcomment" CssClass="aptips" ErrorMessage="字数不符合要求！" 
                        ValidationExpression="^[\s\S][\d\D]{3,139}$" Display="Dynamic"></asp:RegularExpressionValidator>
                    <br />
                 <br />
-  <asp:TextBox ID="txtcomment" runat="server" BackColor="Silver" CssClass="txt3" 
-                    Height="150px" TextMode="MultiLine" Width="603px" MaxLength="3">请不要输入包含个人隐私（账号密码等）的内容，谢谢！</asp:TextBox>
+  <asp:TextBox ID="txtcomment" runat="server" BackColor="White" CssClass="txt3" 
+                    Height="150px" TextMode="MultiLine" Width="603px" MaxLength="3" 
+                           BorderColor="#F78B43" BorderStyle="Solid" BorderWidth="1px">请不要输入包含个人隐私（账号密码等）的内容，谢谢！</asp:TextBox>
                 <br />
                 <br />
                  
@@ -232,45 +214,69 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                     BorderColor="#FF7D23" BorderStyle="Solid" class="txt3" Font-Bold="True" 
                     ForeColor="White" OnClick="btnReset_Click" Text="取消" Width="60px" 
                        UseSubmitBehavior="False" />
-                   </div>
-                </div>  
+                
+                                    
+                </div><br /><br /><div id="commpo" runat="server">                 
                 <asp:Label ID="Label5" runat="server" Text="评论列表："></asp:Label>
                 <br />
                 <br />
-                <asp:DataList ID="dlcom" runat="server" BackColor="LightGoldenrodYellow" 
-                    BorderColor="Tan" BorderWidth="1px" CellPadding="2" 
-                    ForeColor="Black" Width="100%" GridLines="Both" style="font-size: medium">
+                <div id="comdiv" runat="server" style="overflow:scroll; height:600px; overflow-x:hidden;">
+                    <asp:DataList ID="dlcom" runat="server" BackColor="LightGoldenrodYellow" 
+                    BorderColor="Tan" BorderWidth="1px" CellPadding="20" 
+                    ForeColor="Black" Width="100%" GridLines="Both" style="font-size: medium" 
+                        CellSpacing="20">
                     <FooterStyle BackColor="Tan" />
                     <AlternatingItemStyle BackColor="PaleGoldenrod" />
                     <SelectedItemStyle BackColor="DarkSlateBlue" ForeColor="GhostWhite" />
                     <HeaderStyle BackColor="Tan" Font-Bold="True" />
                     <ItemTemplate>
-                          <asp:Label ID="floor"   runat="server" Text='<%#Eval("fid","{0}楼")%>'></asp:Label>
-                         &nbsp;<asp:Label 
+                          <div style="padding:10px;"><div style="float:left;font-size: 11pt;"><asp:Label ID="floor"   runat="server" Text='<%#Eval("fid","{0}楼")%>' 
+                              style="color: #FF7D23"></asp:Label><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                         <div style="position:relative;">
+                             <asp:Label 
                               ID="commentLabel" runat="server" Text='<%#Encryption.Decode(Eval("gname") )%>' 
-                              style="color: #FF7D23"  />
-                          <asp:Label ID="Label7" runat="server"  Text="回复" 
-                              Visible='<%# Eval("state") %>'></asp:Label>
-                          <asp:Label ID="Label2" runat="server"  Text='<%# Eval("rfid","{0}楼") %>' ></asp:Label>
-                          &nbsp;
-                         <br />
-                          &nbsp;<br />
-                          &nbsp;&nbsp;&nbsp; <asp:Label ID="Label6" runat="server" Text='<%#Encryption.Decode(Eval("comment")) %>' ></asp:Label>
-                          <br />
-                        <br /><br />
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;时间:<asp:Label ID="cposttimeLabel" runat="server" 
-                            Text='<%# Eval("cposttime","{0:yyyy-M-d HH:mm:ss}") %>'  /> 
-                          <p style="text-align:right">
+                              style="color: #666666; font-size: 11pt;"  />
+                          <asp:Image ID="Image1" runat="server"  ImageUrl="imgs/v.png" Visible='<%#Eval("ismgr")%>' ToolTip="站点管理员"/>
+                          <br /><asp:Label ID="cposttimeLabel" runat="server" 
+                            Text='<%# Eval("cposttime","{0:yyyy年M月d日}") %>' 
+                              style="color: #999999; font-size: small;"  /><br />                            
+                             <asp:Label ID="Label7" runat="server" Text="回复" 
+                                 Visible='<%# Eval("state") %>'></asp:Label><samp style="font-family:Arial; color:#FF7D23;"><asp:Label ID="Label2" runat="server"
+                                     Text="@"  Visible='<%# Eval("state") %>' ></asp:Label><asp:Label ID="Label8" runat="server"
+                                         Text='<%#Encryption.Decode(Eval("rname")) %>' Visible='<%# Eval("state") %>'></asp:Label></samp><asp:Label
+                                             ID="Label9" runat="server" Text=":" Visible='<%# Eval("state") %>'></asp:Label>
+                              <asp:Label ID="Label6" runat="server" Text='<%#Encryption.Decode(Eval("comment")) %>' ></asp:Label><br />
+                             <br /><div style="margin-left:36pt;"><asp:Table ID="Table1" runat="server" BorderColor="#FF9900" BorderStyle="Solid" 
+                                 BorderWidth="1px" BackColor="#FFFFCC" CellPadding="20" CellSpacing="20" 
+                                 HorizontalAlign="Left" Visible='<%# Eval("state") %>' Width="60%" CssClass="tableo"><asp:TableRow>
+                             <asp:TableCell> 
+                                 <samp style="font-family:Arial; color:#FF7D23;"><asp:Label ID="Label11" runat="server"
+                                     Text="@"  Visible='<%# Eval("state") %>' ></asp:Label><asp:Label ID="Label12" runat="server"
+                                         Text='<%#Encryption.Decode(Eval("rname")) %>' Visible='<%# Eval("state") %>'></asp:Label></samp><asp:Label
+                                             ID="Label13" runat="server" Text=":" Visible='<%# Eval("state") %>'></asp:Label>
+                                 <asp:Label ID="Label10" runat="server" Text='<%#Encryption.Decode(Eval("rcomment")) %>' Visible='<%# Eval("state") %>'></asp:Label>
+</asp:TableCell>
+     
+                             </asp:TableRow>
+   
+                             </asp:Table></div>
+                            
+                            
+                              </div>
+                         
+                                              
+                          <div style="text-align:right"> <asp:Panel ID="plbtn" runat="server" Visible='<%# ((bool)Eval("comon") ? false : true)%>'>
+                           
                               <asp:Button ID="btnR" runat="server" BackColor="#FF7D23" 
                     BorderColor="#FF7D23" BorderStyle="Solid" class="txt3" Font-Bold="True" 
                     ForeColor="White" Text="回复" Width="60px" onclick="btnR_Click" 
                                   CommandArgument='<%# Eval("comid") %>' Visible='<%# Eval("cflag") %>'  />
-                              &nbsp;&nbsp;</p>                 
+                              &nbsp;&nbsp;  </asp:Panel></div></div>                 
                     </ItemTemplate>
                 </asp:DataList>
                 <br />
                 <br />
-                            </div></td>
+                            </div></div></td>
           </tr>
           <tr>
             <td colspan="2" align="left">

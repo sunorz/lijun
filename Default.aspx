@@ -11,15 +11,11 @@
 <link rel="stylesheet" type="text/css" href="style.css" />
 <title>丽军数码-柳州相机维修中心</title>
 <style type="text/css">
-body {
-
-	margin:0; padding:0;
-}
 #pic{ width:100%;} 
-#words{ position:absolute;
-        top: 0px;
+#words{ position:absolute; 
 left:50%;   
-margin-left:-517px;  /*设置为宽度的一半*/   
+margin-left:-517px;  /*设置为宽度的一半*/
+top:20px;
   }
 
 a:link {text-decoration: none;
@@ -36,12 +32,12 @@ a:active {
 
     .style2
     {
-        font-size: 30pt;
+        font-size: 1.5em;
         font-family: 宋体, Arial, Helvetica, sans-serif;
         color: #FFFFFF; letter-spacing:0.3em;
     }
     </style>
-</head>
+<script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <script language="JavaScript" type="text/javascript">
 var lang = navigator.language || navigator.userLanguage;
@@ -50,15 +46,15 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
 </script>
 
 <form id="form1" runat="server">
-<div id="con"><img id="pic" src="imgs/class/bgimg.jpg"/></div>
 <div id="words">
 <table align="center" width="1035px" border="0" cellspacing="0" cellpadding="0" style="height:500px;text-align: center; " >
   <tr>
-    <td colspan="8">
-    <img src="imgs/class/logo.gif"><br /><br />
+    <td colspan="8"><div style="float:left; padding:20px;">
+        <asp:Image ID="Image3" runat="server" />
+        </div>
         <span class="style2">丽军数码摄影器材维修中心</span><br />
         <br />
-        <div id="intro" runat="server" style="width:70%; color:White; font-size:medium; line-height:2em; text-align:left;margin:0px auto;"></div>
+        <div id="intro" runat="server" style="color:White; font-size:medium; line-height:2em; text-align:left;"></div>
          <br />
         <asp:ImageButton ID="ImageButton1" runat="server"   
             ImageUrl="~/imgs/class/more.gif" onclick="ImageButton1_Click" 
@@ -72,7 +68,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
     <td   align="center" valign="middle" class="topbar"><a href="show.aspx" class="ht">配件展示</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="error.aspx" class="ht">常见故障</a></td>
     <td   align="center" valign="middle" class="topbar"><a href="fix.aspx" class="ht">报修流程</a></td>
-     <td align="center" valign="middle" class="topbar"><a href="bbs.aspx" class="ht">维修论坛</a></td>
+     <td align="center" valign="middle" class="topbar"><a href="bbs.aspx" class="ht">业界新闻</a></td>
      <td  align="center" valign="middle" class="topbar"><a href="shop.aspx" class="ht">网店介绍</a></td>
    <td  align="center" valign="middle" class="topbar"> <a href="staff.aspx" class="ht">人才招聘</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="messages.aspx" class="ht">网上留言</a></td>
@@ -81,10 +77,18 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
 </table>
 <br />
     <div runat="server" 
-        style="text-align: left; font-size: small; color: #FFFFFF; line-height:5px;">友情链接：
+        style="text-align: left; font-size: small; color: #FFFFFF; line-height:5px; width:700px; float:left;">友情链接：
         <a class="foot" href="http://www.lzsm168.com/" target="_blank">汇达数码</a>&nbsp; 
         <a class="foot" href="messages.aspx" target="_blank">[交换链接]</a>&nbsp;<br />
      <p><asp:Label ID="Label3" runat="server" Text="" ></asp:Label></p>
-      <p><a href="adminlogin.aspx" class="foot">登录后台</a>&nbsp;&nbsp;<a href="http://jsunplace.tumblr.com/" class="foot">作者博客</a>&nbsp;&nbsp;<a href="about.html" class="foot">关于本站</a></p></div></div> </form>
+      <p><a href="adminlogin.aspx" class="foot">登录后台</a>&nbsp;&nbsp;<a href="http://jsunplace.tumblr.com/" class="foot">作者博客</a>&nbsp;&nbsp;<a href="about.html" class="foot">关于本站</a>&nbsp;&nbsp;<script type="text/javascript">                              var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1253756923'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1253756923%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script></p></div>
+      
+      <div style="float:right; width:250px;">
+          <asp:Image ID="Image1" runat="server" AlternateText="微信" BorderStyle="None" 
+              Height="100px" ToolTip="微信" Width="100px"  ImageUrl="~/imgs/class/qrcodewx.jpg" />&nbsp;&nbsp;<asp:Image 
+              ID="Image2" runat="server" AlternateText="QQ" BorderStyle="None" 
+              Height="100px" ImageUrl="~/imgs/class/qrcodeqq.jpg" ToolTip="QQ" 
+              Width="100px" /></div></div> </form>
+              
 </body>
 </html>

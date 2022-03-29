@@ -14,10 +14,13 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Drawing;
+using System.Net;
+
 public partial class photo : System.Web.UI.Page
 {
      protected void Page_Load(object sender, EventArgs e)
     {
+        Button4.Attributes.Add("onclick", " if(!confirm('确认删除选中的图片吗！')) return false;");
         if (Session["issuper"] == null || Session["ispwd"] == null)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
@@ -78,7 +81,7 @@ public partial class photo : System.Web.UI.Page
         string filepath = fuimg.PostedFile.FileName;
         string Extend = filepath.Substring(filepath.LastIndexOf(".") + 1);//获取格式名
         DateTime dt= TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "China Standard Time");//转东八区
-        string name = "album" + alid.ToString() + "_" +dt.ToString("yyyyMMddHHmmss")+ "." + Extend;//重命名
+        string name = dt.ToString("yyyyMMddHHmmss")+ "." + Extend;//重命名
         if (Extend == "jpg" || Extend == "gif" || Extend == "bmp" || Extend == "png" || Extend == "JPG" || Extend == "GIF" || Extend == "PNG" || Extend == "BMP")
         {
             fuimg.SaveAs(path + "\\" + name);
@@ -103,7 +106,18 @@ public partial class photo : System.Web.UI.Page
         string webFilePath = Server.MapPath("imgs/bbs/" + fileName);
         string webFilePath_s = Server.MapPath("imgs/bbs/smaller/" + fileName);
         System.Drawing.Image image = System.Drawing.Image.FromFile(webFilePath);
-        System.Drawing.Image img = image.GetThumbnailImage(image.Width * height / image.Height, height, null, IntPtr.Zero);
+        int w, h;
+        if (image.Width > image.Height)
+        {
+            w = 100;
+            h = 100 * image.Height / image.Width;
+        }
+        else
+        {
+            h = 100;
+            w = 100 * image.Width / image.Height;
+        }
+        System.Drawing.Image img = image.GetThumbnailImage(w, h, null, IntPtr.Zero);
         img.Save(webFilePath_s);
         img.Dispose();
         image.Dispose();
@@ -127,7 +141,12 @@ public partial class photo : System.Web.UI.Page
         {
             string filepath1 = reader["pourl"].ToString();
             string filepath2 = reader["psmurl"].ToString();
-            File.Delete(Server.MapPath(filepath1));
+            //判断是否为网络图片
+            int start = filepath1.IndexOf("http");
+            if (start == -1)
+            {
+                File.Delete(Server.MapPath(filepath1));
+            }
             File.Delete(Server.MapPath(filepath2));
         }
               conur.Close();
@@ -203,4 +222,103 @@ public partial class photo : System.Web.UI.Page
             sNewStr = sNewStr + "..."; return sNewStr;
         }
     }
+    //删除选中
+    protected void deletemore(object sender, EventArgs e)
+    {
+        for (int i = 0; i < this.gvphoto.Rows.Count; i++)
+        {
+            CheckBox ckb = (CheckBox)this.gvphoto.Rows[i].FindControl("CheckBox1");
+            if (ckb.Checked == true)
+            {
+                int id = Convert.ToInt32(gvphoto.DataKeys[i].Value);
+                string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+                SqlConnection conur = new SqlConnection(connectionString);
+                string delur = "delete from Photo where poid='" + @id + "'";
+                SqlCommand cmdu = new SqlCommand(delur, conur);
+                conur.Open();
+                cmdu.ExecuteNonQuery();
+                conur.Close();
+                delpic(id);//删除图片
+
+            }
+
+        }
+        gvphoto.DataBind();
+    }
+    protected void btnlink_Click(object sender, EventArgs e)
+    {
+        string alid = ddlclass.SelectedValue;
+        string imgname = tbname.Text.Trim();
+        string imgupder = tbmkr.Text.Trim();
+        if (imgname == "")
+        {
+            imgname = "未命名";
+        }
+        if (imgupder == "")
+        {
+            imgupder = "丽军数码";
+        }        
+        string filepath = tblink.Text.Trim();
+        string Extend = filepath.Substring(filepath.LastIndexOf(".") + 1);//获取格式名
+        DateTime dt = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "China Standard Time");//转东八区
+        string name = dt.ToString("yyyyMMddHHmmss") + "." + Extend;//重命名
+        if (Extend == "jpg" || Extend == "gif" || Extend == "bmp" || Extend == "png" || Extend == "JPG" || Extend == "GIF" || Extend == "PNG" || Extend == "BMP"||Extend=="jpeg")
+        {
+            string filepath1 = filepath;
+            string filepath2 = "~/imgs/bbs/smaller/" + name;
+         
+            
+            //生成缩略图
+            string filepath_old = Server.MapPath(filepath2);           
+            //==============开始===============
+            WebClient myWebClient = new WebClient();
+            myWebClient.Headers.Add(HttpRequestHeader.Referer, "/");
+            //下载为临时文件
+            string tempdir = MapPath("~/imgs/bbs/temp."+Extend);
+            try
+            {
+                myWebClient.DownloadFile(filepath, tempdir);
+            }
+            catch(Exception ex)
+            {
+                aptips.InnerText = ex.Message;
+                return;
+            }
+            if (File.Exists(tempdir))
+            {
+                System.Drawing.Image originalImage = System.Drawing.Image.FromFile(tempdir);
+            int w, h;
+            if (originalImage.Width > originalImage.Height)
+            {
+                w = 100;
+                h = 100 * originalImage.Height / originalImage.Width;
+            }
+            else
+            {
+                h = 100;
+                w = 100 * originalImage.Width / originalImage.Height;
+            }
+            System.Drawing.Image thumbImage = originalImage.GetThumbnailImage(w, h, null, IntPtr.Zero);            
+            thumbImage.Save(MapPath(filepath2), System.Drawing.Imaging.ImageFormat.Jpeg);
+            originalImage.Dispose();
+            File.Delete(tempdir);
+            string sql = "insert into Photo(poname,potor,pourl,psmurl,potime,alid) values('" + @imgname + "','" + @imgupder + "','" + @filepath1 + "','" + @filepath2 + "','" + @dt + "','" + @alid + "')";
+            DBHelp.cn(sql).ExecuteNonQuery();
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('上传成功！');window.location.href=window.location.href; </script>");
+            aptips.InnerText = "";
+                      }
+            //============结束=================
+            
+           
+           
+        }
+        else
+        {
+            aptips.InnerText = "格式不支持！";
+        }
+    }  
+
+
+    
+    
 }

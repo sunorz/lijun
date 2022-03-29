@@ -12,6 +12,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Text;
 
 public partial class show : System.Web.UI.Page
 {
@@ -37,38 +38,40 @@ public partial class show : System.Web.UI.Page
             this.Label3.Text = Server.HtmlDecode(rdr["content"].ToString());
             cnn.Close();
         }
-    }
-
-    //缩短
-    public string SubStr(object caption, int nLeng)
+    }    
+    protected string getItems()
     {
-        totalpage();
-        string sString = caption.ToString().Trim();
-        if (sString.Length <= nLeng)
+       //获取数据库图片
+        StringBuilder sb = new StringBuilder();
+        string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+        SqlConnection cnn = new SqlConnection(connectionString);
+        string st = "select * from Photo where alid=3 order by poid desc";
+        cnn.Open();
+        SqlDataAdapter adp = new SqlDataAdapter(st, cnn);
+        DataSet ds = new DataSet();
+        adp.Fill(ds, "honour");
+        DataTable dt = ds.Tables["honour"];
+        int rowcount = dt.Rows.Count;
+        if (rowcount == 0)
         {
-            return sString;
+            sb.Append("<li><img src=\"imgs/nopic.jpg\" width=\"588\" height=\"425\" /><br />暂时没有图片~</li>  ");  
         }
         else
         {
-            string sNewStr = sString.Substring(0, nLeng);
-            sNewStr = sNewStr + "..."; return sNewStr;
-        }
-    }
-    protected void totalpage()
-    {
-        string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
-        SqlConnection cnn = new SqlConnection(connectionString);
-        string st = "select count(*) as total from Photo where alid=3";
-        cnn.Open();
-        SqlCommand cmd = new SqlCommand(st, cnn);
-        SqlDataReader rdr = cmd.ExecuteReader();
-        if (rdr.Read())
-        {
-            Label totl = fvphoto.FindControl("lbtotal") as Label;
 
-            totl.Text = rdr["total"].ToString();
-           cnn.Close();
+            for (int i = 0; i < rowcount; i++)
+            {
+                string name = dt.Rows[i]["poname"].ToString();
+                string pourl = dt.Rows[i]["pourl"].ToString().Replace("~/imgs", "imgs");
+                sb.Append("<li><img src=\"" + pourl + "\" width=\"588\" height=\"425\" /><br />" + name + "</li>  ");
+            }
+
+
+            cnn.Close();
         }
+
+        return sb.ToString();
+
     }
 
 }

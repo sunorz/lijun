@@ -4,7 +4,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="adminsty.css" />
-<title>文章管理</title></head>
+<title>文章管理</title>
+<script src="http://code.jquery.com/jquery-1.2.1.min.js" type="text/javascript"></script>
+ <script type="text/javascript">
+     $(function() {
+         //全选 
+         $("#btn1").click(function() {
+             $("input[name$='CheckBox1']").attr("checked", "true");
+         })
+         //取消全选 
+         $("#btn2").click(function() {
+             $("input[name$='CheckBox1']").removeAttr("checked");
+         })
+     });
+    </script><script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <script language="JavaScript" type="text/javascript">
     var lang = navigator.language || navigator.userLanguage;
@@ -24,7 +37,7 @@
     <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="show.aspx" class="ht" target="_blank">配件展示</a></td>
     <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="error.aspx" class="ht" target="_blank">常见故障</a></td>
     <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="fix.aspx" class="ht" target="_blank">报修流程</a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="bbs.aspx" class="ht" target="_blank">维修论坛</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="bbs.aspx" class="ht" target="_blank">业界新闻</a></td>
     <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="shop.aspx"  class="ht" target="_blank">网店介绍</a></td>
    <td  align="center" valign="middle" bgcolor="#ff7d23"> <a href="staff.aspx" class="ht" target="_blank">人才招聘</a></td>
     <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="messages.aspx" class="ht" target="_blank">网上留言</a></td>
@@ -68,6 +81,15 @@
                           <PagerSettings FirstPageText="第一页&nbsp;" LastPageText="最后一页" 
                               Mode="NextPreviousFirstLast" NextPageText="下一页&nbsp;" PreviousPageText="上一页&nbsp;" />
                           <Columns>
+                              <asp:TemplateField>
+                                  <ItemTemplate>
+                                      <asp:CheckBox ID="CheckBox1" runat="server" />
+                                  </ItemTemplate>
+                                  <EditItemTemplate>
+                                      <asp:CheckBox ID="CheckBox1" runat="server" />
+                                  </EditItemTemplate>
+                                  <ItemStyle HorizontalAlign="Center" />
+                              </asp:TemplateField>
                               <asp:BoundField DataField="rowsid" HeaderText="序号" ReadOnly="True" >
                               <ItemStyle HorizontalAlign="Center" Width="10%" />
                               </asp:BoundField>
@@ -125,7 +147,12 @@
                           <SelectedRowStyle BackColor="DarkSlateBlue" ForeColor="GhostWhite" />
                           <HeaderStyle BackColor="Tan" Font-Bold="True" />
                           <AlternatingRowStyle BackColor="PaleGoldenrod" />
-                      </asp:GridView>
+                      </asp:GridView><br/>
+                      <div style="width:700px; text-align:left;"><input type="button" id="btn1" value="全选">&nbsp;&nbsp;<input type="button" id="btn2" value="取消全选">&nbsp;&nbsp;<asp:Button 
+                              ID="Button4" runat="server"  
+                             
+                              Text="删除" onclick="deletemore" UseSubmitBehavior="False" />
+                      </div>
                     </td>
                 </tr>
                 <tr>

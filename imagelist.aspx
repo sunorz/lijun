@@ -5,7 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="style.css" />
-<title>丽军数码-维修论坛</title>
+<link href="lanrenzhijia.css" type="text/css" rel="stylesheet" />
+<title>丽军数码-业界新闻</title>
     <style type="text/css">
         #title{
 	line-height:5pt;
@@ -58,7 +59,7 @@ a:active {
 }
 
     </style>
-</head>
+<script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <div id="apDiv2" class="toplnk"><uc1:gotop ID="gotop1" runat="server" /></div>
 <script language="JavaScript" type="text/javascript">
@@ -82,7 +83,7 @@ a:active {
     <td align="center" valign="middle" class="topbar"><a href="show.aspx"  class="ht">配件展示</a></td>
     <td align="center" valign="middle" class="topbar"><a href="error.aspx"  class="ht">常见故障</a></td>
     <td align="center" valign="middle" class="topbar"><a href="fix.aspx"  class="ht">报修流程</a></td>
-    <td  align="center" valign="middle" class="ht" bgcolor="#E96800">维修论坛</td>
+    <td  align="center" valign="middle" class="ht" bgcolor="#E96800">业界新闻</td>
     <td  align="center" valign="middle" class="topbar"><a href="shop.aspx" class="ht">网店介绍</a></td>
    <td  align="center" valign="middle" class="topbar"> <a href="staff.aspx" class="ht">人才招聘</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="messages.aspx" class="ht">网上留言</a></td>
@@ -97,7 +98,7 @@ a:active {
       <tr>
         <td colspan="9" align="middle" valign="middle"><a href="bbs.aspx" title="论坛首页">
             <img src="imgs/class/img5.gif" width="200" height="194" 
-                border="0"  /></a><div id="title" runat="server">维修论坛</div></td>
+                border="0"  /></a><div id="title" runat="server">业界新闻</div></td>
       </tr>
   <tr bgcolor="#FFFFFF">
             <td>&nbsp;</td>
@@ -108,7 +109,7 @@ a:active {
             <td rowspan="2" align="left" valign="top">
  <asp:Label ID="Label1" runat="server" Text=""></asp:Label><p id="share" runat="server"><div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到i贴吧" class="bshare-itieba" href="javascript:void(0);"></a><a title="分享到Facebook" class="bshare-facebook" href="javascript:void(0);"></a><a title="分享到Twitter" class="bshare-twitter" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;"></span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></p>
                 
-<asp:ListView ID="ListView1" runat="server" DataKeyNames="poid" 
+<div id="content"><asp:ListView ID="ListView1" runat="server" DataKeyNames="poid" 
                     DataSourceID="SqlDataSource1" GroupItemCount="3" 
                    >
                     <EmptyItemTemplate>
@@ -123,8 +124,8 @@ a:active {
                             <td id="Td2" runat="server" width="200px" height="300px"  
                                 style="background-color:#333333;color: #FFFFFF; text-align: center; font-size:small;">
                                 <br />
-                                <asp:HyperLink ID="HyperLink2" runat="server" 
-                                    NavigateUrl='<%# Eval("pourl") %>' Target="_blank" ImageUrl='<%# Eval("psmurl") %>' CssClass="newl" Font-Size="small" BorderStyle="Solid" BorderWidth="1px" BorderColor="White">查看大图</asp:HyperLink>
+                                <asp:HyperLink ID="openimg" runat="server" 
+                                    NavigateUrl='<%# Eval("pourl") %>' Target="_blank" ImageUrl='<%# Eval("psmurl") %>' CssClass="newl" Font-Size="small" BorderStyle="Solid" BorderWidth="1px" BorderColor="White"  ToolTip='<%#Eval("poname") %>'><%#Eval("poname") %></asp:HyperLink>
                                  <br /><p style="text-align:left;">&nbsp;
                                 <span>标题:</span> 
                                 <asp:Label ID="ponameLabel" runat="server" Text='<%# SubStr(Eval("poname"),10) %>' ToolTip='<%# Eval("poname") %>'/>
@@ -141,8 +142,8 @@ a:active {
                         <AlternatingItemTemplate>
                             <td id="Td3" runat="server" style="background-color:#333333;color: #FFFFFF; text-align: center; font-size:small;"  width="200px" height="300px">
                                 <br />
-                                <asp:HyperLink ID="HyperLink1" runat="server" ImageUrl='<%# Eval("psmurl") %>'
-                                    NavigateUrl='<%# Eval("pourl") %>' Target="_blank" CssClass="newl" Font-Size="Medium" BorderStyle="Solid" BorderWidth="1px" BorderColor="White">查看大图</asp:HyperLink>
+                                <asp:HyperLink ID="openimg" runat="server" ImageUrl='<%# Eval("psmurl") %>'
+                                    NavigateUrl='<%# Eval("pourl") %>' CssClass="newl" Font-Size="Medium" BorderStyle="Solid" BorderWidth="1px" BorderColor="White" ToolTip='<%#Eval("poname") %>'><%#Eval("poname") %></asp:HyperLink>
                                <br /><p style="text-align:left;">&nbsp; 标题:
                                 <asp:Label ID="ponameLabel" runat="server" Text='<%# SubStr(Eval("poname"),10) %>' ToolTip='<%#Eval("poname") %>'></asp:Label>
                                 <br /><br />&nbsp; 作者:
@@ -201,7 +202,20 @@ a:active {
                         </GroupTemplate>
                         <SelectedItemTemplate>                           
                         </SelectedItemTemplate>
-                    </asp:ListView>
+                    </asp:ListView></div>  <script src="js/jquery.min123.js"></script>
+<script src="js/jquery.imgbox.pack.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function() {
+        $("a[id$='openimg']").imgbox({
+            'speedIn': 0,
+            'speedOut': 0,
+            'alignment': 'center',
+            'overlayShow': true,
+            'allowMultiple': false
+        });
+        
+    });
+</script>
                 <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
                     ConnectionString="<%$ ConnectionStrings:lijunConnectionString %>"
                     SelectCommand="SELECT * FROM [Photo] WHERE ([alid] = @alid) order by [poid] desc">
@@ -254,6 +268,8 @@ a:active {
                     <HeaderStyle BackColor="#ffffff" Font-Bold="True" ForeColor="White" />
                     <AlternatingRowStyle BackColor="White" />
                 </asp:GridView>
+              
+
               </td>
           </tr>
           <tr>

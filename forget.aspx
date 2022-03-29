@@ -5,7 +5,15 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="adminsty.css" />
-<title>忘记密码</title>  </head>
+<title>忘记密码</title> 
+    <script src="js/jquery.js"  type="text/javascript"></script>
+<style type="text/css">
+#myemail, .newemail, .newemailtitle{    
+	cursor:default;
+	line-height:20px;
+	text-align:left;
+}
+</style> <script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <script language="JavaScript" type="text/javascript">
     var lang = navigator.language || navigator.userLanguage;
     if (lang.substr(0, 3) == "zh-") {
@@ -53,14 +61,165 @@
                           maxlength="20" CssClass="txt3"></asp:TextBox>
                         </p><p>预留邮箱：<asp:TextBox ID="ylyx" runat="server" BackColor="Silver" CssClass="txt3" 
                             MaxLength="20"></asp:TextBox>
-                                              </p>
+                             <!--自动补全Email-->
+                           <script type="text/javascript">
+                               var nowid;
+                               var totalid;
+                               var can1press = false;
+                               var emailafter;
+                               var emailbefor;
+                               $(document).ready(function() {
+                               $("#ylyx").focus(function() { //文本框获得焦点，插入Email提示层
+                                       $("#myemail").remove();
+                                       $(this).after("<div id='myemail' style='width:200px; height:auto; background:#fff; color:#6B6B6B; position:absolute; right:613px; top:" + ($(this).get(0).offsetTop + $(this).height() + 291) + "px; border:1px solid #ccc;z-index:5px; '></div>");
+                                       if ($("#myemail").html()) {
+                                           $("#myemail").css("display", "block");
+                                           $(".newemail").css("width", $("#myemail").width());
+                                           can1press = true;
+                                       } else {
+                                           $("#myemail").css("display", "none");
+                                           can1press = false;
+                                       }
+                                   }).keyup(function() { //文本框输入文字时，显示Email提示层和常用Email
+                                   var press = $("#ylyx").val();
+                                       if (press != "" || press != null) {
+                                           var emailtxt = "";
+                                           var emailvar = new Array(
+"@sina.com",
+"@163.com",
+"@qq.com",
+"@126.com",
+"@vip.sina.com",
+"@sina.cn",
+"@hotmail.com",
+"@gmail.com",
+"@sohu.com",
+"@139.com",
+"@wo.com.cn",
+"@189.cn",
+"@21cn.com",
+"@live.cn",
+"@vip.qq.com",
+"@yeah.net");
+                                           totalid = emailvar.length;
+                                           var emailmy = "<div class='newemail' style='width:170px; color:#6B6B6B; overflow:hidden;'><font color='#ff6d25'>" + press + "</font></div>";
+                                           if (!(isEmail(press))) {
+                                               for (var i = 0; i < emailvar.length; i++) {
+                                                   emailtxt = emailtxt + "<div class='newemail' style='width:170px; color:#626262; overflow:hidden;'><font color='#000000'>" + press + "</font>" + emailvar[i] + "</div>"
+                                               }
+                                           } else {
+                                               emailbefor = press.split("@")[0];
+                                               emailafter = "@" + press.split("@")[1];
+                                               for (var i = 0; i < emailvar.length; i++) {
+                                                   var theemail = emailvar[i];
+                                                   if (theemail.indexOf(emailafter) == 0) {
+                                                       emailtxt = emailtxt + "<div class='newemail' style='width:170px; color:#6B6B6B; overflow:hidden;'><font color='#ff6d25'>" + emailbefor + "</font>" + emailvar[i] + "</div>"
+                                                   }
+                                               }
+                                           }
+                                           $("#myemail").html(emailmy + emailtxt);
+                                           if ($("#myemail").html()) {
+                                               $("#myemail").css("display", "block");
+                                               $(".newemail").css("width", $("#myemail").width());
+                                               can1press = true;
+                                           } else {
+                                               $("#myemail").css("display", "none");
+                                               can1press = false;
+                                           }
+                                           beforepress = press;
+                                       }
+                                       if (press == "" || press == null) {
+                                           $("#myemail").html("");
+                                           $("#myemail").css("display", "none");
+                                       }
+                                   })
+                                   $(document).click(function() { //文本框失焦时删除层
+                                       if (can1press) {
+                                           $("#myemail").remove();
+                                           can1press = false;
+                                           if ($("#ylyx").focus()) {
+                                               can1press = false;
+                                           }
+                                       }
+                                   })
+                                   $(".newemail").live("mouseover", function() { //鼠标经过提示Email时，高亮该条Email
+                                       $(".newemail").css("background", "#FFF");
+                                       $(this).css("background", "#FFCC99");
+                                       $(this).focus();
+                                       nowid = $(this).index();
+                                   }).live("click", function() { //鼠标点击Email时，文本框内容替换成该条Email，并删除提示层
+                                       var newhtml = $(this).html();
+                                       newhtml = newhtml.replace(/<.*?>/g, "");
+                                       $("#ylyx").val(newhtml);
+                                       $("#myemail").remove();
+                                   })
+                                   $(document).bind("keydown", function(e) {
+                                       if (can1press) {
+                                           switch (e.which) {
+                                               case 38:
+                                                   if (nowid > 0) {
+                                                       $(".newemail").css("background", "#FFF");
+                                                       $(".newemail").eq(nowid).prev().css("background", "#FFCC99").focus();
+                                                       nowid = nowid - 1;
+                                                   }
+                                                   if (!nowid) {
+                                                       nowid = 0;
+                                                       $(".newemail").css("background", "#FFF");
+                                                       $(".newemail").eq(nowid).css("background", "#FFCC99");
+                                                       $(".newemail").eq(nowid).focus();
+                                                   }
+                                                   break;
+
+                                               case 40:
+                                                   if (nowid < totalid) {
+                                                       $(".newemail").css("background", "#FFF");
+                                                       $(".newemail").eq(nowid).next().css("background", "#FFCC99").focus();
+                                                       nowid = nowid + 1;
+                                                   }
+                                                   if (!nowid) {
+                                                       nowid = 0;
+                                                       $(".newemail").css("background", "#FFF");
+                                                       $(".newemail").eq(nowid).css("background", "#FFCC99");
+                                                       $(".newemail").eq(nowid).focus();
+                                                   }
+                                                   break;
+
+                                               case 13:
+                                                   var newhtml = $(".newemail").eq(nowid).html();
+                                                   newhtml = newhtml.replace(/<.*?>/g, "");
+                                                   $("#ylyx").val(newhtml);
+                                                   $("#myemail").remove();
+                                           }
+                                       }
+                                   })
+                               })
+                               //检查email邮箱
+                               function isEmail(str) {
+                                   if (str.indexOf("@") > 0) {
+                                       return true;
+                                   } else {
+                                       return false;
+                                   }
+                               }
+</script>
+<!--补全结束-->
+                                              <asp:Label ID="Label4" runat="server" Text="若忘记邮箱地址，请联系管理员" 
+                              style="font-size: small"></asp:Label>
+                                              </p><p>&nbsp;&nbsp;验证码：                           
+                      <asp:TextBox ID="codes" runat="server" BackColor="Silver" class="txt3" 
+                          maxlength="20" CssClass="txt3" Width="147px"></asp:TextBox>
+                        &nbsp;<asp:Button ID="btnsend" runat="server" BackColor="#FF7D23" BorderColor="#FF7D23" 
+                                                      BorderStyle="Solid" class="txt3" Font-Bold="True" ForeColor="White" 
+                                                      OnClick="btnsend_Click" Text="发送验证码" 
+                              UseSubmitBehavior="False" CausesValidation="False" />
+                        </p>
                                               <div id="aptips" class="aptips" runat="server"></div></td>
                 </tr>
                 <tr>
                   <td colspan="2">
                       <asp:ImageButton ID="btnpwdfg" runat="server" 
                           ImageUrl="~/imgs/okbtn.gif" onclick="btnpwdfg_Click"/>
-                      &nbsp;<asp:ImageButton ID="btnReset1" runat="server" ImageUrl="~/imgs/clearbtn.gif" OnClick="btnReset1_click"/></td>
+                      &nbsp;</td>
                 </tr>
               </table>
             </div>
@@ -79,6 +238,7 @@
                     <p>密码确认：<asp:TextBox ID="newconf" runat="server" BackColor="Silver" CssClass="txt3" 
                             MaxLength="20" TextMode="Password"></asp:TextBox>
                                               </p>
+                                              
                     <div id="aptips2" class="aptips" runat="server"></div></td>
                 </tr>
                 <tr>
@@ -86,41 +246,10 @@
                       <asp:ImageButton ID="btnpwdr" runat="server" 
                           ImageUrl="~/imgs/okbtn.gif" onclick="btnpwdr_Click"/>            
                     &nbsp;
-                    <asp:ImageButton ID="btnReset2" runat="server" ImageUrl="~/imgs/clearbtn.gif" 
-                          OnClick="btnReset2_click"/></td>
+                    </td>
                 </tr>
               </table>
             </div></td>
-          </tr>
-          <tr>
-            <td colspan="3" align="center" valign="middle" width="500">
-
-               
-            <div id="divcode" class="divcss" runat="server" align="center" visible="False">
-              <table width="100%" border="0" cellspacing="0" cellpadding="12">
-                <tr>
-                  <td align="right"><img src="imgs/user.gif" width="32" height="32" /></td>
-                  <td align="left"><strong>重置密码：</strong></td>
-                </tr>
-                <tr>
-                  <td colspan="2"><p>&nbsp;&nbsp;重置验证码：                           
-                      <asp:TextBox ID="txtcode" runat="server" BackColor="Silver" class="txt3" 
-                          maxlength="20" CssClass="txt3"></asp:TextBox>
-                        </p>
-                        <div id="aptips3" runat="server" class="aptips"></div></td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                      <asp:ImageButton ID="btnrescode" runat="server" 
-                          ImageUrl="~/imgs/okbtn.gif" onclick="btnrescode_Click"/>
-                      &nbsp;<asp:ImageButton ID="btnReset3" runat="server" ImageUrl="~/imgs/clearbtn.gif" 
-                          OnClick="btnReset3_click"/></td>
-                </tr>
-              </table>
-            </div>
-
-               
-            </td>
           </tr>
         </table>
 

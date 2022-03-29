@@ -33,6 +33,7 @@ public partial class Default : System.Web.UI.Page
             this.Label3.Text = Server.HtmlDecode(data);
             cnn.Close();
         }
+        swimg();
     }
 
 
@@ -91,4 +92,27 @@ public partial class Default : System.Web.UI.Page
             intro.InnerText = Server.HtmlDecode(data).Replace("<p>","    ");
         }
     }
+    protected void swimg()//Ö÷Ò³Í¼Æ¬Ëæ»úÏÔÊ¾
+    {
+            Random rd = new Random();
+            string str = "01";
+            string result = "";
+            for (int i = 0; i < 1; i++)
+            {
+                result += str[rd.Next(str.Length)];
+            }
+            if (result == "0")
+            {
+                Image3.ImageUrl = "imgs/class/cover_v.jpg";
+                Image3.Height = 450;
+                Image3.Width = 300;
+            }
+            else
+            {
+                Image3.ImageUrl = "imgs/class/cover_h.jpg";
+                Image3.Height = 300;
+                Image3.Width = 450;
+            }
+    }
+    
 }

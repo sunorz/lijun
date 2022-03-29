@@ -136,7 +136,7 @@ public partial class messages : System.Web.UI.Page
             {
                 if (ds.Tables[0].Rows[k]["reply"].ToString().Trim() == "")
                 {
-                    ds.Tables[0].Rows[k]["state"] = false;//如果
+                    ds.Tables[0].Rows[k]["state"] = false;//如果                    
                 }
                 else
                 {
@@ -172,24 +172,27 @@ public partial class messages : System.Web.UI.Page
   //检查用户
   protected void ckuser(string name, string mail)
   {
-      string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
-      SqlConnection cnn = new SqlConnection(connectionString);
-      string st = "select * from Guest where gname='" + @name + "' or gmail='" + @mail + "'";
-      cnn.Open();
-      SqlCommand cmd = new SqlCommand(st, cnn);
-      SqlDataReader rdr = cmd.ExecuteReader();
-      if (rdr.Read())
+      if (name.Trim() != "" || mail.Trim() != "")
       {
-              cnn.Close();       
-      }
-      else
-      {
-          cnn.Close();
+          string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+          SqlConnection cnn = new SqlConnection(connectionString);
+          string st = "select * from Guest where gname='" + @name + "' or gmail='" + @mail + "'";
           cnn.Open();
-          string st2 = "insert into Guest(gname,gmail) values('" + @name + "','" + @mail + "')";
-          SqlCommand cmd2 = new SqlCommand(st2, cnn);
-          cmd2.ExecuteNonQuery();
-          cnn.Close();
+          SqlCommand cmd = new SqlCommand(st, cnn);
+          SqlDataReader rdr = cmd.ExecuteReader();
+          if (rdr.Read())
+          {
+              cnn.Close();
+          }
+          else
+          {
+              cnn.Close();
+              cnn.Open();
+              string st2 = "insert into Guest(gname,gmail) values('" + @name + "','" + @mail + "')";
+              SqlCommand cmd2 = new SqlCommand(st2, cnn);
+              cmd2.ExecuteNonQuery();
+              cnn.Close();
+          }
       }
 
   }

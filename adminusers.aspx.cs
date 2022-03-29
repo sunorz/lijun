@@ -107,13 +107,14 @@ public partial class adminusers : System.Web.UI.Page
         aptips.InnerText = "";
 
     }
-//判断用户名是否重复
+//判断用户名、邮箱是否重复
     public bool isname()
     {
         string txtname = Encryption.Encode(yhm.Text.Trim());
+        string txtmail = Encryption.Encode(ylyx.Text.Trim());
         string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
         SqlConnection cno = new SqlConnection(connectionString);
-        string ftr = "select adname from Admin where adname='" + @txtname + "'";
+        string ftr = "select adname from Admin where adname='" + @txtname + "' or admail='"+@txtmail+"' ";
         cno.Open();
         SqlCommand cmr = new SqlCommand(ftr, cno);
         SqlDataReader cmrd = cmr.ExecuteReader();

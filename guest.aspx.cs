@@ -18,6 +18,7 @@ public partial class guest : System.Web.UI.Page
 {
      protected void Page_Load(object sender, EventArgs e)
     {
+        Button4.Attributes.Add("onclick", " if(!confirm('确认删除该访客吗？\\n如果想禁止该访客再次发言，请直接禁言！')) return false;"); 
         if (Session["issuper"] == null || Session["ispwd"] == null)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
@@ -88,7 +89,9 @@ public partial class guest : System.Web.UI.Page
         TextBox tb=gvguest.Rows[e.RowIndex].FindControl("TextBox1") as TextBox;
         TextBox tb2=gvguest.Rows[e.RowIndex].FindControl("TextBox2") as TextBox;
         CheckBox cb = gvguest.Rows[e.RowIndex].FindControl("CheckBox1") as CheckBox;
+        CheckBox cb2 = gvguest.Rows[e.RowIndex].FindControl("CheckBox2") as CheckBox;
          int locker;
+         int isadmin;
         if (cb.Checked)
         {
             locker = 1;
@@ -97,22 +100,30 @@ public partial class guest : System.Web.UI.Page
         {
             locker = 0;
         }
+        if (cb2.Checked)
+        {
+            isadmin = 1;
+        }
+        else
+        {
+            isadmin = 0;
+        }
         string name=Encryption.Encode(tb.Text.Trim());
         string mail=Encryption.Encode(tb2.Text.Trim());
         int guid=Convert.ToInt32(gvguest.DataKeys[e.RowIndex].Value);
-        if(ckguest(guid,name,mail))
+        if (ckguest(guid, name, mail))
         {
-          string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
-          SqlConnection conur = new SqlConnection(connectionString);
-          string delur = "update Guest set gname='" + @name + "',gmail='"+@mail+"',gflag='" + @locker + "' where guid='" + @guid + "'";
-          SqlCommand cmdu = new SqlCommand(delur, conur);
-          conur.Open();
-          cmdu.ExecuteNonQuery();
-          conur.Close();
-          Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
-          bind();
-          gvguest.EditIndex = -1;                  
-          }
+            string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+            SqlConnection conur = new SqlConnection(connectionString);
+            string delur = "update Guest set gname='" + @name + "',gmail='" + @mail + "',gflag='" + @locker + "',ismgr='" + @isadmin + "' where guid='" + @guid + "'";
+            SqlCommand cmdu = new SqlCommand(delur, conur);
+            conur.Open();
+            cmdu.ExecuteNonQuery();
+            conur.Close();
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('更新成功！');</script>");
+            bind();
+            gvguest.EditIndex = -1;
+        }       
         bind();
     }
     //检查
@@ -140,7 +151,12 @@ public partial class guest : System.Web.UI.Page
     //绑定
     private void bind()
     {
-        string bdsql = "select *,ROW_NUMBER()OVER (order by guid) AS rowsid from Guest where guid<>19 and guid<>39 and guid<>42";
+
+        if (Session["issuper"] != null)
+        {
+            string adname = Session["issuper"].ToString();
+        }
+        string bdsql = "select *,ROW_NUMBER()OVER (order by guid) AS rowsid from Guest where guid<>19";
         string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
         SqlConnection conur = new SqlConnection(connectionString);
         SqlDataAdapter cmdu = new SqlDataAdapter(bdsql, conur);
@@ -162,4 +178,78 @@ public partial class guest : System.Web.UI.Page
         gvguest.PageIndex = e.NewPageIndex;
         bind();
     }
+    //删除选中
+    protected void deletemore(object sender, EventArgs e)
+    {
+   
+        for (int i = 0; i < this.gvguest.Rows.Count; i++)
+        {
+            CheckBox ckb = (CheckBox)this.gvguest.Rows[i].FindControl("CheckBox3");
+            if (ckb.Checked == true)
+            {
+
+                string id = gvguest.DataKeys[i].Value.ToString();
+                if (ckhvre(id) && ckhvro(id))
+                {
+                    string delur = "delete from Guest where guid='" + @id + "'";
+                    DBHelp.cn(delur).ExecuteNonQuery();
+
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('被删除的访客有被回复的评论！\\n请选择“停用”！');</script>");
+                }
+                
+                }
+
+            }        
+        bind();
+    }
+    protected void gvguest_RowsDel(object sender, GridViewDeleteEventArgs e)
+    {
+      string id = gvguest.DataKeys[e.RowIndex].Value.ToString();
+      ckhvre(id);
+      if (ckhvre(id) && ckhvro(id))//没有留言和被回复评论
+      {
+          string delur = "delete Guest where guid='" + @id + "'";
+          DBHelp.cn(delur).ExecuteNonQuery();
+      }
+      else
+      {
+          Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('被删除的访客有被回复的评论！\\n请选择“停用”！');</script>");
+      }
+      bind();
+    }
+    //判断被删除的用户是否有评论被回复
+    protected bool ckhvre(string id)
+    {
+        string st3 = "select * from Comment where repid in (select comid from Comment where gid='"+@id+"')";
+        SqlDataReader reader3 = DBHelp.cn(st3).ExecuteReader();
+        if (reader3.Read())
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+
+        }
+
+    }
+    //判断被删除的用户是否有留言
+    protected bool ckhvro(string id)
+    {
+        string st4 = "select * from Mess where gid='" + @id + "'";
+        SqlDataReader reader4 = DBHelp.cn(st4).ExecuteReader();
+        if (reader4.Read())
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
+    }
+   
 }

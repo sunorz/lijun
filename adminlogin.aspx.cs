@@ -18,6 +18,19 @@ public partial class adminlogin : System.Web.UI.Page
     
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Session["issuper"] == null || Session["ispwd"] == null)
+        {
+           
+        }
+        else if (WebHelp.Auth(Session["issuper"].ToString(), Session["ispwd"].ToString()) == false)
+        {
+
+        }
+
+        else
+        {
+            Response.Redirect("adminweb.aspx");
+        }
         footerload();
     }
 	protected void btnLogin_click(object sender,ImageClickEventArgs e)

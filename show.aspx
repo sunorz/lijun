@@ -4,7 +4,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="style.css" />
-<title>丽军数码-配件展示</title></head>
+<title>丽军数码-配件展示</title><script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script>
+<link href="style-157.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery-157.js" language="javascript" type="text/javascript"></script>
+<!--[if IE 6]>
+<script src="js/ie6PNG.js" type="text/javascript"></script>
+<script type="text/javascript">DD_belatedPNG.fix('*');</script>
+<![endif]-->
+
+
+</head>
     <style type="text/css">
 		#title{
 	line-height:5pt;
@@ -30,30 +39,6 @@ a:active {
 	background-image: url(imgs/class/bg2.jpg);
 	background-repeat: repeat;
 	background-attachment: fixed;
-}
-.pager
- {
-     width:100%;  margin:10px; line-height:20px; display:block;color:#F59223;
-    
- }
-.pager a, .pager span
- {
-
-    border: 1px solid #F59223; 
-    line-height: 30px;
-    margin-right: 5px;
-    padding: 2px 6px;
-    background-color:White;color:#F59223;
- }
-.pager a:hover
- {border:1 solid #F59223; background-color:#F59223; color:White;  padding: 2px 6px;}
-.pager .current
-{
-     border: 1px solid #F59223; 
-    line-height: 20px;
-    margin: 0 5px;
-    padding: 2px 6px;
-    background-color:#F59223;color:White;
 }
     </style>
 <body>
@@ -82,7 +67,7 @@ a:active {
     <td   align="center" valign="middle" class="topbar"><a href="fix.aspx" class="ht">
         报修流程</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="bbs.aspx" class="ht">
-        维修论坛</a></td>
+        业界新闻</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="shop.aspx" class="ht">
         网店介绍</a></td>
    <td  align="center" valign="middle" class="topbar"> <a href="staff.aspx" class="ht">
@@ -103,55 +88,60 @@ a:active {
             配件展示</div></td>
         </tr>
   <tr>
-    <td colspan="9" align="center" bgcolor="#333333">
+    <td colspan="9" align="center" bgcolor="White">
         <table width="100%" border="0" cellspacing="0" cellpadding="12">
           <tr>
-            <td align="center" bgcolor="#333333">
-              <asp:FormView ID="fvphoto" runat="server" AllowPaging="True" PageSize="1"
-                    DataSourceID="SqlDataSource1" DataKeyNames="poid" CellPadding="3" 
-                    BackColor="#333333" 
-                    BorderColor="#333333" BorderStyle="None" BorderWidth="1px" 
-                    HorizontalAlign="Center" EnableTheming="True" CellSpacing="5" 
-                    Font-Names="Arial" >
-                    <PagerSettings  Position="Top"  Mode="NextPrevious" PageButtonCount="5" NextPageText="下一页" PreviousPageText="上一页" />
-                    <FooterStyle BackColor="#333333"/>
-                    <RowStyle BackColor="#333333" ForeColor="White" />
-                    <EditItemTemplate>                       
-                    </EditItemTemplate>
-                    <InsertItemTemplate>                     
-                    </InsertItemTemplate>
-                    <ItemTemplate>
-                        <br />
-                        <span class="contents"><asp:Label ID="Label4" runat="server" 
-                            Text='<%# Eval("poname") %>' Font-Names="arial,宋体,sans-serif;" 
-                            ForeColor="White" style="font-size: large"></asp:Label></span>
-                        <br />                                                
-                         <br />
-                        <asp:Image ID="Image1" Width="100%" Height="76%" runat="server" 
-                            ImageUrl='<%# Eval("pourl") %>' BorderStyle="Solid" BorderWidth="3px" BorderColor="White" />
-                            <br />
-                        <br />
-                        Page&nbsp;&nbsp;<asp:Label ID="Label1" runat="server" Text='<%# SubStr(Eval("rowsid"),60) %>' 
-                            style="text-align: right; font-weight: 700; font-family: 微软雅黑; font-size: x-large; color: #999999;"></asp:Label>
-                        /<asp:Label ID="lbtotal" runat="server" Text="0"></asp:Label>
-                       <br />                    
-                        
-                    </ItemTemplate>
-                    <PagerStyle BackColor="#333333"   HorizontalAlign="Left" 
-                        Font-Bold="True" Font-Size="Medium" 
-                        Font-Underline="True" CssClass="pager" />
-                    <EmptyDataTemplate>
-                        <asp:Image ID="Image2" Width="100%" Height="76%" runat="server" 
-                            ImageUrl="~/imgs/nopic.jpg" BorderStyle="Solid" BorderWidth="3px" BorderColor="White"  ToolTip="没有图片" />
-                    </EmptyDataTemplate>
-                    <HeaderStyle BackColor="#000084" Font-Bold="True" ForeColor="White" />
-                    <EditRowStyle BackColor="#008A8C" Font-Bold="True" ForeColor="White" />
-                </asp:FormView>   
-                <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
-                     ConnectionString="<%$ ConnectionStrings:lijunConnectionString %>"
-                    SelectCommand="SELECT *,ROW_NUMBER()OVER (order by poid) AS rowsid FROM [Photo] WHERE [alid] =3">
-                </asp:SqlDataSource>
-                <br /><br /><br /><br />
+            <td align="center" bgcolor="White">
+                <div class="kePublic">
+<!--效果html开始-->
+<div class="mkeFocus">
+ <div class="mkeUl">
+  <ul>
+      <%=getItems()%>
+
+  </ul>
+  <div class="mkeNum"><span class="mke_ns1">1</span><span class="mke_ns2">1</span></div>
+  <div class="mkeLbtn"></div>
+  <div class="mkeRbtn"></div>
+ </div>
+</div>
+<script language="javascript">
+    var rnum = $(".mkeUl ul li").size();
+    var cnum = 0;
+    $(".mke_ns2").html(rnum);
+    $(".mkeUl ul").width(rnum * 588);
+    $(".mkeRbtn").click(function() {
+        cnum++;
+        if (cnum > (rnum - 1)) {
+            cnum = 0
+        }
+        $(".mkeUl ul").animate({ "left": -cnum * 588 }, 300);
+        $(".mke_ns1").html(cnum + 1);
+    });
+    $(".mkeLbtn").click(function() {
+        cnum--;
+        if (cnum < 0) {
+            cnum = rnum - 1;
+        }
+        $(".mkeUl ul").animate({ "left": -cnum * 588 }, 300);
+        $(".mke_ns1").html(cnum + 1);
+    });
+
+    function autoPlay() {
+        cnum++;
+        if (cnum > (rnum - 1)) {
+            cnum = 0
+        }
+        $(".mkeUl ul").animate({ "left": -cnum * 588 }, 300);
+        $(".mke_ns1").html(cnum + 1);
+    }
+
+    var Timer = setInterval(autoPlay, 5000);
+    $(".mkeFocus").hover(function() { clearInterval(Timer) }, function() { Timer = setInterval(autoPlay, 5000); });
+
+</script>
+<!--效果html结束-->
+</div>
               <div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到i贴吧" class="bshare-itieba" href="javascript:void(0);"></a><a title="分享到Facebook" class="bshare-facebook" href="javascript:void(0);"></a><a title="分享到Twitter" class="bshare-twitter" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;">
                   </span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></td>
           </tr>

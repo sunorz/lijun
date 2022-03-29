@@ -5,7 +5,20 @@
 <meta http-equiv="Content-Type" content="text/html" />
 <link rel="stylesheet" type="text/css" href="adminsty.css" />
 <title>访客管理</title>
-    </head>
+<script src="http://code.jquery.com/jquery-1.2.1.min.js" type="text/javascript"></script>
+ <script type="text/javascript">
+     $(function() {
+         //全选 
+         $("#btn1").click(function() {
+         $("input[name$='CheckBox3'][name^='gvguest']").attr("checked", "true");
+         })
+         //取消全选 
+         $("#btn2").click(function() {
+         $("input[name$='CheckBox3'][name^='gvguest']").removeAttr("checked");
+         })
+     });
+    </script>
+   <script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <script language="JavaScript" type="text/javascript">
     var lang = navigator.language || navigator.userLanguage;
@@ -54,11 +67,21 @@
                           BorderWidth="1px" CellPadding="2" DataKeyNames="guid" ForeColor="Black" 
                           Width="100%" CssClass="txt3" AllowPaging="True" HorizontalAlign="Center" 
                           onrowupdating="gvguest_RowUpd" onrowediting="gvguest_RowEdt" 
-                          onpageindexchanging="gvguest_OnPageIndexChanging">
+                          onpageindexchanging="gvguest_OnPageIndexChanging" 
+                          onrowdeleting="gvguest_RowsDel">
                           <Columns>
+                              <asp:TemplateField>
+                                  <EditItemTemplate>
+                                      <asp:CheckBox ID="CheckBox3" runat="server" />
+                                  </EditItemTemplate>
+                                  <ItemTemplate>
+                                      <asp:CheckBox ID="CheckBox3" runat="server" />
+                                  </ItemTemplate>
+                                  <ItemStyle HorizontalAlign="Center" />
+                              </asp:TemplateField>
                               <asp:BoundField DataField="rowsid" HeaderText="序号" ReadOnly="True" 
                                   SortExpression="rowsid" >
-                              <ItemStyle HorizontalAlign="Left" />
+                              <ItemStyle HorizontalAlign="Center" Width="10%" />
                               </asp:BoundField>
                               <asp:BoundField DataField="guid" HeaderText="guid" InsertVisible="False" 
                                   ReadOnly="True" SortExpression="guid" Visible="False" />
@@ -102,6 +125,17 @@
                                   </EditItemTemplate>
                                   <ItemStyle HorizontalAlign="Center" />
                               </asp:TemplateField>
+                              <asp:TemplateField HeaderText="管理员">
+                                  <EditItemTemplate>
+                                      <asp:CheckBox ID="CheckBox2" runat="server" Checked='<%# Bind("ismgr") %>' 
+                                       />
+                                  </EditItemTemplate>
+                                  <ItemTemplate>
+                                      <asp:CheckBox ID="CheckBox2" runat="server" Checked='<%# Bind("ismgr") %>' 
+                                          Enabled="false" />
+                                  </ItemTemplate>
+                                  <ItemStyle HorizontalAlign="Center" />
+                              </asp:TemplateField>
                               <asp:TemplateField ShowHeader="False">
                                   <ItemTemplate>
                                       <asp:Button ID="Button1" runat="server" CausesValidation="false" 
@@ -116,55 +150,13 @@
                                   <ItemStyle HorizontalAlign="Center" />
                                   <ItemStyle HorizontalAlign="Center" />
                               </asp:TemplateField>
-                          </Columns>
-                          <FooterStyle BackColor="Tan" />
-                          <PagerStyle BackColor="PaleGoldenrod" ForeColor="DarkSlateBlue" 
-                              HorizontalAlign="Center" />
-                          <EmptyDataTemplate>
-                              <p style="text-align:center">没有可以禁言的访客了！</p>
-                          </EmptyDataTemplate>
-                          <SelectedRowStyle BackColor="DarkSlateBlue" ForeColor="GhostWhite" />
-                          <HeaderStyle BackColor="Tan" Font-Bold="True" />
-                          <AlternatingRowStyle BackColor="PaleGoldenrod" />
-                      </asp:GridView>
-                      <br /> 
-                      <p style="text-align: left; background-color: #CCCCCC">
-                          注意：您只有在删除该访客全部留言和评论后，方可在下表中找到他。<br/>陈旧评论对应的访客只能停用。</p>
-                      <asp:GridView ID="gvguest2" runat="server" AllowPaging="True" 
-                          AutoGenerateColumns="False" BackColor="LightGoldenrodYellow" BorderColor="Tan" 
-                          BorderWidth="1px" CellPadding="2" DataKeyNames="guid" CssClass="txt3"
-                          DataSourceID="SqlDataSource2" ForeColor="Black" HorizontalAlign="Center" Width="100%"  
-                          >
-                          <Columns>
-                              <asp:BoundField DataField="rowsid" HeaderText="序号" 
-                                  ReadOnly="True" SortExpression="rowsid" />
-                              <asp:BoundField DataField="guid" HeaderText="guid" SortExpression="guid" 
-                                  InsertVisible="False" ReadOnly="True" Visible="False" />
-                              <asp:TemplateField HeaderText="昵称" SortExpression="gname">
-                                  <ItemTemplate>
-                                      <asp:Label ID="Label1" runat="server" Text='<%#Encryption.Decode(Eval("gname")) %>'></asp:Label>
-                                  </ItemTemplate>
-                                  <EditItemTemplate>
-                                      <asp:TextBox ID="TextBox1" runat="server" Text='<%#Encryption.Decode(Eval("gname")) %>'></asp:TextBox>
-                                  </EditItemTemplate>
-                              </asp:TemplateField>
-                              <asp:TemplateField HeaderText="邮箱" SortExpression="gmail">
-                                  <ItemTemplate>
-                                      <asp:Label ID="Label2" runat="server" Text='<%#Encryption.Decode(Eval("gmail")) %>'></asp:Label>
-                                  </ItemTemplate>
-                                  <EditItemTemplate>
-                                      <asp:TextBox ID="TextBox2" runat="server" Text='<%Encryption.Decode(Eval("gmail")) %>'></asp:TextBox>
-                                  </EditItemTemplate>
-                              </asp:TemplateField>
-                              <asp:CheckBoxField DataField="gflag" HeaderText="禁言" SortExpression="gflag" >
-                              <ItemStyle HorizontalAlign="Center" />
-                              </asp:CheckBoxField>
                               <asp:TemplateField ShowHeader="False">
                                   <ItemTemplate>
-                                      <asp:Button ID="Button1" runat="server" CausesValidation="False" 
-                                          CommandName="Delete" Text="删除" OnClientClick="javascript:return confirm('您确定删除该访客吗？');"/>
-                                  </ItemTemplate><ControlStyle BackColor="#FF7D23" BorderColor="#FF7D23" BorderStyle="Solid" 
-                                Font-Bold="True" Font-Names="宋体" Font-Size="Medium" ForeColor="White" />
+                                      <asp:Button ID="Button2" runat="server" CausesValidation="false" CommandName="delete" 
+                                          Text="删除" />
+                                  </ItemTemplate>
+                                  <ControlStyle BackColor="#FF7D23" BorderColor="#FF7D23" BorderStyle="Solid" 
+                                      Font-Bold="True" Font-Names="宋体" Font-Size="Medium" ForeColor="White" />
                                   <ItemStyle HorizontalAlign="Center" />
                               </asp:TemplateField>
                           </Columns>
@@ -172,34 +164,19 @@
                           <PagerStyle BackColor="PaleGoldenrod" ForeColor="DarkSlateBlue" 
                               HorizontalAlign="Center" />
                           <EmptyDataTemplate>
-                              <p style="text-align:center">没有可以删除的访客了！</p>
+                              <p style="text-align:center">没有访客信息！</p>
                           </EmptyDataTemplate>
                           <SelectedRowStyle BackColor="DarkSlateBlue" ForeColor="GhostWhite" />
                           <HeaderStyle BackColor="Tan" Font-Bold="True" />
                           <AlternatingRowStyle BackColor="PaleGoldenrod" />
                       </asp:GridView>
-                      <br />
-                  <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
-                    ConnectionString="<%$ ConnectionStrings:lijunConnectionString %>"
-                    SelectCommand="select ROW_NUMBER()OVER (order by guid) AS rowsid,guid,gname,gmail,gflag from (select * from Guest left join Comment on guid=gid) as a left join Mess as b on guid=b.gid where comment is null and pcontent is null and guid<>19 and guid<>39 and guid<>42"              
-                    ProviderName="System.Data.SqlClient"                     
-                    DeleteCommand="DELETE FROM [Guest] WHERE [guid] = @guid" >
-                           <DeleteParameters>
-                               <asp:Parameter Name="guid" Type="Int32" />
-                           </DeleteParameters>
-                           <UpdateParameters>
-                               <asp:Parameter Name="gname" Type="String" />
-                               <asp:Parameter Name="gmail" Type="String" />
-                               <asp:Parameter Name="gflag" Type="Boolean" />
-                               <asp:Parameter Name="guid" Type="Int32" />
-                           </UpdateParameters>
-                           <InsertParameters>
-                               <asp:Parameter Name="gname" Type="String" />
-                               <asp:Parameter Name="gmail" Type="String" />
-                               <asp:Parameter Name="gflag" Type="Boolean" />
-                           </InsertParameters>
-                </asp:SqlDataSource>
-                       </td>
+                                            <br />
+                      <div style="width:700px; text-align:left;"><input type="button" id="btn1" value="全选">&nbsp;&nbsp;<input type="button" id="btn2" value="取消全选">&nbsp;&nbsp;<asp:Button 
+                              ID="Button4" runat="server"  
+                             
+                              Text="删除" onclick="deletemore" UseSubmitBehavior="False" />
+                      </div>
+                      </td>
                 </tr>
                 </table>
 </td>

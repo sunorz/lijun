@@ -19,6 +19,7 @@ public partial class postmgr : System.Web.UI.Page
 	//载入
     protected void Page_Load(object sender, EventArgs e)
     {
+        Button4.Attributes.Add("onclick", " if(!confirm('确认删除选中的文章吗！')) return false;"); 
         if (!IsPostBack)
         {
                   footerload();
@@ -67,8 +68,7 @@ public partial class postmgr : System.Web.UI.Page
         SqlCommand cmdu = new SqlCommand(delur, conur);
         conur.Open();
         cmdu.ExecuteNonQuery();
-        conur.Close();
-        Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('删除成功！');window.location.href='postmgr.aspx';</script>");
+        conur.Close();        
         }
     protected void footerload()
     {
@@ -97,6 +97,28 @@ public partial class postmgr : System.Web.UI.Page
             string sNewStr = sString.Substring(0, nLeng);
             sNewStr = sNewStr + "..."; return sNewStr;
         }
+    }
+    //删除选中
+    protected void deletemore(object sender, EventArgs e)
+    {
+        for (int i = 0; i < this.gvpost.Rows.Count; i++)
+        {
+            CheckBox ckb = (CheckBox)this.gvpost.Rows[i].FindControl("CheckBox1");
+            if (ckb.Checked == true)
+            {
+                int id = Convert.ToInt32(gvpost.DataKeys[i].Value);
+                string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+                SqlConnection conur = new SqlConnection(connectionString);
+                string delur = "delete from Article where artid='" + @id + "'";
+                SqlCommand cmdu = new SqlCommand(delur, conur);
+                conur.Open();
+                cmdu.ExecuteNonQuery();
+                conur.Close();
+
+            }
+
+        }
+        gvpost.DataBind();
     }
 }
 

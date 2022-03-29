@@ -5,7 +5,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="adminsty.css" />
 <title>后台管理</title>
- </head>   
+<script src="http://code.jquery.com/jquery-1.2.1.min.js" type="text/javascript"></script>
+ <script type="text/javascript">
+     $(function() {
+         //全选 
+         $("#btn1").click(function() {
+             $("input[name$='CheckBox2']").attr("checked", "true");
+         })
+         //取消全选 
+         $("#btn2").click(function() {
+             $("input[name$='CheckBox2']").removeAttr("checked");
+         })
+     });
+    </script>
+ <script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>   
 <body>
 <script language="JavaScript" type="text/javascript">
 var lang = navigator.language || navigator.userLanguage;
@@ -25,7 +38,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
     <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="show.aspx" class="ht" target="_blank">配件展示</a></td>
     <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="error.aspx" class="ht" target="_blank">常见故障</a></td>
     <td   align="center" valign="middle" bgcolor="#ff7d23"><a href="fix.aspx" class="ht" target="_blank">报修流程</a></td>
-    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="bbs.aspx" class="ht" target="_blank">维修论坛</a></td>
+    <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="bbs.aspx" class="ht" target="_blank">业界新闻</a></td>
     <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="shop.aspx"  class="ht" target="_blank">网店介绍</a></td>
    <td  align="center" valign="middle" bgcolor="#ff7d23"> <a href="staff.aspx" class="ht" target="_blank">人才招聘</a></td>
     <td  align="center" valign="middle" bgcolor="#ff7d23"><a href="messages.aspx" class="ht" target="_blank">网上留言</a></td>
@@ -83,7 +96,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                   <p>新密码确认：<asp:TextBox ID="newconf" class="txt3" runat="server" 
                             BackColor="Silver" MaxLength="20"  TextMode="Password" 
                             ></asp:TextBox></p>
-                                            <p align="center"><div id="aptips" runat="server">
+                                            <div id="aptips"  runat="server" style="margin:auto 0; color:Red; font-weight:bolder;">
                             
                         </div>
                         
@@ -105,6 +118,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                 <tr>
                   <td width="49%" align="right"><img src="imgs/user.gif" width="32" height="32" /></td>
                   <td width="25%" align="left"><strong>用户管理：</strong></td>
+                  <td align="right">&nbsp;</td>
                   <td align="right"><asp:ImageButton ID="Cls2" runat="server" ImageUrl="~/imgs/close.gif" title="关闭" OnClick="Cls2_click"/></td>
                 </tr>
                 <tr>
@@ -116,6 +130,15 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                           onrowediting="gvuser_RowEdt" onrowupdating="gvuser_RowUpd" HorizontalAlign="Center" 
                           >
                             <Columns>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="CheckBox2" runat="server" />
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:CheckBox ID="CheckBox2" runat="server" />
+                                    </EditItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" />
+                                </asp:TemplateField>
                                 <asp:BoundField DataField="rowsid" HeaderText="序号" ReadOnly="True">
                                 <ItemStyle HorizontalAlign="Left" Width="6%" />
                                 </asp:BoundField>
@@ -165,7 +188,7 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                                     <ItemStyle HorizontalAlign="Center" />
                                 </asp:TemplateField>
                                 <asp:CommandField ButtonType="Button" ShowEditButton="True" 
-                                    UpdateText="保存" ShowCancelButton="False" >
+                                    ShowCancelButton="False" EditText="修改" >
                                     
                                     <ControlStyle BackColor="#FF7D23" BorderColor="#FF7D23" BorderStyle="Solid" 
                                         Font-Bold="True" Font-Names="宋体" Font-Size="Medium" ForeColor="White" />
@@ -192,10 +215,18 @@ document.write("<style type=\"text/css\" media=\"screen\">center{display:none;}<
                                 <AlternatingRowStyle BackColor="PaleGoldenrod" />
                       </asp:GridView>
                         
-                        <br /></td>
+                        <br />
+                      <div style="width:700px; text-align:left;"><input type="button" id="btn1" value="全选">&nbsp;&nbsp;<input type="button" id="btn2" value="取消全选">&nbsp;&nbsp;<asp:Button 
+                              ID="Button4" runat="server"  
+                             
+                              Text="删除" onclick="deletemore" UseSubmitBehavior="False" />
+                      </div><br /></td>
                 </tr>
                 <tr>
                   <td colspan="3">
+                      <br />
+                      <br />
+                      <br />
                   <asp:Button ID="btnCeuser" runat="server" class="txt3" Text="创建新用户" 
                     BackColor="#FF7D23" BorderStyle="Solid" Font-Bold="True" 
                     ForeColor="White" BorderColor="#FF7D23" OnClick="btnCeuser_Click" /></td>

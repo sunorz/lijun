@@ -18,7 +18,7 @@ public partial class detail: System.Web.UI.Page
 protected void Page_Load(object sender, EventArgs e)
 
 {
-reply.Visible = false;
+
 if (!IsPostBack)
 {
 getnews();
@@ -41,6 +41,7 @@ banner.Visible = false;
 }
 else
 {
+ckadmin(newid);
 bind2();
 bind1();
 authcom();
@@ -51,6 +52,7 @@ txtcomment.Attributes.Add("OnFocus", "if(this.value=='请不要输入包含个人隐私（账
 txtcomment.Attributes.Add("OnBlur", "if(this.value==''){this.value='请不要输入包含个人隐私（账号密码等）的内容，谢谢！'}");
 }
 showfoot();
+deletethis();
 
 }
 }
@@ -68,7 +70,7 @@ protected void btngood_Click(object sender, ImageClickEventArgs e)
     Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('谢谢支持！');</script>");
     showgood();
 }
-
+//提交评论
 protected void btnPost_Click(object sender, EventArgs e)
 {
 
@@ -101,7 +103,7 @@ st = "insert into Comment (aid,gid,comment,cposttime,fid) values('" + @newid + "
 }
 else
 {
-int repid = Convert.ToInt32(ddlfloors.SelectedValue);
+    int repid = Convert.ToInt32(Session["repis"]); 
 st = "insert into Comment (aid,gid,repid,comment,cposttime,fid) values('" + @newid + "','" + @gid + "','" + @repid + "','" + @comment + "','" + @dt + "','" + @fids + "')";
 }
 SqlCommand cmd = new SqlCommand(st, cnn);
@@ -167,7 +169,7 @@ string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectio
 SqlConnection cnn = new SqlConnection(connectionString);
 string newid = Request.QueryString["id"];
 //对两个查询表进行查询
-string st = "Select  a.fid,a.gname,rfid,rname,comment,cposttime,a.comid,cflag from (Select * from Comment,Guest where Comment.gid=Guest.guid and aid='" + @newid + "' ) as a left join (Select comid,fid as rfid,gname as rname,repid from Comment,Guest where Comment.gid=Guest.guid and comid in (Select repid from Comment)) as b on a.repid=b.comid order by a.comid";
+string st = "Select  a.fid,rfid,ismgr,a.gname,rcomment,rname,comment,cposttime,a.comid,cflag,comon from (Select * from Comment,Guest,Article where Comment.gid=Guest.guid and aid=artid and aid='" + @newid + "') as a left join (Select comid,gname as rname,repid,fid as rfid,comment as rcomment from Comment,Guest where Comment.gid=Guest.guid and comid in (Select repid from Comment)) as b on a.repid=b.comid and aid='" + @newid + "' order by a.comid";
 cnn.Open();
 SqlDataAdapter da = new SqlDataAdapter(st, cnn);
 DataSet ds = new DataSet();
@@ -179,7 +181,9 @@ for (int j = 0; j < ds.Tables[0].Columns.Count; j++)
 {
 if (ds.Tables[0].Rows[k]["rfid"].ToString().Trim() == "")
 {
-ds.Tables[0].Rows[k]["state"] = false;//如果
+ds.Tables[0].Rows[k]["state"] = false;
+ds.Tables[0].Rows[k]["rname"] = "W09e9r226HPhomHFSD8Ktg==";
+ds.Tables[0].Rows[k]["rcomment"] = "W09e9r226HPhomHFSD8Ktg==";
 }
 else
 {
@@ -194,6 +198,7 @@ dlcom.DataBind();
 if (dlcom.Items.Count == 0)
 {
 Label5.Visible = false;
+comdiv.Visible = false;
 }
 ds.Clear();
 cnn.Close();      
@@ -212,7 +217,6 @@ fvtxt.DataBind();
 if (ds.Tables[0].Rows[0]["comon"].ToString() == "True")
 {
 ImageButton ibtn = fvtxt.FindControl("btnRly") as ImageButton;
-ibtn.Visible = false;
 dlcom.Enabled = false;
 }
 ds.Clear();
@@ -297,21 +301,12 @@ else
 {
 cnn.Close();
 cnn.Open();
-string st2 = "insert into Guest(gname,gmail) values('" + @name + "','" + @mail + "')";
+string st2 = "insert into Guest(gname,gmail,gflag,ismgr) values('" + @name + "','" + @mail + "','0','0')";
 SqlCommand cmd2 = new SqlCommand(st2, cnn);
 cmd2.ExecuteNonQuery();
 cnn.Close();
 }
 
-}
-//文章回复
-protected void btnRly_Click(object sender, ImageClickEventArgs e)
-{
-reply.Visible = true;
-lbif.Visible = true;
-lbr1.Visible = false;
-lbr2.Visible = false;
-ddlfloors.Visible = false;
 }
 //楼层回复
 protected void btnR_Click(object sender, EventArgs e)
@@ -320,10 +315,18 @@ reply.Visible = true;
 lbif.Visible = false;
 lbr1.Visible = true;
 lbr2.Visible = true;
-ddlfloors.Visible = true;
+lbre.Visible = true;
 Button btn = sender as Button;
-ddlfloors.Text = btn.CommandArgument.ToString();
+    string commm=btn.CommandArgument.ToString();
+Session["repis"] = commm;
 int newsid = Convert.ToInt32(Request.QueryString["id"]);
+string st = "select * from Comment as a,Guest as b where comid='"+@commm+"' and a.gid=b.guid ";
+SqlDataReader reader = DBHelp.cn(st).ExecuteReader();
+if (reader.Read())
+{
+    
+    lbre.Text =Encryption.Decode(reader["gname"]).ToString();
+}
 }   
 
 
@@ -349,11 +352,7 @@ cnn.Close();
 return 0;
 }
 }
-//关闭回复面板
-protected void ibtnclose_Click(object sender, ImageClickEventArgs e)
-{
-Page_Load(sender, e);
-}
+//检查是否允许评论
 protected void authcom()
 {
 string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
@@ -364,16 +363,28 @@ SqlCommand cmd = new SqlCommand(st, cnn);
 SqlDataReader rdr = cmd.ExecuteReader();
 if (rdr.Read())
 {
-if (rdr["comment"].ToString() == "True")
-{
-ImageButton ibtn = fvtxt.FindControl("btnRly") as ImageButton;
-ibtn.Visible = false;
-dlcom.Enabled = false;
-}
+    if (rdr["comment"].ToString() == "True")//评论已经关闭
+    {
+        dlcom.Enabled = false;
+        reply.Visible = false;
+    }
+    else
+    {
+if (ckcomm() == true)
+    {
+        dlcom.Enabled = false;
+      
+        reply.Visible = false;
+    }
+    }
 cnn.Close();
 }
 else
 {
+    
+       dlcom.Enabled = true;
+        reply.Visible = true;
+   
 cnn.Close();
 }
 }
@@ -434,6 +445,64 @@ for (int i = (currentPage - 1) * pageSize; i < currentPage * pageSize && i < str
 displayText += "<div>" + strLined[i] + "</div>";
 }
 return displayText;
+}
+    //验证管理员
+protected void ckadmin(string artid)
+{
+    if (Session["issuper"] == null || Session["ispwd"] == null)
+    {
+        HyperLink1.Visible = false;
+        HyperLink2.Visible = false;
+    }
+    else if (WebHelp.Auth(Session["issuper"].ToString(), Session["ispwd"].ToString()) == false)
+    {
+        HyperLink1.Visible = false;
+        HyperLink2.Visible = false;
+    }
+    else
+    {
+        //HyperLink1.NavigateUrl = "javascript:void if(!confirm('确认删除本文吗？')) return false;window.location.href='editpost.aspx?id=" + artid+"';";
+        HyperLink1.NavigateUrl = "editpost.aspx?id=" + artid;
+        HyperLink2.NavigateUrl = "detail.aspx?id=" + artid+"&ac=delete";
+    }
+}
+protected void deletethis()
+{
+    string newid = Request.QueryString["id"];
+    string action = Request.QueryString["ac"];
+    if(action=="delete")
+    {
+    string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+    SqlConnection cnn = new SqlConnection(connectionString);
+    string st = "Delete Article where artid='" + @newid + "'";
+    SqlCommand cmd = new SqlCommand(st, cnn);
+    cnn.Open();
+    cmd.ExecuteNonQuery();
+    cnn.Close();
+    Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('删除成功！');  window.location.href='bbs.aspx'; </script>");
+    }
+}
+    //验证关闭评论
+protected bool ckcomm()
+{
+    string newid = Request.QueryString["id"];
+    string st = "select * from Article where artid='" + @newid + "'";
+    SqlDataReader red = DBHelp.cn(st).ExecuteReader();
+    if (red.Read())
+    {
+        if (red["comon"].ToString() == "True")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
 }

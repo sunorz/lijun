@@ -19,7 +19,7 @@ public partial class adminweb : System.Web.UI.Page
     //载入
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        Button4.Attributes.Add("onclick", " if(!confirm('确认删除选中的用户吗？')) return false;"); 
         if (Session["issuper"] == null || Session["ispwd"] == null)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
@@ -278,6 +278,33 @@ public partial class adminweb : System.Web.UI.Page
         Response.Redirect("guest.aspx");
     }
 
+    //删除选中
+    protected void deletemore(object sender, EventArgs e)
+    {
+        for (int i = 0; i < this.gvuser.Rows.Count; i++)
+        {
+            CheckBox ckb = (CheckBox)this.gvuser.Rows[i].FindControl("CheckBox2");
+            if (ckb.Checked == true)
+            {
+                int id = Convert.ToInt32(gvuser.DataKeys[i].Value);
+               
+                   
+                    string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+                    SqlConnection conur = new SqlConnection(connectionString);
+                    string delur = "delete from Admin where id='" + @id + "'";
+                    SqlCommand cmdu = new SqlCommand(delur, conur);
+                    conur.Open();
+                    cmdu.ExecuteNonQuery();
+                    conur.Close();
+
+               
+
+            }
+
+        }
+
+        bind();
+    }
 }
      
    

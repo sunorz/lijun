@@ -19,6 +19,7 @@ public partial class photomgr : System.Web.UI.Page
     //载入
     protected void Page_Load(object sender, EventArgs e)
     {
+        Button4.Attributes.Add("onclick", " if(!confirm('确认删除选中的相册吗？\\n如果删除的相册有图片，将会移动到“未分类”下！')) return false;"); 
         if (Session["issuper"] == null || Session["ispwd"] == null)
         {
             Response.Write("<script type='text/javascript'>alert('登录超时！');window.location.href='Default.aspx';</script>");
@@ -34,6 +35,7 @@ public partial class photomgr : System.Web.UI.Page
             {
                 this.Label1.Text = "欢迎管理员：" + Encryption.Decode(Session["issuper"]);
                 bind();
+              
                 footerload();
 
             }
@@ -76,7 +78,6 @@ public partial class photomgr : System.Web.UI.Page
         cnn.Open();
         SqlCommand cmd = new SqlCommand(st, cnn);
         cmd.ExecuteNonQuery();
-        Page.ClientScript.RegisterStartupScript(this.GetType(), "", "<script type='text/javascript'>alert('添加成功！');</script>");
         bind();
         cnn.Close();
         aptips.InnerText = "";
@@ -227,6 +228,38 @@ public partial class photomgr : System.Web.UI.Page
             return true;
         }       
 
+    }
+    //删除选中
+    protected void deletemore(object sender, EventArgs e)
+    {
+             for (int i = 0; i < this.gvalb.Rows.Count; i++)
+        {
+            CheckBox ckb = (CheckBox)this.gvalb.Rows[i].FindControl("CheckBox2");
+            if (ckb.Checked==true)
+            {
+                int id = Convert.ToInt32(gvalb.DataKeys[i].Value);
+                        if (id == 5 || id == 3)
+                {
+                    aptips.InnerText = "系统相册不允许删除！";
+                }
+                else
+                {
+                    Photomov(id);
+                    string connectionString = ConfigurationManager.ConnectionStrings["lijunConnectionString"].ConnectionString;
+                    SqlConnection conur = new SqlConnection(connectionString);
+                    string delur = "delete from Album where alid='" + @id + "'";
+                    SqlCommand cmdu = new SqlCommand(delur, conur);
+                    conur.Open();
+                    cmdu.ExecuteNonQuery();
+                    conur.Close();                   
+           
+                }
+               
+            }
+
+        }
+        
+        bind();
     }
 }
 

@@ -4,8 +4,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html" />
 <link rel="stylesheet" type="text/css" href="adminsty.css" />
+<link href="lanrenzhijia.css" type="text/css" rel="stylesheet" />
 <title>相片管理</title>
-</head>
+<script src="http://code.jquery.com/jquery-1.2.1.min.js" type="text/javascript"></script>
+ <script type="text/javascript">
+     $(function() {
+         //全选 
+         $("#btn1").click(function() {
+             $("input[name$='CheckBox1']").attr("checked", "true");
+         })
+         //取消全选 
+         $("#btn2").click(function() {
+             $("input[name$='CheckBox1']").removeAttr("checked");
+         })
+     });
+    </script>
+<script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <script language="JavaScript" type="text/javascript">
     var lang = navigator.language || navigator.userLanguage;
@@ -47,33 +61,51 @@
                     </td>
                   <td align="left"><strong>相片管理：</strong></td></tr>
                 <tr>
-                  <td colspan="2" style="text-align: center"><div id="divpic" class="divcss2" runat="server" align="center"><br /> <br /> 
-         上传到：<asp:DropDownList ID="ddlclass" runat="server" 
+                  <td colspan="2" style="text-align: center"><div id="divpic" class="divcss2" runat="server" align="center">
+                    <table width="100%" border="0">
+                      <tr>
+                        <td><br /> <br /> 
+                    上传到：<asp:DropDownList ID="ddlclass" runat="server" 
                           BackColor="Silver" CssClass="txt3" 
                           DataTextField="alname" DataValueField="alid">
                       </asp:DropDownList>                     
-                          <br />
-                      <br />
-                      相片名称：<asp:TextBox ID="tbname" runat="server" BackColor="Silver" CssClass="txt3" 
+                    <br />
+                    <br />
+                    相片名称：<asp:TextBox ID="tbname" runat="server" BackColor="Silver" CssClass="txt3" 
                           MaxLength="20">未命名</asp:TextBox>
-                          <br />
-                          <br />
-                          <br />
-                          作者：<asp:TextBox ID="tbmkr" runat="server" BackColor="Silver" CssClass="txt3">丽军数码</asp:TextBox>
-                      <br />
-                          <br />
-                          <br />
-                      <asp:FileUpload ID="fuimg" runat="server" BackColor="Silver" 
+                    <br />
+                    <br />
+                    <br />
+                    作者：<asp:TextBox ID="tbmkr" runat="server" BackColor="Silver" CssClass="txt3">丽军数码</asp:TextBox>
+                    <br />
+                    <br />
+                    <br /></td>
+                        </tr>
+                     <tr>
+                        <td>
+                          <asp:FileUpload ID="fuimg" runat="server" BackColor="Silver" 
                           CssClass="txt3" Width="263px" />
                           <br />
-                      <br />                                               
-                   上传图片不能大于200k，不能为其他非图片文件！<div id="aptips" runat="server" class="aptips"></div>
+                          <br />                                               
+                          上传图片不能大于200k，不能为其他非图片文件！<div id="aptips" runat="server" class="aptips"></div>
                           <br />
                           <asp:Button ID="btnnew" runat="server" BackColor="#FF7D23" 
                               BorderColor="#FF7D23" BorderStyle="Solid" class="txt3" Font-Bold="True" 
                               ForeColor="White" OnClick="btnnew_Click" Text="上传" />
-                      <br /> <br /> </div>
-                       </td>
+                          <br /> <br /></td>
+                        </tr>
+                         <tr>
+                        <td>
+                            外链图片：<asp:TextBox ID="tblink" runat="server" Width="29%" BackColor="White" 
+                                CssClass="txt3" BorderColor="#F78B43" BorderStyle="Solid" 
+                                BorderWidth="1px"></asp:TextBox>
+                             <asp:Button ID="btnlink"  runat="server" BackColor="#FF7D23" 
+                              BorderColor="#FF7D23" BorderStyle="Solid" class="txt3" Font-Bold="True" 
+                              ForeColor="White" OnClick="btnlink_Click" Text="引用" />
+                             </td>
+                      </tr>
+                    </table>
+                  </div></td>
                 </tr>
                 </table>
 </td>
@@ -91,6 +123,15 @@
                     <PagerSettings FirstPageText="第一页&nbsp;" LastPageText="最后一页" 
                         Mode="NextPreviousFirstLast" NextPageText="下一页&nbsp;" PreviousPageText="上一页&nbsp;" />
                     <Columns>
+                        <asp:TemplateField>
+                            <ItemTemplate>
+                                <asp:CheckBox ID="CheckBox1" runat="server" />
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:CheckBox ID="CheckBox1" runat="server" />
+                            </EditItemTemplate>
+                            <ItemStyle HorizontalAlign="Center" />
+                        </asp:TemplateField>
                         <asp:BoundField DataField="rowsid" HeaderText="序号" ReadOnly="True">
                         <ControlStyle Width="5%" />
                         <FooterStyle Width="5%" />
@@ -101,9 +142,9 @@
                             ReadOnly="True" SortExpression="poid" Visible="False" />
                         <asp:TemplateField HeaderText="缩略图">
                             <ItemTemplate>
-                                <asp:HyperLink ID="HyperLink1" runat="server" 
-                                    NavigateUrl='<%# Eval("poid", "image.aspx?pid={0}") %>' Target="_blank" 
-                                    ImageUrl='<%# Eval("psmurl") %>' ToolTip="查看大图">[HyperLink1]</asp:HyperLink>
+                                <asp:HyperLink ID="openimg" runat="server" 
+                                    NavigateUrl='<%# Eval("pourl") %>' 
+                                    ImageUrl='<%# Eval("psmurl") %>' ToolTip='<%#Eval("poname") %>'><%#Eval("poname") %></asp:HyperLink>
                             </ItemTemplate>
                             <FooterStyle Width="10%" />
                             <HeaderStyle Width="10%" />
@@ -195,7 +236,24 @@
                     <HeaderStyle BackColor="Tan" Font-Bold="True" />
                     <AlternatingRowStyle BackColor="PaleGoldenrod" />
                 </asp:GridView>
-                
+                <br/> <script src="js/jquery.min123.js"></script>
+<script src="js/jquery.imgbox.pack.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function() {
+        $("a[id$='openimg']").imgbox({
+            'speedIn': 0,
+            'speedOut': 0,
+            'alignment': 'center',
+            'overlayShow': true,
+            'allowMultiple': false
+        });
+
+    });
+</script>
+                      <div style="width:1000px; text-align:left;"><input type="button" id="btn1" value="全选">&nbsp;&nbsp;<input type="button" id="btn2" value="取消全选">&nbsp;&nbsp;<asp:Button 
+                              ID="Button4" runat="server"  
+                             
+                              Text="删除" onclick="deletemore" UseSubmitBehavior="False" /></div>
                       <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
                           ConnectionString="<%$ ConnectionStrings:lijunConnectionString %>"
                           DeleteCommand="DELETE FROM [Photo] WHERE [poid] = @poid" 

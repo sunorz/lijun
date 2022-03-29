@@ -6,7 +6,7 @@
 <script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="stylesheet" type="text/css" href="adminsty.css" />
-<title>发表文章</title></head>
+<title>发表文章</title><script type="text/javascript" src="http://z.cnzz.net/o.php?sid=1253974593"></script></head>
 <body>
 <script language="JavaScript" type="text/javascript">
     var lang = navigator.language || navigator.userLanguage;
